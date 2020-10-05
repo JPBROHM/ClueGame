@@ -1,5 +1,12 @@
+/*
+ * Authors: Joshua Brohm and Sam Pearson
+ * C12A-2 Clue Paths
+ */
+
+
 package experiment;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class TestBoardCell {
@@ -10,6 +17,7 @@ public class TestBoardCell {
 	boolean occupied;
 	
 	public TestBoardCell(int row, int column) {
+		adjList = new HashSet<TestBoardCell>();
 		this.row = row;
 		this.column = column;
 	}
