@@ -32,16 +32,16 @@ class BoardTestsExp {
 		/* TEST FOR TOP RIGHT ADJACENCY LIST */
 		//test to make sure that the adjacency list is the correct size, and contains the correct cells
 		TestBoardCell cell = board.getCell(0,0);
-		Set<TestBoardCell> testList = cell.getAdjList();
+		Set<TestBoardCell> testList = cell.getAdjList(board.getGrid());
 		//fail if the adjacency list does not contain the adjacent cells for (0,0) or is the wrong size
 		Assert.assertTrue(testList.contains(board.getCell(1,0)));
-		Assert.assertTrue(testList.contains(board.getCell(1,0)));
+		Assert.assertTrue(testList.contains(board.getCell(0,1)));
 		Assert.assertEquals(2, testList.size());
 		
 		/* TEST FOR BOTTOM RIGHT ADJACENCY LIST */
 		//test to make sure that the adjacency list is the correct size, and contains the correct cells
 		cell = board.getCell(3,3);
-		testList = cell.getAdjList();
+		testList = cell.getAdjList(board.getGrid());
 		//fail if the adjacency list does not contain the adjacent cells for (0,0) or is the wrong size
 		Assert.assertTrue(testList.contains(board.getCell(3,2)));
 		Assert.assertTrue(testList.contains(board.getCell(2,3)));
@@ -50,32 +50,32 @@ class BoardTestsExp {
 		/* TEST FOR A RIGHT EDGE ADJACENCY LIST */
 		//test to make sure that the adjacency list is the correct size, and contains the correct cells
 		cell = board.getCell(1,3);
-		testList = cell.getAdjList();
+		testList = cell.getAdjList(board.getGrid());
 		//fail if the adjacency list does not contain the adjacent cells for (0,0) or is the wrong size
-		Assert.assertTrue(testList.contains(board.getCell(0,3)));
-		Assert.assertTrue(testList.contains(board.getCell(2,3)));
-		Assert.assertTrue(testList.contains(board.getCell(1,2)));
+		Assert.assertTrue(testList.contains(board.getCell(3,0)));
+		Assert.assertTrue(testList.contains(board.getCell(3,2)));
+		Assert.assertTrue(testList.contains(board.getCell(2,1)));
 		Assert.assertEquals(3, testList.size());
 		
 		/* TEST FOR LEFT EDGE ADJACENCY LIST */
 		//test to make sure that the adjacency list is the correct size, and contains the correct cells
 		cell = board.getCell(2,0);
-		testList = cell.getAdjList();
+		testList = cell.getAdjList(board.getGrid());
 		//fail if the adjacency list does not contain the adjacent cells for (0,0) or is the wrong size
-		Assert.assertTrue(testList.contains(board.getCell(1,0)));
-		Assert.assertTrue(testList.contains(board.getCell(3,0)));
-		Assert.assertTrue(testList.contains(board.getCell(2,1)));
+		Assert.assertTrue(testList.contains(board.getCell(0,1)));
+		Assert.assertTrue(testList.contains(board.getCell(0,3)));
+		Assert.assertTrue(testList.contains(board.getCell(1,2)));
 		Assert.assertEquals(3, testList.size());
 		
 		/* TEST FOR MIDDLE ADJACENCY LIST */
 		//test to make sure that the adjacency list is the correct size, and contains the correct cells
 		cell = board.getCell(2,2);
-		testList = cell.getAdjList();
+		testList = cell.getAdjList(board.getGrid());
 		//fail if the adjacency list does not contain the adjacent cells for (0,0) or is the wrong size
-		Assert.assertTrue(testList.contains(board.getCell(1,2)));
-		Assert.assertTrue(testList.contains(board.getCell(3,2)));
 		Assert.assertTrue(testList.contains(board.getCell(2,1)));
 		Assert.assertTrue(testList.contains(board.getCell(2,3)));
+		Assert.assertTrue(testList.contains(board.getCell(1,2)));
+		Assert.assertTrue(testList.contains(board.getCell(3,2)));
 		Assert.assertEquals(4, testList.size());
 		
 	
@@ -167,21 +167,21 @@ class BoardTestsExp {
 	
 	
 	
-	
+
 	@Test
 	public void testTargetsMixed() {
 		//test targets with other spaces besides open walkways
-		board.getCell(0, 2).setOccupied(true);
+		board.occupyCell(board.getCell(0, 2),true);
 		board.getCell(1, 2).setRoom(true);
 		//create adjacency list
-		TestBoardCell cell = board.getCell(0, 3);
-		board.calcTargets(cell, 3);
+		TestBoardCell startCell = board.getCell(0, 3);
+		board.calcTargets(startCell, 3);
 		Set<TestBoardCell> targets = board.getTargets();
 		//run tests
-		Assert.assertEquals(3, targets.size());
-		Assert.assertTrue(targets.contains(board.getCell(1,2)));
+		Assert.assertTrue(targets.contains(board.getCell(1,1)));		
 		Assert.assertTrue(targets.contains(board.getCell(2,2)));
 		Assert.assertTrue(targets.contains(board.getCell(3,3)));
+		Assert.assertEquals(3, targets.size());
 		
 	}
 	
@@ -204,7 +204,8 @@ class BoardTestsExp {
 	Assert.assertFalse(testList.contains(board.getCell(0,3)));
 	Assert.assertFalse(testList.contains(board.getCell(1,0)));
 	Assert.assertFalse(testList.contains(board.getCell(0,1)));
-	Assert.assertEquals(8, testList.size());
+	Assert.assertFalse(testList.contains(board.getCell(0,0)));
+	Assert.assertEquals(7, testList.size());
 		
 }
 
