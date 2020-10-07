@@ -22,6 +22,8 @@ public class TestBoardCell {
 		this.row = row;
 		this.column = column;	
 	}
+	
+	
 	public TestBoardCell(int row, int column, boolean occupy, boolean room) {
 		adjList = new HashSet<TestBoardCell>();
 		this.row = row;
@@ -36,6 +38,10 @@ public class TestBoardCell {
 	public int getColumn() {
 		return column;
 	}
+	
+	//the adj list cannot be made until the actual game board has been made, becuase it contains cells
+	//putting the code to make an adj list in the constructor of a board cell ended up making it a recursive 
+	//constructor,  which ended up damaging performance significantly and none of the tests passed
 	public Set<TestBoardCell> getAdjList(TestBoardCell[][] grid){
 		if(column != 0) {
 			adjList.add(grid[column - 1][row]);

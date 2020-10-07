@@ -31,12 +31,11 @@ public class TestBoard {
 		return grid;
 	}
 	
+	
+	
+	//method to actual changing the value of a cell, instead of making a copy then changing the value of the copy
 	public void occupyCell(TestBoardCell cell, boolean occupy) {
-		TestBoardCell newCell = cell;
-		newCell.setOccupied(occupy);
-		int col = cell.getColumn();
-		int row = cell.getRow();
-		grid[col][row] = newCell;
+		grid[cell.getColumn()][cell.getRow()].setOccupied(occupy);
 	}
 	
 	
@@ -48,31 +47,26 @@ public class TestBoard {
 		visited.add(startCell);
 		findAllTargets(startCell, pathLength);
 	}
-	
+
+	//find all the targets, but if an adjCell is occupied do not visit it
 	public void findAllTargets(TestBoardCell cell, int numSteps) {
 		for (TestBoardCell adjCell : cell.getAdjList(grid)) {
-			if (!adjCell.getOccupied()) {
-				if ((!visited.contains(adjCell))) {
-					visited.add(adjCell);
-					if(numSteps == 1){
-						legalTargets.add(adjCell);
-					} else {
-						findAllTargets(adjCell, numSteps - 1);
+			if ((!visited.contains(adjCell)) && (!adjCell.getOccupied())) {
+				visited.add(adjCell);
+				if(numSteps == 1){
+					legalTargets.add(adjCell);
+				} else {
+					findAllTargets(adjCell, numSteps - 1);
 
-					}
-					visited.remove(adjCell);
 				}
-
+				visited.remove(adjCell);
 			}
+
+
 		}
 	}
 
 	public Set<TestBoardCell> getTargets(){
-		for (TestBoardCell cell : legalTargets) {
-			if(cell.getOccupied()) {
-				legalTargets.remove(cell);
-			}
-		}
 		return legalTargets;
 	}
 
