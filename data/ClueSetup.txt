@@ -1,0 +1,11 @@
+// Rooms and room cards
+Room, Comfort Room, C
+Room, Kitchen, K
+Room, Bathroom, B
+Room, Billiard Room, R
+Room, Murder Room, M
+Room, Dining Room, D
+Room, Hall, H
+// Other spaces on board
+Space, Unused, X
+Space, Walkway, W
