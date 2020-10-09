@@ -1,0 +1,13 @@
+Authors: Sam Pearson & Josh Brohm
+
+The biggest change we made is to how secret passages work, they seemed 
+too OP inside of rooms, so we put them in walkways.
+This changed how the get room/get secret passages functions will work
+We made a function called get first that we set up for the test which will eventually get the first character
+of the secret passage label, after that we can use the getSecretPassage function to get the 2nd character
+
+We used similar tests to the 306 file, as we sort of had to, but we changed all of our cells to reflect what we were trying to test
+I think one door happened to be in the same place, also the number of COLS and ROWS remained unchanged, but everything else used different 
+indices.
+
+We also made testing if all the rooms were created and that they all the correct name/character into one test

@@ -3,7 +3,7 @@ package clueGame;
 public class Room {
 	
 	private String name;
-	private char character;
+	
 	public Room() {
 		// TODO Auto-generated constructor stub
 	}

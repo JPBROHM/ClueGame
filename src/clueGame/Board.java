@@ -1,6 +1,7 @@
 package clueGame;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -16,7 +17,8 @@ public class Board {
 	private String textFile;
 	private Set<BoardCell> visited;
 	private Set<BoardCell> legalTargets;
-	private Map<Character, Room> rooms;
+	private Map<Character, Room> rooms = new HashMap<Character, Room>();
+
 
 	/*
 	 * variable and methods used for singleton pattern

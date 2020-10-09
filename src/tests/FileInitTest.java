@@ -14,7 +14,7 @@ import clueGame.BoardCell;
 import clueGame.DoorDirection;
 import clueGame.Room;
 
-class FileInitTest {
+public class FileInitTest {
 
 	public static final int numRows = 25;
 	public static final int numCols = 24;
@@ -115,17 +115,34 @@ public void testNumDoorways() {
 		
 		
 		
-			// this is a secret passage test
+			// this is a secret passage test --> we tweaked how these work, theyre not in rooms, but rather walkways near-ish rooms-->will have to do more tweaking in next step
 			BoardCell cell;
 			Room room;
 			cell = board.getCell(0, 5);
-			room = board.getRoom( cell ) ;
-			assertTrue( room != null );
-			assertEquals( room.getName(), "Study" ) ;
+			assertEquals(cell.getFirst(), 'M');
 			assertTrue( cell.getSecretPassage() == 'K' );
 		
-		
-		
+			//test walkway
+			cell = board.getCell(2, 5);
+			room = board.getRoom( cell ) ;
+			// Note for our purposes, walkways and closets are rooms
+			assertTrue( room != null );
+			assertEquals( room.getName(), "Walkway" ) ;
+			assertFalse( cell.isRoomCenter() );
+			assertFalse( cell.isLabel() );
+			
+			//test room center
+			cell = board.getCell(2, 2);
+			room = board.getRoom( cell ) ;
+			assertTrue( room != null );
+			assertEquals( room.getName(), "Murder Room" ) ;
+			assertTrue( cell.isRoomCenter() );
+			assertTrue( room.getCenterCell() == cell );
+			//test not center
+			cell = board.getCell(3, 3);
+			room = board.getRoom(cell);
+			assertEquals( room.getName(), "Murder Room" ) ;
+			assertFalse( cell.isRoomCenter() );
 		
 		
 		}
