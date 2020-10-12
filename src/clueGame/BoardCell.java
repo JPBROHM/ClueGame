@@ -107,9 +107,13 @@ public class BoardCell  implements Comparable<BoardCell> {
 		
 	}
 
-	public Set<BoardCell> calcAdjList() {
+	public Set<BoardCell> getAdjList() {
 		adjList = new HashSet<BoardCell>();
 		return adjList;
+	}
+	
+	public void calcAdjList() {
+		adjList = new HashSet<BoardCell>();
 	}
 
 

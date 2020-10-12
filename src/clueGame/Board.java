@@ -218,7 +218,7 @@ public class Board {
 	}
 	public Set<BoardCell> getAdjList(int i, int j) {
 		// TODO Auto-generated method stub
-		return grid[i][j].calcAdjList();
+		return grid[i][j].getAdjList();
 	}
 	
 	public void calcTargets(BoardCell cell, int i) {
