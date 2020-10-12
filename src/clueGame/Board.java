@@ -216,5 +216,18 @@ public class Board {
 		Room room = rooms.get(label.charAt(0));
 		return room;
 	}
+	public Set<BoardCell> getAdjList(int i, int j) {
+		// TODO Auto-generated method stub
+		return grid[i][j].calcAdjList();
+	}
+	
+	public void calcTargets(BoardCell cell, int i) {
+		legalTargets = new HashSet<BoardCell>();
+		
+	}
+	public Set<BoardCell> getTargets() {
+		// TODO Auto-generated method stub
+		return legalTargets;
+	}
 
 }

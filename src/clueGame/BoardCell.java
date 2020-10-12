@@ -102,5 +102,15 @@ public class BoardCell  implements Comparable<BoardCell> {
 		return 1;
 	}
 
+	public void setOccupied(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Set<BoardCell> calcAdjList() {
+		adjList = new HashSet<BoardCell>();
+		return adjList;
+	}
+
 
 }
