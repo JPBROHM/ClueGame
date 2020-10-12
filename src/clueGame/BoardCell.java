@@ -26,10 +26,12 @@ public class BoardCell  implements Comparable<BoardCell> {
 		adjList = new HashSet<BoardCell>();
 		this.row = row;
 		this.column = column;
+		//if cellLabel from csv file is 1 character, we know its not a room center, label, doorway, or secret passage
 		if(cellLabel.length() == 1) {
 			doorway = false;
 			roomCenter = false;
 			label = false;
+			//if cellLabel is 2 characters long determine if it is a label, center, secret passage, or doorway, and set variables accordingly
 		} else if(cellLabel.length() == 2) {
 			if (cellLabel.charAt(1) == '^' || cellLabel.charAt(1) == 'v' || cellLabel.charAt(1) == '<' || cellLabel.charAt(1) == '>') {
 				doorway = true;
