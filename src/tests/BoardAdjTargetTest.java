@@ -40,7 +40,7 @@ class BoardAdjTargetTest {
 		// we want to test a couple of different rooms.
 		// First, the Murder Room
 		Set<BoardCell> testList = board.getAdjList(2, 2);
-		assertEquals(2, testList.size());
+		assertEquals(1, testList.size());
 		assertTrue(testList.contains(board.getCell(4, 6)));
 		
 		
@@ -57,7 +57,7 @@ class BoardAdjTargetTest {
 	{
 		//test MK -> KM
 		Set<BoardCell> testList = board.getAdjList(5, 0);
-		assertEquals(4, testList.size());
+		assertEquals(3, testList.size());
 		assertTrue(testList.contains(board.getCell(23, 16)));
 		
 		
@@ -179,7 +179,8 @@ class BoardAdjTargetTest {
 		Assert.assertTrue(testList6.contains(board.getCell(3,8)));
 		Assert.assertTrue(testList6.contains(board.getCell(1,8)));
 		Assert.assertTrue(testList6.contains(board.getCell(4,5)));
-		Assert.assertEquals(9,testList6.size());
+		Assert.assertTrue(testList6.contains(board.getCell(2,7)));
+		Assert.assertEquals(10,testList6.size());
 		
 	}
 

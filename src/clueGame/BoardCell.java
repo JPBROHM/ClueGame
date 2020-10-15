@@ -3,6 +3,7 @@ package clueGame;
 import java.util.HashSet;
 import java.util.Set;
 
+import experiment.TestBoard;
 import experiment.TestBoardCell;
 
 public class BoardCell  implements Comparable<BoardCell> {
@@ -16,10 +17,21 @@ public class BoardCell  implements Comparable<BoardCell> {
 	private char secretPassage;
 	private DoorDirection doorDirection;
 	private char first;
+	private boolean secretPassageBool;
+	private boolean isRoom;
+	private boolean isOccupied;
+
+
 
 	public BoardCell(){
 		// TODO Auto-generated constructor stub
 	}
+	
+	public boolean isRoom() {
+		return isRoom;
+	}
+
+
 
 	public BoardCell(int row, int column, String cellLabel) {
 		this.cellLabel = cellLabel;
@@ -28,13 +40,20 @@ public class BoardCell  implements Comparable<BoardCell> {
 		this.column = column;
 		//if cellLabel from csv file is 1 character, we know its not a room center, label, doorway, or secret passage
 		if(cellLabel.length() == 1) {
+			if(!cellLabel.equals("W") && !cellLabel.equals("X")) {
+				isRoom = true;
+			} else {
+				isRoom = false;
+			}
 			doorway = false;
 			roomCenter = false;
 			label = false;
+			secretPassageBool=false;
 			//if cellLabel is 2 characters long determine if it is a label, center, secret passage, or doorway, and set variables accordingly
 		} else if(cellLabel.length() == 2) {
 			if (cellLabel.charAt(1) == '^' || cellLabel.charAt(1) == 'v' || cellLabel.charAt(1) == '<' || cellLabel.charAt(1) == '>') {
 				doorway = true;
+				isRoom = false;
 				if (cellLabel.charAt(1) == '^') {
 					doorDirection = DoorDirection.UP;
 				}
@@ -50,13 +69,16 @@ public class BoardCell  implements Comparable<BoardCell> {
 			}
 			else if(cellLabel.charAt(1)=='*') {
 				roomCenter=true;
+				isRoom = true;
 			}
 			else if(cellLabel.charAt(1) == '#') {
 				label=true;
+				isRoom = true;
 				}
 			else {
 				first=cellLabel.charAt(0);
 				secretPassage=cellLabel.charAt(1);
+				secretPassageBool=true;
 			}
 		}
 	}
@@ -85,6 +107,10 @@ public class BoardCell  implements Comparable<BoardCell> {
 		// return the second character
 		return secretPassage;
 	}
+	public boolean isSecretPassage() {
+		// return the second character
+		return secretPassageBool;
+	}
 	public char getFirst() {
 		//get the first character (of the secret passage) and return it
 		return first;
@@ -103,17 +129,31 @@ public class BoardCell  implements Comparable<BoardCell> {
 	}
 
 	public void setOccupied(boolean b) {
-		// TODO Auto-generated method stub
+		isOccupied = b;
 		
 	}
 
 	public Set<BoardCell> getAdjList() {
-		adjList = new HashSet<BoardCell>();
 		return adjList;
 	}
 	
-	public void calcAdjList() {
-		adjList = new HashSet<BoardCell>();
+	public void addToAdjList(BoardCell cell) {
+		this.adjList.add(cell);
+	}
+
+	public int getRow() {
+		// TODO Auto-generated method stub
+		return row;
+	}
+
+	public int getColumn() {
+		// TODO Auto-generated method stub
+		return column;
+	}
+
+	public boolean getOccupied() {
+		// TODO Auto-generated method stub
+		return isOccupied;
 	}
 
 
