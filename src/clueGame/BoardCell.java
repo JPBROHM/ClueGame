@@ -32,6 +32,8 @@ public class BoardCell  implements Comparable<BoardCell> {
 	}
 
 
+	
+	
 
 	public BoardCell(int row, int column, String cellLabel) {
 		this.cellLabel = cellLabel;
@@ -83,6 +85,19 @@ public class BoardCell  implements Comparable<BoardCell> {
 		}
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 		public DoorDirection getDoorDirection() {
 			// TODO Auto-generated method stub
@@ -137,7 +152,8 @@ public class BoardCell  implements Comparable<BoardCell> {
 		return adjList;
 	}
 	
-	public void addToAdjList(BoardCell cell) {
+
+	public void addToAdjList(BoardCell cell) {	
 		this.adjList.add(cell);
 	}
 

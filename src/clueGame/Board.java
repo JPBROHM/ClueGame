@@ -34,10 +34,19 @@ public class Board {
 	private Board() {
 		super() ;
 	}
+	
+	
+	
+	
 	// this method returns the only Board
 	public static Board getInstance() {
 		return theInstance;
 	}
+	
+	
+	
+	
+	
 	/*
 	 * initialize the board (since we are using singleton pattern)
 	 */
@@ -64,7 +73,6 @@ public class Board {
 	
 
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
-
 		roomNames = new HashMap<String, String>();
 		FileReader f;
 		f = new FileReader(textFile);
@@ -91,14 +99,20 @@ public class Board {
 
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public void loadLayoutConfig() throws BadConfigFormatException, FileNotFoundException {
-
-
 		ArrayList<String> rows = new ArrayList<String>();
 		FileReader f;
-
-		
-
 		//Read each row into an ArrayList of strings
 		f = new FileReader(csvFile);
 		Scanner s = new Scanner(f);
@@ -176,8 +190,205 @@ public class Board {
 	}
 
 
+	
+	
+	
+	
 
 	
+	
+	
+	
+	
+	
+	
+	//calculating the adj List is much more complex than in the testBoardCell class
+	//this is because we have to account for only be able to enter rooms through doorways along with not being able to walk 
+	//around in rooms
+	public void calcAdjList(int row, int column) {
+		Set<BoardCell> adjList = new HashSet<BoardCell>();
+		//set of if statements is similar to testBoardCell, but it only adds the cell to the adj list 
+		//if its a walkway, since you need to be on a doorway to enter a room
+		if(column != 0 ) {
+			if (grid[row][column - 1].getCellLabel().charAt(0) == 'W') {
+				grid[row][column].addToAdjList(grid[row][column - 1]);
+			}
+		} 
+		if(column != grid[0].length - 1 ) {
+			if (grid[row][column + 1].getCellLabel().charAt(0) == 'W') {
+				grid[row][column].addToAdjList(grid[row][column + 1]);
+			}
+		}
+		if(row != 0 ) {
+			if (grid[row - 1][column].getCellLabel().charAt(0) == 'W') {
+				grid[row][column].addToAdjList(grid[row - 1][column]);
+			}
+		}
+		if(row != grid.length - 1 ) {
+			if (grid[row + 1][column].getCellLabel().charAt(0) == 'W') {
+				grid[row][column].addToAdjList(grid[row + 1][column]);
+			}
+		}
+		
+		//Switch statement for if the player is on a doorway
+		if (grid[row][column].isDoorway()) {
+			DoorDirection dDir = grid[row][column].getDoorDirection();
+			BoardCell roomCenter;
+			char labelChar;
+			String roomCellLabel;
+			switch (dDir) {
+			//each switch statement is the same, just the direction differs
+			case UP:
+				roomCellLabel = grid[row - 1][column].getCellLabel();							//go one cell in the direction of the doorway to get the character of the room
+				labelChar = roomCellLabel.charAt(0);
+				roomCenter = rooms.get(labelChar).getCenterCell();									//find that rooms center cell from the rooms map
+				grid[row][column].addToAdjList(roomCenter);											//add the center cell of the room to the current cells adj list
+				grid[roomCenter.getRow()][roomCenter.getColumn()].addToAdjList(grid[row][column]);  //add the doorway to the adj list of the room center
+				break;
+			case DOWN:
+				roomCellLabel = grid[row + 1][column].getCellLabel();
+				labelChar = roomCellLabel.charAt(0);
+				roomCenter = rooms.get(labelChar).getCenterCell();
+				grid[row][column].addToAdjList(roomCenter);
+				grid[roomCenter.getRow()][roomCenter.getColumn()].addToAdjList(grid[row][column]);
+				break;
+			case LEFT:
+				roomCellLabel = grid[row][column - 1].getCellLabel();
+				labelChar = roomCellLabel.charAt(0);
+				roomCenter = rooms.get(labelChar).getCenterCell();
+				grid[row][column].addToAdjList(roomCenter);
+				grid[roomCenter.getRow()][roomCenter.getColumn()].addToAdjList(grid[row][column]);
+				break;
+			case RIGHT:
+				roomCellLabel = grid[row][column + 1].getCellLabel();
+				labelChar = roomCellLabel.charAt(0);
+				roomCenter = rooms.get(labelChar).getCenterCell();
+				grid[row][column].addToAdjList(roomCenter);
+				grid[roomCenter.getRow()][roomCenter.getColumn()].addToAdjList(grid[row][column]);
+				break;
+			default:
+				break;
+			
+			}
+		}
+
+		//secret passageways
+		if (grid[row][column].isSecretPassage()) {
+			char first=grid[row][column].getFirst();
+			char secretPassage=grid[row][column].getSecretPassage();
+
+			//if a secret passage way is surrounded by more than 2 cells that are part of a room then it is in that room
+			//calculated because the 306 board has all the secret passageways in rooms, so they need to teleport to the room center
+			//but our board has secret passageways that dont go into rooms they just go to a specific cell
+			int numRoom=0;
+			if (row != grid.length - 1 && grid[row+1][column].isRoom()) {
+				numRoom++;
+				}
+			if (column != grid[0].length - 1 && grid[row][column+1].isRoom()) {
+				numRoom++;
+				}
+			if (row != 0 && grid[row-1][column].isRoom()) {
+				numRoom++;
+				}
+			if (column != 0 && grid[row][column-1].isRoom() ) {
+				numRoom++;
+				}
+
+			//if the passageway teleports the player to a cell outside of a room
+			if (numRoom<2) {
+				//scan through to find inverse order of ^^, add to adj list.
+				String passSec = ""+secretPassage+first;
+				for(int i=0;i<numRows;i++) {
+					for (int j=0; j<numColumns;j++) {
+						if (grid[i][j].getCellLabel().equals(passSec)) {
+							grid[row][column].addToAdjList(grid[i][j]);
+						}
+					}
+				}
+			}
+			
+			//if the passageway teleports the player into a room
+			else {
+
+				//find room == char secretPassage
+				//find that room's center
+				//add to adj list
+				int room1Row = rooms.get(secretPassage).getCenterCell().getRow();
+				int room1Col = rooms.get(secretPassage).getCenterCell().getColumn();
+				int room2Row = rooms.get(first).getCenterCell().getRow();
+				int room2Col = rooms.get(first).getCenterCell().getColumn();
+				
+				//add room2 to room1s adj lists
+				grid[room2Row][room2Col].addToAdjList(grid[room1Row][room1Col]);
+
+			}
+
+		}
+
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//add the the cell the player is on to the visited list then call the find targets method
+	public void calcTargets(BoardCell cell, int pathLength) {
+		legalTargets = new HashSet<BoardCell>();
+		visited = new HashSet<BoardCell>();
+		visited.add(cell);
+		findAllTargets(cell, pathLength);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	//find all the targets, but if an adjCell is occupied do not visit it
+	//this is basically the same as in testBoard class, except the first if statement was added because players cannot 
+	//enter and exit a room in the same turn
+	public void findAllTargets(BoardCell cell, int numSteps) {
+		for (BoardCell adjCell : cell.getAdjList()) {
+			if (adjCell.isRoom() && (!visited.contains(adjCell))) {
+				legalTargets.add(adjCell);
+				visited.add(adjCell);
+			}
+			else if ((!visited.contains(adjCell)) && !adjCell.getOccupied()) {
+				visited.add(adjCell);
+				if(numSteps == 1){
+					legalTargets.add(adjCell);
+				} else {
+					findAllTargets(adjCell, numSteps - 1);
+
+				}
+				visited.remove(adjCell);
+			}
+			
+
+
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	public Set<BoardCell> getTargets() {
+		// TODO Auto-generated method stub
+		return legalTargets;
+	}
 	
 	public void setConfigFiles(String csvFile, String textFile) {
 		this.csvFile = "data/" + csvFile;
@@ -230,161 +441,5 @@ public class Board {
 	
 	
 	
-	public void calcAdjList(int row, int column) {
-		Set<BoardCell> adjList = new HashSet<BoardCell>();
-		if(column != 0 ) {
-			if (grid[row][column - 1].getCellLabel().charAt(0) == 'W') {
-				grid[row][column].addToAdjList(grid[row][column - 1]);
-			}
-		} 
-		if(column != grid[0].length - 1 ) {
-			if (grid[row][column + 1].getCellLabel().charAt(0) == 'W') {
-				grid[row][column].addToAdjList(grid[row][column + 1]);
-			}
-		}
-		if(row != 0 ) {
-			if (grid[row - 1][column].getCellLabel().charAt(0) == 'W') {
-				grid[row][column].addToAdjList(grid[row - 1][column]);
-			}
-		}
-		if(row != grid.length - 1 ) {
-			if (grid[row + 1][column].getCellLabel().charAt(0) == 'W') {
-				grid[row][column].addToAdjList(grid[row + 1][column]);
-			}
-		}
-		if (grid[row][column].isDoorway()) {
-			DoorDirection dDir = grid[row][column].getDoorDirection();
-			BoardCell roomCenter;
-			char labelChar;
-			String roomCellLabel;
-			switch (dDir) {
-			case UP:
-				roomCellLabel = grid[row - 1][column].getCellLabel();
-				labelChar = roomCellLabel.charAt(0);
-				roomCenter = rooms.get(labelChar).getCenterCell();
-				grid[row][column].addToAdjList(roomCenter);
-				grid[roomCenter.getRow()][roomCenter.getColumn()].addToAdjList(grid[row][column]);
-				break;
-			case DOWN:
-				roomCellLabel = grid[row + 1][column].getCellLabel();
-				labelChar = roomCellLabel.charAt(0);
-				roomCenter = rooms.get(labelChar).getCenterCell();
-				grid[row][column].addToAdjList(roomCenter);
-				grid[roomCenter.getRow()][roomCenter.getColumn()].addToAdjList(grid[row][column]);
-				break;
-			case LEFT:
-				roomCellLabel = grid[row][column - 1].getCellLabel();
-				labelChar = roomCellLabel.charAt(0);
-				roomCenter = rooms.get(labelChar).getCenterCell();
-				grid[row][column].addToAdjList(roomCenter);
-				grid[roomCenter.getRow()][roomCenter.getColumn()].addToAdjList(grid[row][column]);
-				break;
-			case RIGHT:
-				roomCellLabel = grid[row][column + 1].getCellLabel();
-				labelChar = roomCellLabel.charAt(0);
-				roomCenter = rooms.get(labelChar).getCenterCell();
-				grid[row][column].addToAdjList(roomCenter);
-				grid[roomCenter.getRow()][roomCenter.getColumn()].addToAdjList(grid[row][column]);
-				break;
-			default:
-				break;
-			
-			}
-		}
-
-		//secret passageways
-		if (grid[row][column].isSecretPassage()) {
-			char first=grid[row][column].getFirst();
-			char secretPassage=grid[row][column].getSecretPassage();
-
-			int numRoom=0;
-			if (row != grid.length - 1 && grid[row+1][column].isRoom()) {numRoom++;}
-			if (column != grid[0].length - 1 && grid[row][column+1].isRoom()) {numRoom++;}
-			if (row != 0 && grid[row-1][column].isRoom()) {numRoom++;}
-			if (column != 0 && grid[row][column-1].isRoom() ) {numRoom++;}
-
-			if (numRoom<2) {
-				//scan through to find inverse order of ^^, add to adj list.
-				String passSec = ""+secretPassage+first;
-				for(int i=0;i<numRows;i++) {
-					for (int j=0; j<numColumns;j++) {
-						if (grid[i][j].getCellLabel().equals(passSec)) {
-							grid[row][column].addToAdjList(grid[i][j]);
-						}
-					}
-				}
-			}
-			else {
-
-				//find room == char secretPassage
-				//find that room's center
-				//add to adj list
-				int room1Row=0;
-				int room1Col=0;
-				int room2Row=0;
-				int room2Col=0;
-				String passSec = ""+secretPassage+'*';
-				String secPass=""+first+'*';
-				for(int i=0;i<numRows;i++) {
-					for (int j=0; j<numColumns;j++) {
-						if (grid[i][j].getCellLabel().equals(passSec)) {
-							room1Row=i;
-							room1Col=j;
-						}
-					}
-				}
-				for(int i=0;i<numRows;i++) {
-					for (int j=0; j<numColumns;j++) {
-						if (grid[i][j].getCellLabel().equals(secPass)) {
-							room2Row=i;
-							room2Col=j;
-						}
-					}
-				}
-				//add room1 and room2 to eachother adj lists
-				grid[room2Row][room2Col].addToAdjList(grid[room1Row][room1Col]);
-
-			}
-
-		}
-
-
-	}
-	
-	public void calcTargets(BoardCell cell, int pathLength) {
-		legalTargets = new HashSet<BoardCell>();
-		visited = new HashSet<BoardCell>();
-		visited.add(cell);
-		findAllTargets(cell, pathLength);
-		
-	}
-	
-	//find all the targets, but if an adjCell is occupied do not visit it
-	public void findAllTargets(BoardCell cell, int numSteps) {
-		for (BoardCell adjCell : cell.getAdjList()) {
-			if (adjCell.isRoom() && (!visited.contains(adjCell))) {
-				legalTargets.add(adjCell);
-				visited.add(adjCell);
-			}
-			else if ((!visited.contains(adjCell)) && (!adjCell.getOccupied()) && !adjCell.isRoom()) {
-				visited.add(adjCell);
-				if(numSteps == 1){
-					legalTargets.add(adjCell);
-				} else {
-					findAllTargets(adjCell, numSteps - 1);
-
-				}
-				visited.remove(adjCell);
-			}
-			
-
-
-		}
-	}
-	
-	public Set<BoardCell> getTargets() {
-		// TODO Auto-generated method stub
-		return legalTargets;
-	}
 
 }
