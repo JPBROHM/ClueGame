@@ -192,28 +192,27 @@ public class Board {
 	//this is because we have to account for only be able to enter rooms through doorways along with not being able to walk 
 	//around in rooms
 	public void calcAdjList(int row, int column) {
-		Set<BoardCell> adjList = new HashSet<BoardCell>();
+		
 		//set of if statements is similar to testBoardCell, but it only adds the cell to the adj list 
 		//if its a walkway, since you need to be on a doorway to enter a room
-		if(column != 0 ) {
-			if (grid[row][column - 1].getCellLabel().charAt(0) == 'W') {
+		if(column != 0 && (grid[row][column - 1].getCellLabel().charAt(0) == 'W')) {
+			
 				grid[row][column].addToAdjList(grid[row][column - 1]);
-			}
+			
 		} 
-		if(column != grid[0].length - 1 ) {
-			if (grid[row][column + 1].getCellLabel().charAt(0) == 'W') {
+		if(column != grid[0].length - 1 && (grid[row][column + 1].getCellLabel().charAt(0) == 'W') ) {
 				grid[row][column].addToAdjList(grid[row][column + 1]);
-			}
+			
 		}
-		if(row != 0 ) {
-			if (grid[row - 1][column].getCellLabel().charAt(0) == 'W') {
+		if(row != 0 && (grid[row - 1][column].getCellLabel().charAt(0) == 'W') ) {
+			
 				grid[row][column].addToAdjList(grid[row - 1][column]);
-			}
+		
 		}
-		if(row != grid.length - 1 ) {
-			if (grid[row + 1][column].getCellLabel().charAt(0) == 'W') {
+		if(row != grid.length - 1 && (grid[row + 1][column].getCellLabel().charAt(0) == 'W') ) {
+			
 				grid[row][column].addToAdjList(grid[row + 1][column]);
-			}
+			
 		}
 		
 		//Switch statement for if the player is on a doorway
