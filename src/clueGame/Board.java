@@ -77,9 +77,7 @@ public class Board {
 		String room;
 		while(sc.hasNext()) {
 			room = sc.nextLine();
-			if(room.charAt(0) == '/') {
-				continue;
-			} else {
+			if(!(room.charAt(0) == '/')) {
 				String[] currRoom = room.split(",");
 				//if room or space is misspelled, or if the setup file contains a classification that isnt a room or a space throw an error 
 				//specifying that its the setup file causing the issue
@@ -89,8 +87,8 @@ public class Board {
 				String name = currRoom[1].substring(1);
 				char letter = currRoom[2].charAt(1);
 				Room roomToAdd = new Room(name);
-				rooms.put(letter, roomToAdd);					
-			}
+				rooms.put(letter, roomToAdd);	
+			} 
 		}
 		sc.close();
 
