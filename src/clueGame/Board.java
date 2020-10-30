@@ -90,8 +90,8 @@ public class Board {
 				if (!currRoom[0].equals("Room") && !currRoom[0].equals("Space")) {
 					throw new BadConfigFormatException("Bad setup file, contains area that is not a room or space");
 				}
-				String name = currRoom[1];
-				String letter = currRoom[2];
+				String name = currRoom[1].substring(1);
+				String letter = currRoom[2].substring(1);
 				roomNames.put(letter, name);					
 			}
 		}
@@ -152,11 +152,11 @@ public class Board {
 				//when the row was split, the character representation of the row has a space before it, since there was a space after the comma
 				//which is the delimiter that was used, so add a space for the sake of checking it with the roomNames map before getting rid of said space
 				//and adding to the rooms map
-				String key = " " + currRow[j].charAt(0);
-
+				String key = "" + currRow[j].charAt(0);
+				
 				//if they key is in the roomNames map, its a valid room/space so it can be added to the rooms map
 				if (roomNames.containsKey(key)) {
-					Room room1 = new Room(roomNames.get(key).substring(1));
+					Room room1 = new Room(roomNames.get(key));
 					rooms.putIfAbsent(currRow[j].charAt(0), room1);
 
 					//if the current space is a label space or room center space, add the cell location to the the rooms information
@@ -175,6 +175,7 @@ public class Board {
 							rooms.replace(currRow[j].charAt(0), room1);
 						}
 					}
+					
 				//if the key was not in roomNames map, then it is an invalid space, so throw an exception giving specific values
 				//as to what grid caused the problem along with the room it was trying to create
 				} else {
@@ -309,17 +310,8 @@ public class Board {
 			
 			//if the passageway teleports the player into a room
 			else {
-
-				//find room == char secretPassage
-				//find that room's center
-				//add to adj list
-				//int room1Row = rooms.get(secretPassage).getCenterCell().getRow();
-				//int room1Col = rooms.get(secretPassage).getCenterCell().getColumn();
-				//int room2Row = rooms.get(first).getCenterCell().getRow();
-				//int room2Col = rooms.get(first).getCenterCell().getColumn();
-				
 				//add room2 to room1s adj lists
-				 rooms.get(first).getCenterCell().addToAdjList(rooms.get(secretPassage).getCenterCell());
+				rooms.get(first).getCenterCell().addToAdjList(rooms.get(secretPassage).getCenterCell());
 
 			}
 
