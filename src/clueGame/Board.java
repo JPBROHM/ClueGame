@@ -313,13 +313,13 @@ public class Board {
 				//find room == char secretPassage
 				//find that room's center
 				//add to adj list
-				int room1Row = rooms.get(secretPassage).getCenterCell().getRow();
-				int room1Col = rooms.get(secretPassage).getCenterCell().getColumn();
-				int room2Row = rooms.get(first).getCenterCell().getRow();
-				int room2Col = rooms.get(first).getCenterCell().getColumn();
+				//int room1Row = rooms.get(secretPassage).getCenterCell().getRow();
+				//int room1Col = rooms.get(secretPassage).getCenterCell().getColumn();
+				//int room2Row = rooms.get(first).getCenterCell().getRow();
+				//int room2Col = rooms.get(first).getCenterCell().getColumn();
 				
 				//add room2 to room1s adj lists
-				grid[room2Row][room2Col].addToAdjList(grid[room1Row][room1Col]);
+				 rooms.get(first).getCenterCell().addToAdjList(rooms.get(secretPassage).getCenterCell());
 
 			}
 
