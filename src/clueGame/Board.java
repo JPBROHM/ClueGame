@@ -150,26 +150,23 @@ public class Board {
 				char key = currRow[j].charAt(0);
 				
 				//if they key is in the roomNames map, its a valid room/space so it can be added to the rooms map
-				if (rooms.containsKey(key)) {
-					//if the current space is a label space or room center space, add the cell location to the the rooms information
-					//in the map, allowing the center and label cells for each room to be accessed later
-					if(currRow[j].length() > 1) {
-
-						if (currRow[j].charAt(1) == '#') {
-							rooms.get(currRow[j].charAt(0)).setLabel(grid[i][j]);
-						}
-
-						if (currRow[j].charAt(1) == '*') {
-							rooms.get(currRow[j].charAt(0)).setCenter(grid[i][j]);
-						}
-					}
-					
-				//if the key was not in roomNames map, then it is an invalid space, so throw an exception giving specific values
-				//as to what grid caused the problem along with the room it was trying to create
-				} else {
+				if (!rooms.containsKey(key)) {	
+					//if the key was not in roomNames map, then it is an invalid space, so throw an exception giving specific values
+					//as to what grid caused the problem along with the room it was trying to create
 					throw new BadConfigFormatException("Error: Room/space " + key + "at row " + i + "column " + j + " does not exist");
 				}
+				//if the current space is a label space or room center space, add the cell location to the the rooms information
+				//in the map, allowing the center and label cells for each room to be accessed later
+				else if(currRow[j].length() > 1 && (currRow[j].charAt(1) == '#')) {
+					rooms.get(currRow[j].charAt(0)).setLabel(grid[i][j]);
+				}
+
+				else if (currRow[j].length() > 1 && (currRow[j].charAt(1) == '*')) {
+					rooms.get(currRow[j].charAt(0)).setCenter(grid[i][j]);
+
+				}
 			}
+			
 		}
 		for (int i = 0; i < numRows; i++ ) {
 			for (int j = 0; j < numColumns; j++) {
