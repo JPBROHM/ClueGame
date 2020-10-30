@@ -23,7 +23,6 @@ public class Board {
 	private Set<BoardCell> visited;
 	private Set<BoardCell> legalTargets;
 	private Map<Character, Room> rooms;
-	private Map<String, String> roomNames;
 
 
 	/*
@@ -52,7 +51,6 @@ public class Board {
 	 */
 	public void initialize(){
 		rooms = new HashMap<Character, Room>();
-		roomNames = new HashMap<String, String>();
 		try {
 			loadSetupConfig();
 			loadLayoutConfig();
@@ -73,7 +71,6 @@ public class Board {
 	
 
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
-		roomNames = new HashMap<String, String>();
 		FileReader f;
 		f = new FileReader(textFile);
 		//read in all the rooms/spaces skipping comments
