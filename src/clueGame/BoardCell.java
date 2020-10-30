@@ -127,7 +127,7 @@ public class BoardCell  implements Comparable<BoardCell> {
 		// return the second character
 		return secretPassageBool;
 	}
-	public char getFirst() {
+	public char getSecretPassageStart() {
 		//get the first character (of the secret passage) and return it
 		return first;
 	}

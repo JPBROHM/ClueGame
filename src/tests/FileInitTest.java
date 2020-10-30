@@ -119,7 +119,7 @@ public void testNumDoorways() {
 			BoardCell cell;
 			Room room;
 			cell = board.getCell(5, 0);
-			assertEquals(cell.getFirst(), 'M');
+			assertEquals(cell.getSecretPassageStart(), 'M');
 			assertTrue( cell.getSecretPassage() == 'K' );
 		
 			//test walkway

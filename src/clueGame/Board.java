@@ -91,8 +91,9 @@ public class Board {
 					throw new BadConfigFormatException("Bad setup file, contains area that is not a room or space");
 				}
 				String name = currRoom[1].substring(1);
-				String letter = currRoom[2].substring(1);
-				roomNames.put(letter, name);					
+				char letter = currRoom[2].charAt(1);
+				Room roomToAdd = new Room(name);
+				rooms.put(letter, roomToAdd);					
 			}
 		}
 		sc.close();
@@ -152,13 +153,12 @@ public class Board {
 				//when the row was split, the character representation of the row has a space before it, since there was a space after the comma
 				//which is the delimiter that was used, so add a space for the sake of checking it with the roomNames map before getting rid of said space
 				//and adding to the rooms map
-				String key = "" + currRow[j].charAt(0);
+				char key = currRow[j].charAt(0);
 				
 				//if they key is in the roomNames map, its a valid room/space so it can be added to the rooms map
-				if (roomNames.containsKey(key)) {
-					Room room1 = new Room(roomNames.get(key));
-					rooms.putIfAbsent(currRow[j].charAt(0), room1);
-
+				if (rooms.containsKey(key)) {
+					Room room1 = rooms.get(key);
+					
 					//if the current space is a label space or room center space, add the cell location to the the rooms information
 					//in the map, allowing the center and label cells for each room to be accessed later
 					if(currRow[j].length() > 1) {
@@ -275,7 +275,7 @@ public class Board {
 
 		//secret passageways
 		if (grid[row][column].isSecretPassage()) {
-			char first=grid[row][column].getFirst();
+			char first=grid[row][column].getSecretPassageStart();
 			char secretPassage=grid[row][column].getSecretPassage();
 
 			//if a secret passage way is surrounded by more than 2 cells that are part of a room then it is in that room
