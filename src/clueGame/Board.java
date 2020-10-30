@@ -55,8 +55,7 @@ public class Board {
 			loadSetupConfig();
 			loadLayoutConfig();
 		} catch (FileNotFoundException | BadConfigFormatException e) {
-			//this catch is empty as both loadSetupConfig and loadLayoutConfig throw BadConfig exceptions with messages
-			//as to what exactly caused the exception to be thrown that are more specific than this catch can be
+			e.getMessage();
 		}
 		
 		
