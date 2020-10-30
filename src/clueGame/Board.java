@@ -77,7 +77,7 @@ public class Board {
 		String room;
 		while(sc.hasNext()) {
 			room = sc.nextLine();
-			if(!(room.charAt(0) == '/')) {
+			if(room.charAt(0) != '/') {
 				String[] currRoom = room.split(",");
 				//if room or space is misspelled, or if the setup file contains a classification that isnt a room or a space throw an error 
 				//specifying that its the setup file causing the issue
@@ -151,22 +151,16 @@ public class Board {
 				
 				//if they key is in the roomNames map, its a valid room/space so it can be added to the rooms map
 				if (rooms.containsKey(key)) {
-					Room room1 = rooms.get(key);
-					
 					//if the current space is a label space or room center space, add the cell location to the the rooms information
 					//in the map, allowing the center and label cells for each room to be accessed later
 					if(currRow[j].length() > 1) {
 
 						if (currRow[j].charAt(1) == '#') {
-							room1 = rooms.get(currRow[j].charAt(0));
-							room1.setLabel(grid[i][j]);
-							rooms.replace(currRow[j].charAt(0), room1);
+							rooms.get(currRow[j].charAt(0)).setLabel(grid[i][j]);
 						}
 
 						if (currRow[j].charAt(1) == '*') {
-							room1 = rooms.get(currRow[j].charAt(0));
-							room1.setCenter(grid[i][j]);
-							rooms.replace(currRow[j].charAt(0), room1);
+							rooms.get(currRow[j].charAt(0)).setCenter(grid[i][j]);
 						}
 					}
 					
