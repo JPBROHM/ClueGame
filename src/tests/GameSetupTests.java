@@ -42,10 +42,10 @@ class GameSetupTests {
 		//test load people
 		Map<String, String> peopleList = board.getPlayers();
 		assertEquals(numPlayers, peopleList.size());
-		assertTrue(weaponsList.contains("Mr. Green"));
-		assertTrue(weaponsList.contains("Colonel Mustard"));
-		assertTrue(weaponsList.contains("Mrs. White"));
-		assertFalse(weaponsList.contains("Pistol"));
+		assertTrue(peopleList.containsKey("Mr. Green"));
+		assertTrue(peopleList.containsKey("Colonel Mustard"));
+		assertTrue(peopleList.containsKey("Mrs. White"));
+		assertFalse(peopleList.containsKey("Pistol"));
 		
 	}
 

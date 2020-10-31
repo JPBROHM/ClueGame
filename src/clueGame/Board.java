@@ -94,6 +94,12 @@ public class Board {
 					Room roomToAdd = new Room(name);
 					rooms.put(letter, roomToAdd);
 				}
+				else if (currRoom[0].equals("Weapon")) {
+					weapons.add(currRoom[1].substring(1));
+				}
+				else if (currRoom[0].equals("Player")) {
+					players.put(currRoom[1].substring(1), currRoom[2].substring(1));
+				}
 			} 
 		}
 		sc.close();
