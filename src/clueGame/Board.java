@@ -1,5 +1,6 @@
 package clueGame;
 
+import java.awt.Color;
 import java.io.FileNotFoundException;
 
 import java.io.FileReader;
@@ -27,6 +28,7 @@ public class Board {
 	private Set<String> weapons;
 	private Set<Suspect> allCharacters;
 	private Set<Suspect> computers;
+	private Suspect ComputerPlayer;
 	private Suspect human;
 
 	/*
@@ -59,13 +61,49 @@ public class Board {
 		players = new HashMap<String, String>();
 		allCharacters = new HashSet<Suspect>();
 		computers = new HashSet<Suspect>();
-		human = new HumanPlayer();
+		int count = 0;
+		Color color = new Color(0,0,0);
 		try {
 			loadSetupConfig();
 			loadLayoutConfig();
 		} catch (FileNotFoundException | BadConfigFormatException e) {
 			e.getMessage();
 		}
+
+		for (Map.Entry<String, String> entry : players.entrySet()) {
+			if (entry.getValue().equals("Blue")) {
+				color = new Color(0,0,255);
+			}
+			if (entry.getValue().equals("Green")) {
+				color = new Color(0,255,0);
+			}
+			if (entry.getValue().equals("Purple")) {
+				color = new Color(128,0,128);
+			}
+			if (entry.getValue().equals("Red")) {
+				color = new Color(255,0,0);
+			}
+			if (entry.getValue().equals("White")) {
+				color = new Color(255,255,255);
+			}
+			if (entry.getValue().equals("Yellow")) {
+				color = new Color(255,255,0);
+			}
+			if (count == 0) {
+				human = new HumanPlayer(entry.getKey(), color, count, count);
+				allCharacters.add(human);
+				count++;
+			}
+			else {
+				ComputerPlayer computer = new ComputerPlayer(entry.getKey(), color, count, count);
+				computers.add(computer);
+				allCharacters.add(computer);
+			}
+		}
+		
+		
+		
+		
 		
 		
 	}

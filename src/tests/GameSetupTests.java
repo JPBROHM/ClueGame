@@ -3,6 +3,7 @@ package tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.awt.Color;
 import java.util.Map;
 import java.util.Set;
 
@@ -62,7 +63,6 @@ class GameSetupTests {
 		assertFalse(computers.contains(human));
 		assertEquals(numPlayers, allCharacters.size());
 		assertEquals(numComputers, computers.size());
-		
 		
 	}
 

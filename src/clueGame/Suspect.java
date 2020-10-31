@@ -22,6 +22,9 @@ public abstract class Suspect {
 		this.col = col;
 	}
 
+	public Color getColor() {
+		return color;
+	}
 
 	public abstract void updateHand(Card card);
 	
