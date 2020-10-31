@@ -23,6 +23,8 @@ public class Board {
 	private Set<BoardCell> visited;
 	private Set<BoardCell> legalTargets;
 	private Map<Character, Room> rooms;
+	private Map<String, String> players;
+	private Set<String> weapons;
 
 
 	/*
@@ -51,6 +53,8 @@ public class Board {
 	 */
 	public void initialize(){
 		rooms = new HashMap<Character, Room>();
+		weapons = new HashSet<String>();
+		players = new HashMap<String, String>();
 		try {
 			loadSetupConfig();
 			loadLayoutConfig();
@@ -81,13 +85,15 @@ public class Board {
 				String[] currRoom = room.split(",");
 				//if room or space is misspelled, or if the setup file contains a classification that isnt a room or a space throw an error 
 				//specifying that its the setup file causing the issue
-				if (!currRoom[0].equals("Room") && !currRoom[0].equals("Space")) {
+				if (!currRoom[0].equals("Room") && !currRoom[0].equals("Space") && !currRoom[0].equals("Weapon") && !currRoom[0].equals("Player")) {
 					throw new BadConfigFormatException("Bad setup file, contains area that is not a room or space");
 				}
-				String name = currRoom[1].substring(1);
-				char letter = currRoom[2].charAt(1);
-				Room roomToAdd = new Room(name);
-				rooms.put(letter, roomToAdd);	
+				if (currRoom[0].equals("Room") || currRoom[0].equals("Space") ) {
+					String name = currRoom[1].substring(1);
+					char letter = currRoom[2].charAt(1);
+					Room roomToAdd = new Room(name);
+					rooms.put(letter, roomToAdd);
+				}
 			} 
 		}
 		sc.close();
@@ -415,6 +421,14 @@ public class Board {
 		return grid[row][column].getAdjList();
 	}
 	
+	
+	public Set<String> getWeapons(){
+		return weapons;
+	}
+	
+	public Map<String, String> getPlayers(){
+		return players;
+	}
 	
 	
 

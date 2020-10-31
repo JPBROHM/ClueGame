@@ -9,3 +9,17 @@ Room, Hall, H
 // Other spaces on board
 Space, Unused, X
 Space, Walkway, W
+// Weapons
+Weapon, Pistol
+Weapon, Knife
+Weapon, Chainsaw
+Weapon, Poison
+Weapon, Piano Wire
+Weapon, Baseball Bat
+// Players
+Player, Mrs. White, White
+Player, Colonel Mustard, Yellow
+Player, Professor Plum, Purple
+Player, Miss Scarlet, Red
+Player, Mrs. Peacock, blue
+Player, Mr. Green, Green
