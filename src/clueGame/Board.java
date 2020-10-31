@@ -25,7 +25,9 @@ public class Board {
 	private Map<Character, Room> rooms;
 	private Map<String, String> players;
 	private Set<String> weapons;
-
+	private Set<Suspect> allCharacters;
+	private Set<Suspect> computers;
+	private Suspect human;
 
 	/*
 	 * variable and methods used for singleton pattern
@@ -55,6 +57,9 @@ public class Board {
 		rooms = new HashMap<Character, Room>();
 		weapons = new HashSet<String>();
 		players = new HashMap<String, String>();
+		allCharacters = new HashSet<Suspect>();
+		computers = new HashSet<Suspect>();
+		human = new HumanPlayer();
 		try {
 			loadSetupConfig();
 			loadLayoutConfig();
@@ -374,7 +379,7 @@ public class Board {
 	
 	
 	public Set<BoardCell> getTargets() {
-		// TODO Auto-generated method stub
+
 		return legalTargets;
 	}
 	
@@ -436,6 +441,14 @@ public class Board {
 		return players;
 	}
 	
-	
+	public Set<Suspect> getComputers(){
+		return computers;
+	}
+	public Set<Suspect> getAllCharacters(){
+		return allCharacters;
+	}
+	public Suspect getHuman(){
+		return human;
+	}
 
 }

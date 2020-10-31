@@ -10,12 +10,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import clueGame.Board;
+import clueGame.Suspect;
 
 class GameSetupTests {
 	
 	private static Board board;
 	private static int numWeapons = 6;
 	private static int numPlayers = 6;
+	private static int numComputers = 5;
 
 	@BeforeAll
 	public static void setUp() {
@@ -29,7 +31,7 @@ class GameSetupTests {
 	
 	
 	@Test
-	public void loadPeopleWeapons() {
+	public void testPeopleWeapons() {
 		//test load weapons
 		Set<String> weaponsList = board.getWeapons();
 		assertEquals(numWeapons, weaponsList.size());
@@ -46,6 +48,21 @@ class GameSetupTests {
 		assertTrue(peopleList.containsKey("Colonel Mustard"));
 		assertTrue(peopleList.containsKey("Mrs. White"));
 		assertFalse(peopleList.containsKey("Pistol"));
+		
+	}
+	
+	@Test
+	public void testPlayers() {
+		//Havent added an option for player to choose character yet, so the human player is just going to be set to a random player
+		Set<Suspect> allCharacters = board.getAllCharacters();
+		Set<Suspect> computers = board.getComputers();
+		Suspect human = board.getHuman();
+		assertEquals(numComputers, computers.size());
+		assertTrue(allCharacters.contains(human));
+		assertFalse(computers.contains(human));
+		assertEquals(numPlayers, allCharacters.size());
+		assertEquals(numComputers, computers.size());
+		
 		
 	}
 
