@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 import experiment.TestBoardCell;
@@ -30,6 +32,8 @@ public class Board {
 	private Set<Suspect> computers;
 	private Suspect ComputerPlayer;
 	private Suspect human;
+	private Solution solution;
+	private ArrayList<Card> deck;
 
 	/*
 	 * variable and methods used for singleton pattern
@@ -61,6 +65,7 @@ public class Board {
 		players = new HashMap<String, String>();
 		allCharacters = new HashSet<Suspect>();
 		computers = new HashSet<Suspect>();
+		solution = new Solution();
 		int count = 0;
 		Color color = new Color(0,0,0);
 		try {
@@ -72,22 +77,22 @@ public class Board {
 
 		for (Map.Entry<String, String> entry : players.entrySet()) {
 			if (entry.getValue().equals("Blue")) {
-				color = new Color(0,0,255);
+				color = Color.BLUE;
 			}
 			if (entry.getValue().equals("Green")) {
-				color = new Color(0,255,0);
+				color = Color.GREEN;
 			}
 			if (entry.getValue().equals("Purple")) {
-				color = new Color(128,0,128);
+				color = Color.MAGENTA;
 			}
 			if (entry.getValue().equals("Red")) {
-				color = new Color(255,0,0);
+				color = Color.RED;
 			}
 			if (entry.getValue().equals("White")) {
-				color = new Color(255,255,255);
+				color = Color.WHITE;
 			}
 			if (entry.getValue().equals("Yellow")) {
-				color = new Color(255,255,0);
+				color = Color.YELLOW;
 			}
 			if (count == 0) {
 				human = new HumanPlayer(entry.getKey(), color, count, count);
@@ -101,9 +106,30 @@ public class Board {
 			}
 		}
 		
+		ArrayList<Card> playerCards = new ArrayList<>();
+		ArrayList<Card> weaponCards = new ArrayList<>();
+		ArrayList<Card> roomCards = new ArrayList<>();
+		deck = new ArrayList<>();
+
+		for (Entry<Character, Room> entry : rooms.entrySet()) {
+			if (!(entry.getValue().getName().equals("Walkway") || entry.getValue().getName().equals("Unused"))) {
+				deck.add(new Card(CardType.ROOM, entry.getValue().getName()));
+				roomCards.add(new Card(CardType.ROOM, entry.getValue().getName()));
+			}
+		}
 		
+		for (Entry<String, String> entry : players.entrySet()) {
+			deck.add(new Card(CardType.PERSON, entry.getKey()));
+			playerCards.add(new Card(CardType.PERSON, entry.getKey()));
+		}
 		
-		
+		for (String entry : weapons) {
+			deck.add(new Card(CardType.WEAPON, entry));
+			weaponCards.add(new Card(CardType.WEAPON, entry));
+		}
+		Random r = new Random();
+		solution = new Solution( playerCards.get(r.nextInt(playerCards.size() - 1)), roomCards.get(r.nextInt(roomCards.size() - 1)), 
+												weaponCards.get(r.nextInt(weaponCards.size() - 1)));
 		
 		
 	}
@@ -487,6 +513,13 @@ public class Board {
 	}
 	public Suspect getHuman(){
 		return human;
+	}
+	
+	public Solution getSolution(){
+		return solution;
+	}
+	public ArrayList<Card> getDeck(){
+		return deck;
 	}
 
 }

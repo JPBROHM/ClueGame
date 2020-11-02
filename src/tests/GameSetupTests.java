@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Color;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -11,6 +12,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import clueGame.Board;
+import clueGame.Card;
+import clueGame.CardType;
+import clueGame.Solution;
 import clueGame.Suspect;
 
 class GameSetupTests {
@@ -19,6 +23,7 @@ class GameSetupTests {
 	private static int numWeapons = 6;
 	private static int numPlayers = 6;
 	private static int numComputers = 5;
+	private static int numCards = 19;
 
 	@BeforeAll
 	public static void setUp() {
@@ -54,7 +59,7 @@ class GameSetupTests {
 	
 	@Test
 	public void testPlayers() {
-		//Havent added an option for player to choose character yet, so the human player is just going to be set to a random player
+		//Havent added an option for player to choose character yet, so the human player is just going to be set to the first character loaded in
 		Set<Suspect> allCharacters = board.getAllCharacters();
 		Set<Suspect> computers = board.getComputers();
 		Suspect human = board.getHuman();
@@ -65,5 +70,36 @@ class GameSetupTests {
 		assertEquals(numComputers, computers.size());
 		
 	}
+	
+	@Test
+	public void testSolution() {
+		//test to make sure solution has a person, weapon, and room card
+		Solution solution = board.getSolution();
+		assertEquals(CardType.PERSON, solution.getPerson().getType());
+		assertEquals(CardType.WEAPON, solution.getWeapon().getType());
+		assertEquals(CardType.ROOM, solution.getRoom().getType());
+	}
+	
+	
+	@Test
+	public void testDeck() {
+		//test to make sure the deck is of the right size
+		assertEquals(numCards, board.getDeck().size());
+		//test to make sure no card was added twice
+		Set<Card> deckCards = new HashSet<>();
+		for (int i = 0; i < board.getDeck().size(); i++) {
+			deckCards.add(board.getDeck().get(i));
+		}
+		assertEquals(deckCards.size(), board.getDeck().size());
+	}
+	
+	
+	@Test
+	public void testDealer() {
+		//test to see if all players have similar size hands
+		//test to make sure no card was dealt to more than one player
+		//test to make sure no player got cards that are also in the solution
+	}
+	
 
 }
