@@ -21,5 +21,5 @@ Player, Mrs. White, White
 Player, Colonel Mustard, Yellow
 Player, Professor Plum, Purple
 Player, Miss Scarlet, Red
-Player, Mrs. Peacock, blue
+Player, Mrs. Peacock, Blue
 Player, Mr. Green, Green

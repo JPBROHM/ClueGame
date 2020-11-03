@@ -20,6 +20,7 @@ public class BoardCell  implements Comparable<BoardCell> {
 	private boolean secretPassageBool;
 	private boolean isRoom;
 	private boolean isOccupied;
+	private boolean isWalkway;
 
 
 
@@ -52,8 +53,14 @@ public class BoardCell  implements Comparable<BoardCell> {
 			label = false;
 			secretPassageBool=false;
 			//if cellLabel is 2 characters long determine if it is a label, center, secret passage, or doorway, and set variables accordingly
+
+			if(cellLabel.equals("W")) {isWalkway=true;}
+			else {isWalkway=false;}
+
+
 		} else if(cellLabel.length() == 2) {
 			if (cellLabel.charAt(1) == '^' || cellLabel.charAt(1) == 'v' || cellLabel.charAt(1) == '<' || cellLabel.charAt(1) == '>') {
+				isWalkway = true;
 				doorway = true;
 				isRoom = false;
 				if (cellLabel.charAt(1) == '^') {
@@ -72,16 +79,19 @@ public class BoardCell  implements Comparable<BoardCell> {
 			else if(cellLabel.charAt(1)=='*') {
 				roomCenter=true;
 				isRoom = true;
+				isWalkway = false;
 			}
 			else if(cellLabel.charAt(1) == '#') {
 				label=true;
 				isRoom = true;
+				isWalkway = false;
 				}
 			else {
 				first=cellLabel.charAt(0);
 				secretPassage=cellLabel.charAt(1);
 				secretPassageBool=true;
 				isRoom = true;
+				isWalkway = false;
 			}
 		}
 	}
@@ -108,6 +118,9 @@ public class BoardCell  implements Comparable<BoardCell> {
 	public boolean isDoorway() {
 		// TODO Auto-generated method stub
 		return doorway;
+	}
+	public boolean isWalkway() {
+		return isWalkway;
 	}
 
 	public boolean isLabel() {

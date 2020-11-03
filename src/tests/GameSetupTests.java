@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import clueGame.Board;
+import clueGame.BoardCell;
 import clueGame.Card;
 import clueGame.CardType;
 import clueGame.Solution;
@@ -84,20 +86,54 @@ class GameSetupTests {
 	@Test
 	public void testDeck() {
 		//test to make sure the deck is of the right size
-		assertEquals(numCards, board.getDeck().size());
+		assertEquals(numCards, board.getDeckSet().size() + 3);
 		//test to make sure no card was added twice
 		Set<Card> deckCards = new HashSet<>();
 		for (int i = 0; i < board.getDeck().size(); i++) {
 			deckCards.add(board.getDeck().get(i));
 		}
 		assertEquals(deckCards.size(), board.getDeck().size());
+		
 	}
 	
 	
 	@Test
+	public void testStartLocations() {
+		//test that starting locations are walkways and not shared
+		for (Suspect comp : board.getComputers()) {
+			BoardCell cell = board.getCell(comp.getRow(), comp.getCol());
+			System.out.println(comp.getRow());
+			System.out.println(comp.getCol());
+			System.out.println(comp.getName());
+			assertTrue(cell.isWalkway());
+			for (Suspect comp1 : board.getComputers()) {
+				Suspect human = board.getHuman();
+				if (!(comp.getName().equals(comp1.getName()))) {
+					assertFalse(comp.getRow() == comp1.getRow() && comp.getCol() == comp1.getCol() && comp.getRow() == human.getRow() && comp.getCol() == human.getCol());
+				}
+			}
+		}
+		
+		
+	
+			
+	}
+	
+	@Test
 	public void testDealer() {
 		//test to see if all players have similar size hands
-		//test to make sure no card was dealt to more than one player
+		Suspect human = board.getHuman();
+		int size = human.getPlayerHand().size();
+		int totalCards = size;
+		for (Suspect comp1 : board.getComputers()) {
+			assertTrue(Math.abs(comp1.getPlayerHand().size() - size) <= 1 );
+			totalCards += comp1.getPlayerHand().size();
+		}
+		ArrayList<Card> deck = board.getDeck();
+		assertEquals(numCards, totalCards + 3);
+		assertTrue(deck.isEmpty());
+		//test to make sure no card was dealt to more than one player&& all cards dealt
+		
 		//test to make sure no player got cards that are also in the solution
 	}
 	

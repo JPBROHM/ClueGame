@@ -7,7 +7,7 @@ public abstract class Suspect {
 	private String name;
 	private Color color;
 	private int row,col;
-	private ArrayList<Card> playerHand;
+	protected ArrayList<Card> playerHand;
 	
 	
 	public Suspect() {
@@ -20,12 +20,25 @@ public abstract class Suspect {
 		this.color = color;
 		this.row = row;
 		this.col = col;
+		this.playerHand = new ArrayList<>();
 	}
 
 	public Color getColor() {
 		return color;
 	}
 
+	public String getName() {
+		return name;
+	}
+	public int getRow() {
+		return row;
+	}
+	public int getCol() {
+		return col;
+	}
+	public ArrayList<Card> getPlayerHand() {
+		return playerHand;
+	}
 	public abstract void updateHand(Card card);
 	
 
