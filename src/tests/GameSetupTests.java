@@ -102,12 +102,11 @@ class GameSetupTests {
 		//test that starting locations are walkways and not shared
 		for (Suspect comp : board.getComputers()) {
 			BoardCell cell = board.getCell(comp.getRow(), comp.getCol());
-			System.out.println(comp.getRow());
-			System.out.println(comp.getCol());
-			System.out.println(comp.getName());
+			//make sure that the starting location is a walkway, not room or unused space
 			assertTrue(cell.isWalkway());
 			for (Suspect comp1 : board.getComputers()) {
 				Suspect human = board.getHuman();
+				//make sure that the start locations of each character is not equal to that of another character or the human player
 				if (!(comp.getName().equals(comp1.getName()))) {
 					assertFalse(comp.getRow() == comp1.getRow() && comp.getCol() == comp1.getCol() && comp.getRow() == human.getRow() && comp.getCol() == human.getCol());
 				}
@@ -130,11 +129,10 @@ class GameSetupTests {
 			totalCards += comp1.getPlayerHand().size();
 		}
 		ArrayList<Card> deck = board.getDeck();
+		//make sure there are no duplicate cards
 		assertEquals(numCards, totalCards + 3);
+		//make sure all cards were dealt
 		assertTrue(deck.isEmpty());
-		//test to make sure no card was dealt to more than one player&& all cards dealt
-		
-		//test to make sure no player got cards that are also in the solution
 	}
 	
 

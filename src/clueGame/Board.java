@@ -177,7 +177,8 @@ public class Board {
 					}
 					else if(deck.size()==1) {
 						sus.updateHand(deck.get(0));
-						deck.remove(0);}
+						deck.remove(0);
+						}
 				}
 				if(deck.size()>1) {
 					num = r.nextInt(deck.size() - 1);

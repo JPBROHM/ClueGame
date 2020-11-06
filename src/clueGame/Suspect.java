@@ -2,12 +2,17 @@ package clueGame;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Set;
 
 public abstract class Suspect {
 	private String name;
 	private Color color;
 	private int row,col;
 	protected ArrayList<Card> playerHand;
+	protected Set<String> roomsSeen;
+	protected Set<String> weaponsSeen;
+	protected Set<String> peopleSeen;
+	
 	
 	
 	public Suspect() {
@@ -39,7 +44,9 @@ public abstract class Suspect {
 	public ArrayList<Card> getPlayerHand() {
 		return playerHand;
 	}
+
 	public abstract void updateHand(Card card);
+	
 	
 
 }
