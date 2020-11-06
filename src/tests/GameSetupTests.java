@@ -86,7 +86,7 @@ class GameSetupTests {
 	@Test
 	public void testDeck() {
 		//test to make sure the deck is of the right size
-		assertEquals(numCards, board.getDeckSet().size() + 3);
+		assertEquals(numCards, board.getDeckSet().size());
 		//test to make sure no card was added twice
 		Set<Card> deckCards = new HashSet<>();
 		for (int i = 0; i < board.getDeck().size(); i++) {
@@ -130,7 +130,7 @@ class GameSetupTests {
 		}
 		ArrayList<Card> deck = board.getDeck();
 		//make sure there are no duplicate cards
-		assertEquals(numCards, totalCards + 3);
+		assertEquals(numCards, totalCards);
 		//make sure all cards were dealt
 		assertTrue(deck.isEmpty());
 	}

@@ -34,6 +34,7 @@ public class Board {
 	private Solution solution;
 	private ArrayList<Card> deck;
 	private Set<Card> deckSet;
+	private ArrayList<Card> roomCards;
 
 	/*
 	 * variable and methods used for singleton pattern
@@ -67,6 +68,7 @@ public class Board {
 		computers = new HashSet<Suspect>();
 		deckSet = new HashSet<>();
 		solution = new Solution();
+		roomCards = new ArrayList<>();
 		int count = 0;
 		Color color = new Color(0,0,0);
 		try {
@@ -125,7 +127,6 @@ public class Board {
 
 			ArrayList<Card> playerCards = new ArrayList<>();
 			ArrayList<Card> weaponCards = new ArrayList<>();
-			ArrayList<Card> roomCards = new ArrayList<>();
 			deck = new ArrayList<>();
 
 			for (Entry<Character, Room> entry : rooms.entrySet()) {
@@ -151,9 +152,7 @@ public class Board {
 			solution = new Solution( playerCards.get(p), roomCards.get(ro), 
 					weaponCards.get(w));
 			
-			playerCards.remove(p);
-			weaponCards.remove(w);
-			roomCards.remove(ro);
+			
 			for (int i = 0; i < playerCards.size(); i++) {
 				deck.add(playerCards.get(i));
 			}
@@ -167,6 +166,9 @@ public class Board {
 			for (int i = 0; i < deck.size(); i++) {
 				deckSet.add(deck.get(i));
 			}
+			playerCards.remove(p);
+			weaponCards.remove(w);
+			roomCards.remove(ro);
 			int num = 0;
 			while(!deck.isEmpty()) {
 				for (Suspect sus : computers) {
@@ -201,6 +203,10 @@ public class Board {
 
 	
 	
+
+
+
+
 
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
 		FileReader f;
@@ -552,6 +558,13 @@ public class Board {
 	}
 	
 	
+	public Map<Character, Room> getRooms() {
+		return rooms;
+	}
+
+
+
+
 	public Set<BoardCell> getAdjList(int row, int column){
 		return grid[row][column].getAdjList();
 	}
@@ -586,5 +599,9 @@ public class Board {
 		
 		return deckSet;
 	}
+	public ArrayList<Card> getRoomCards() {
+		return roomCards;
+	}
+
 
 }

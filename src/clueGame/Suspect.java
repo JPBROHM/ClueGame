@@ -2,6 +2,7 @@ package clueGame;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 public abstract class Suspect {
@@ -26,6 +27,10 @@ public abstract class Suspect {
 		this.row = row;
 		this.col = col;
 		this.playerHand = new ArrayList<>();
+		roomsSeen = new HashSet<>();
+		peopleSeen = new HashSet<>();
+		weaponsSeen = new HashSet<>();
+		
 	}
 
 	public Color getColor() {
