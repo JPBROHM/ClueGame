@@ -83,7 +83,6 @@ class ComputerAITests {
 		
 		//Check that all the other rooms get targeted a few times, but not Murder Room
 		assertEquals(0, murderCount);
-		System.out.println(comfortCount);
 	}
 	
 	
@@ -96,7 +95,7 @@ class ComputerAITests {
 	
 	@Test
 	void testCreateSuggestion() {
-		//Suggestion has one of each type
+		//Cehck to see that a suggestion has one of each type of card
 		Color color = new Color(255,0,0);
 		ComputerPlayer player = new ComputerPlayer("Player", color, 12, 20);
 		Solution suggestion =  player.createSuggestion(board.getDeckSet(), board);
@@ -104,10 +103,10 @@ class ComputerAITests {
 		Assert.assertEquals(CardType.WEAPON, suggestion.getWeapon().getType());
 		Assert.assertEquals(CardType.ROOM, suggestion.getRoom().getType());
 
-		//testing that player room is suggestion room
+		//testing that the room the player is in is the is suggestion room
 		Assert.assertEquals("Dining Room", suggestion.getRoom().getName());
 
-		//test random person selected
+		//test random person selected with certain people already being "seen"
 		Set<String> setPeopleCards = new HashSet<>();
 		setPeopleCards.add("Mrs. Peacock");
 		setPeopleCards.add("Mr. Green");
@@ -124,10 +123,13 @@ class ComputerAITests {
 			if(suggestion.getPerson().getName().equals("Miss Scarlet")) {countScarlet++;}
 			if(suggestion.getPerson().getName().equals("Professor Plum")) {countPlum++;}}
 		assert(countPlum==0);
+		assert(countScarlet > 1);
+		assert(countMustard > 1);
+		assert(countWhite > 1);
 
 
 
-		//test weapon selected
+		//test to see if a random weapon is selected given three weapon cards that have been "seen"
 
 		Set<String> setWeaponCards = new HashSet<>();
 		setWeaponCards.add("Pistol");
@@ -146,13 +148,14 @@ class ComputerAITests {
 			if(suggestion.getWeapon().getName().equals("Chainsaw")) {countChainsaw++;}
 			if(suggestion.getWeapon().getName().equals("Knife")) {countKnife++;}
 		}
+		assert(countPoison>0);
 		assert(countKnife==0);
 		assert(countChainsaw==0);
 		assert(countPistol==0);
 
 
 
-		//test only one of the weapons not seen
+		//test for when all but one weapon card has been seen, making sure it returns that one weapon every time
 		setWeaponCards.clear();
 		setWeaponCards.add("Poison");
 		setWeaponCards.add("Knife");
@@ -169,7 +172,7 @@ class ComputerAITests {
 
 
 
-		//test only one person not seen
+		//test for when all but one 
 		setPeopleCards.clear();
 		setPeopleCards.add("Mrs. Peacock");
 		setPeopleCards.add("Colonel Mustard");
@@ -182,9 +185,59 @@ class ComputerAITests {
 			if(suggestion.getPerson().getName().equals("Mrs. White")) {countWhite++;}}
 		assert(countWhite==200);
 	}
+
+
+
+
+	@Test
+	void disproveSuggestion() {
+		Color color = new Color(255,0,0);
+		ComputerPlayer player = new ComputerPlayer("Player", color, 12, 20);
+		Solution suggestion =  player.createSuggestion(board.getDeckSet(), board);
+			
+		
+		ComputerPlayer player2 = new ComputerPlayer("Player2", color, 15,18);
+		//give player no cards
+		//check that returns null
+		assertEquals(player2.disproveSuggestion(suggestion),null);
+		
+		
+		
+		
+		
+		
+		//give a player one card
+		//check card is returned
+		
+		player2.updateHand(suggestion.getWeapon());
+		assertEquals(player2.disproveSuggestion(suggestion),suggestion.getWeapon());
+		
+		
+		
+		//give player 2 cards
+		//check that each card is returned some of the time
+		//check that total of returns of those 2 cards = total disprove suggestion calls
+		player2.updateHand(suggestion.getPerson());
+		int countWeapon=0;
+		int countPerson=0;
+		for (int i=0; i<200; i++) {
+			Card disproveCard=player2.disproveSuggestion(suggestion);
+			if(disproveCard.equals(suggestion.getWeapon())) {countWeapon++;}
+			if(disproveCard.equals(suggestion.getPerson())) {countPerson++;}
+		}
+		assert(countWeapon>1);
+
+		assert(countPerson>1);
+		assertEquals(200, countWeapon+countPerson);
+		
+		
+		
+		
+		
+		
+		
+	}
 }
-
-
 
 
 

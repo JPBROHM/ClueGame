@@ -29,7 +29,7 @@ public class ComputerPlayer extends Suspect {
 			if (possibleTargets.size()==1) {this.target = possibleTargets.get(0);}
 			else {
 				Random r = new Random();
-				int randoGen = (r.nextInt(possibleTargets.size() - 1));
+				int randoGen = (r.nextInt(possibleTargets.size()));
 				this.target = possibleTargets.get(randoGen);}
 		}
 
