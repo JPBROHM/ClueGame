@@ -76,6 +76,9 @@ public class GameControlPanel extends JPanel{
 
 
 
+    	//creating the panels and grids before adding them to eachother,
+    	//they follow the same layout as the example layout from the assignment
+    	//each one is named by that panels corresponding place in the frame
         GameControlPanel top = new GameControlPanel();
         top.setLayout(new GridLayout(1, 4));
         
@@ -99,6 +102,9 @@ public class GameControlPanel extends JPanel{
         GameControlPanel bottom = new GameControlPanel();
         bottom.setLayout(new GridLayout(0, 2));
         
+        
+        
+        //some good ole hard coded button/label text fields
         GameControlPanel bottomLeft = new GameControlPanel();
         bottomLeft.setBorder(new TitledBorder (new EtchedBorder(), "Guess"));
         bottom.setLayout(new GridLayout(1, 0));
@@ -108,11 +114,17 @@ public class GameControlPanel extends JPanel{
         bottomRight.setBorder(new TitledBorder (new EtchedBorder(), "Guess Result"));
         bottom.setLayout(new GridLayout(1, 0));
         
+        //the extra spaces are to get the roll closer to the text field for it
+        //, makes it prettier
+        //A1 coding practice ^^
     	JLabel roll = new JLabel("               Roll:");
         JLabel whosTurn = new JLabel("Who's turn?");
         JButton accuseButton = new JButton("Make Accusation");
         JButton nextButton = new JButton("NEXT!");
 
+        
+        
+        //adding the stuff to the display, starting from the innermost fields and working its way out
         bottomRight.add(panel.getTheGuessResult());
         bottomLeft.add(panel.getTheGuess());
 
@@ -130,6 +142,8 @@ public class GameControlPanel extends JPanel{
         top.add(accuseButton);
         top.add(nextButton);
         
+        
+        //add the displays to the panel
         panel.add(top);
         panel.add(bottom);
         
