@@ -52,6 +52,7 @@ public class ComputerPlayer extends Suspect {
 		Card r = new Card();
 		ArrayList<String> NOTseenWeapons = new ArrayList<>();
 		ArrayList<String> NOTseenPeople = new ArrayList<>();
+		//iterate through all cards in the deck, if the card has not been seen by that player add it to a list
 		for (Card card : deck) {
 			if (card.getType() == CardType.WEAPON && !weaponsSeen.contains(card.getName())) {
 				NOTseenWeapons.add(card.getName());
@@ -60,6 +61,8 @@ public class ComputerPlayer extends Suspect {
 				NOTseenPeople.add(card.getName());
 			}
 		}	
+		
+		//randomly select a player and a weapon that has not been seen
 		Random rand = new Random();
 		if (NOTseenPeople.size() > 1) {
 			int Prand = rand.nextInt(NOTseenPeople.size());
@@ -73,15 +76,18 @@ public class ComputerPlayer extends Suspect {
 		} else {
 			w = new Card(CardType.WEAPON, NOTseenWeapons.get(0));
 		}
+		//get corresponding room of the location of the player
 		int row = getRow();
 		int col = getCol();
 		String name = board.getRoom(board.getCell(row, col).getCellLabel().charAt(0)).getName();
 		r = new Card(CardType.ROOM, name);
+		
+		//return a solution object to be the suggestion, containing the randomly chosen weapon and person and the room the player is currently in
 		return new Solution(p,r,w);
 	}
 	
 	
-	//used for testing
+	//used for testing purposes to set things to exactly what we want to test for specific scenarios
 	public Set<String> getRoomCards() {
 		return roomsSeen;
 	}

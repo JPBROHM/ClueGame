@@ -6,7 +6,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -92,8 +91,12 @@ class GameSolutionTest {
 		int countPerson=0;
 		for (int i=0; i<200; i++) {
 			Card disproveCard=player2.disproveSuggestion(suggestion);
-			if(disproveCard.equals(suggestion.getWeapon())) {countWeapon++;}
-			if(disproveCard.equals(suggestion.getPerson())) {countPerson++;}
+			if(disproveCard.equals(suggestion.getWeapon())) {
+				countWeapon++;
+			}
+			if(disproveCard.equals(suggestion.getPerson())) {
+				countPerson++;
+			}
 		}
 		assert(countWeapon>1);
 
@@ -146,7 +149,6 @@ class GameSolutionTest {
 		//if two or more players can disprove, go in order of suspect list for who disproves
 		//cards in player 2 & 3 hand
 		player3.updateHand(suggestion.getPerson());
-		System.out.println(suggestion.getWeapon().getName());
 		assertEquals(suggestion.getWeapon(),board.handleSuggestion(suggestion, player1));
 		
 		

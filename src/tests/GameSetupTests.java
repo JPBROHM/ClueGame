@@ -130,7 +130,7 @@ class GameSetupTests {
 		}
 		ArrayList<Card> deck = board.getDeck();
 		//make sure there are no duplicate cards
-		assertEquals(numCards, totalCards);
+		assertEquals(numCards, totalCards + 3);
 		//make sure all cards were dealt
 		assertTrue(deck.isEmpty());
 	}

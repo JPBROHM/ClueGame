@@ -82,6 +82,8 @@ public class Board {
 		
 		if(!players.isEmpty()) {
 			for (Map.Entry<String, String> entry : players.entrySet()) {
+				//each player has a corresponding color, it was easiest to then give each color a corresponding starting location
+				//then use that to set the starting location of the player
 				int row = 0;
 				int col = 0;
 				if (entry.getValue().equals("Blue")) {
@@ -126,6 +128,9 @@ public class Board {
 				}
 			}
 
+			//this next chunks purpose is to create three separate "decks" one of all room, weapons and players,
+			//the point of this is to separate them first so the solution can be made, then they can be put into a deck and that large deck
+			//dealt out to the players
 			ArrayList<Card> playerCards = new ArrayList<>();
 			ArrayList<Card> weaponCards = new ArrayList<>();
 			deck = new ArrayList<>();
@@ -146,6 +151,7 @@ public class Board {
 				
 				weaponCards.add(new Card(CardType.WEAPON, entry));
 			}
+			//this is where the solution gets created
 			Random r = new Random();
 			int p = (r.nextInt(playerCards.size() - 1));
 			int w = (r.nextInt(weaponCards.size() - 1));
@@ -153,7 +159,7 @@ public class Board {
 			solution = new Solution( playerCards.get(p), roomCards.get(ro), 
 					weaponCards.get(w));
 			
-			
+			//all the cards are now put into one large deck
 			for (int i = 0; i < playerCards.size(); i++) {
 				deck.add(playerCards.get(i));
 			}
@@ -167,9 +173,10 @@ public class Board {
 			for (int i = 0; i < deck.size(); i++) {
 				deckSet.add(deck.get(i));
 			}
-			playerCards.remove(p);
-			weaponCards.remove(w);
-			roomCards.remove(ro);
+			//remove the cards that were used for the solution
+			deck.remove(p);
+			deck.remove(p+w);
+			deck.remove(p+w+ro);
 			int num = 0;
 			while(!deck.isEmpty()) {
 				for (Suspect sus : computers) {
@@ -506,6 +513,38 @@ public class Board {
 	
 	
 	
+	public boolean checkAccusation(Solution accusation) {
+		//if any of the cards in an accusation dont match the cards in the boards solution, return false
+		if (!accusation.getPerson().getName().equals(solution.getPerson().getName())) {
+			return false;
+		}
+		if (!accusation.getWeapon().getName().equals(solution.getWeapon().getName())) {
+			return false;
+		}
+		if (!accusation.getRoom().getName().equals(solution.getRoom().getName())) {
+			return false;
+		}
+		//if none of the if statements triggered to return false, the accusation is right so return true
+		return true;
+	}
+
+
+
+
+	public Card handleSuggestion(Solution suggestion, Suspect player) {
+		//iterate through all players, seeing if any can disprove the suggestion, is they can return whatever card they 
+		//use to disprove the suggestion
+		for (Suspect playeri : allCharacters) {
+			if (!playeri.getName().equals(player.getName())) {
+				if (playeri.disproveSuggestion(suggestion) == null) {
+					continue;
+				} else {
+					return playeri.disproveSuggestion(suggestion);
+				}
+			}
+		}
+		return null;
+	}
 	
 	
 	
@@ -604,48 +643,17 @@ public class Board {
 		return roomCards;
 	}
 
-
-
-
-	public boolean checkAccusation(Solution accusation) {
-		if (!accusation.getPerson().getName().equals(solution.getPerson().getName())) {
-			return false;
-		}
-		if (!accusation.getWeapon().getName().equals(solution.getWeapon().getName())) {
-			return false;
-		}
-		if (!accusation.getRoom().getName().equals(solution.getRoom().getName())) {
-			return false;
-		}
-		return true;
-	}
-
-
-
-
+	
+	
+	
 	public void setSolution(Solution solution) {
 		this.solution = solution;
 	}
 
 
-
-
-	public Card handleSuggestion(Solution suggestion, Suspect player) {
-		for (Suspect playeri : allCharacters) {
-			if (!playeri.getName().equals(player.getName())) {
-				if (playeri.disproveSuggestion(suggestion) == null) {
-					continue;
-				} else {
-					return playeri.disproveSuggestion(suggestion);
-				}
-			}
-		}
-		return null;
-	}
-
-
-
-
+	//These three setter are used for testing purposes, as the initialize method randomly selects a solution, along with randomly deals the deck
+	//but for testing we need to know exactly what the solution is and what cards are in each players hand, setters allow us to create a custom solution/players
+	//with custom hands so we know what to test
 	public void setAllCharacters(ArrayList<Suspect> allCharacters) {
 		this.allCharacters = allCharacters;
 	}

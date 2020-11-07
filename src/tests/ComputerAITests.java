@@ -127,7 +127,6 @@ class ComputerAITests {
 
 
 		//test to see if a random weapon is selected given three weapon cards that have been "seen"
-
 		Set<String> setWeaponCards = new HashSet<>();
 		setWeaponCards.add("Pistol");
 		setWeaponCards.add("Knife");
