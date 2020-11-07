@@ -90,7 +90,8 @@ public abstract class Suspect {
 		//rand function	
 			Random r = new Random();
 			int randoGen = (r.nextInt(possibleCards.size()));
-			return possibleCards.get(randoGen);}
+			return possibleCards.get(randoGen);
+			}
 		
 		
 		//else, return null

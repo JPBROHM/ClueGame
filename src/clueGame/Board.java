@@ -1,3 +1,4 @@
+
 package clueGame;
 
 import java.awt.Color;
@@ -28,7 +29,7 @@ public class Board {
 	private Map<Character, Room> rooms;
 	private Map<String, String> players;
 	private Set<String> weapons;
-	private Set<Suspect> allCharacters;
+	private ArrayList<Suspect> allCharacters;
 	private Set<Suspect> computers;
 	private Suspect human;
 	private Solution solution;
@@ -64,7 +65,7 @@ public class Board {
 		rooms = new HashMap<Character, Room>();
 		weapons = new HashSet<String>();
 		players = new HashMap<String, String>();
-		allCharacters = new HashSet<Suspect>();
+		allCharacters = new ArrayList<Suspect>();
 		computers = new HashSet<Suspect>();
 		deckSet = new HashSet<>();
 		solution = new Solution();
@@ -581,7 +582,7 @@ public class Board {
 	public Set<Suspect> getComputers(){
 		return computers;
 	}
-	public Set<Suspect> getAllCharacters(){
+	public ArrayList<Suspect> getAllCharacters(){
 		return allCharacters;
 	}
 	public Suspect getHuman(){
@@ -624,6 +625,43 @@ public class Board {
 
 	public void setSolution(Solution solution) {
 		this.solution = solution;
+	}
+
+
+
+
+	public Card handleSuggestion(Solution suggestion, Suspect player) {
+		for (Suspect playeri : allCharacters) {
+			if (!playeri.getName().equals(player.getName())) {
+				if (playeri.disproveSuggestion(suggestion) == null) {
+					continue;
+				} else {
+					return playeri.disproveSuggestion(suggestion);
+				}
+			}
+		}
+		return null;
+	}
+
+
+
+
+	public void setAllCharacters(ArrayList<Suspect> allCharacters) {
+		this.allCharacters = allCharacters;
+	}
+
+
+
+
+	public void setComputers(Set<Suspect> computers) {
+		this.computers = computers;
+	}
+
+
+
+
+	public void setHuman(Suspect human) {
+		this.human = human;
 	}
 
 

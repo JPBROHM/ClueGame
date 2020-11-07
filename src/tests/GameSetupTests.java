@@ -62,7 +62,7 @@ class GameSetupTests {
 	@Test
 	public void testPlayers() {
 		//Havent added an option for player to choose character yet, so the human player is just going to be set to the first character loaded in
-		Set<Suspect> allCharacters = board.getAllCharacters();
+		ArrayList<Suspect> allCharacters = board.getAllCharacters();
 		Set<Suspect> computers = board.getComputers();
 		Suspect human = board.getHuman();
 		assertEquals(numComputers, computers.size());
