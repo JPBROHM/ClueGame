@@ -188,6 +188,35 @@ class ComputerAITests {
 
 
 
+	
+	@Test
+	public void checkAccusation() {
+		
+		
+		//solution is:
+		Solution answer = new Solution(new Card(CardType.PERSON, "Mrs. White"), new Card(CardType.ROOM, "Comfort Room"), new Card(CardType.WEAPON, "Pistol"));
+		Solution accusationRight = new Solution(new Card(CardType.PERSON, "Mrs. White"), new Card(CardType.ROOM, "Comfort Room"), new Card(CardType.WEAPON, "Pistol"));
+		Solution accusationRoom = new Solution(new Card(CardType.PERSON, "Mrs. White"), new Card(CardType.ROOM, "Hall"), new Card(CardType.WEAPON, "Pistol"));
+		Solution accusationWeapon = new Solution(new Card(CardType.PERSON, "Mrs. White"), new Card(CardType.ROOM, "Comfort Room"), new Card(CardType.WEAPON, "Baseball Bat"));
+		Solution accusationPerson = new Solution(new Card(CardType.PERSON, "Colonel Mustard"), new Card(CardType.ROOM, "Comfort Room"), new Card(CardType.WEAPON, "Pistol"));
+		
+		board.setSolution(answer);
+		//guess solution
+		
+		//accusation is right
+		assertTrue(board.checkAccusation(accusationRight));
+		
+		//room is wrong
+		assertFalse(board.checkAccusation(accusationRoom));
+
+		//weapon wrong
+		assertFalse( board.checkAccusation(accusationWeapon));
+		
+		//person wrong
+		assertFalse(board.checkAccusation(accusationPerson));
+
+	
+	}
 
 	@Test
 	void disproveSuggestion() {

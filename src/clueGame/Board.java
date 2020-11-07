@@ -604,4 +604,27 @@ public class Board {
 	}
 
 
+
+
+	public boolean checkAccusation(Solution accusation) {
+		if (!accusation.getPerson().getName().equals(solution.getPerson().getName())) {
+			return false;
+		}
+		if (!accusation.getWeapon().getName().equals(solution.getWeapon().getName())) {
+			return false;
+		}
+		if (!accusation.getRoom().getName().equals(solution.getRoom().getName())) {
+			return false;
+		}
+		return true;
+	}
+
+
+
+
+	public void setSolution(Solution solution) {
+		this.solution = solution;
+	}
+
+
 }
