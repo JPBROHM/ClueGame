@@ -16,7 +16,7 @@ public class GameKnownCardsPanel extends JPanel{
 	
 	
 	public GameKnownCardsPanel setPeople(HumanPlayer player) {
-		//set hand
+		//get hand
 		GameKnownCardsPanel peoplePanel = new GameKnownCardsPanel();
 		peoplePanel.setBorder(new TitledBorder (new EtchedBorder(), "People"));
 		ArrayList<Card> peopleCards = new ArrayList<>();
@@ -25,20 +25,40 @@ public class GameKnownCardsPanel extends JPanel{
 				peopleCards.add(player.getPlayerHand().get(i));
 			}
 		}
-        peoplePanel.setLayout(new GridLayout(peopleCards.size() + player.getPeopleSeen().size() + 2, 0));
 		
-        JLabel hand = new JLabel("In Hand:");
-        peoplePanel.add(hand);
-        
+		//setting things to the right size dependant on if they have/dont have cards in hand/seen
+		if (peopleCards.isEmpty() && player.getPeopleSeen().isEmpty()) {
+			peoplePanel.setLayout(new GridLayout(4, 0));
+		}
+		else if(peopleCards.isEmpty()) {
+			peoplePanel.setLayout(new GridLayout(player.getPeopleSeen().size() + 3, 0));
+		}
+		else if( player.getPeopleSeen().isEmpty()) {
+			peoplePanel.setLayout(new GridLayout(peopleCards.size() + 3, 0));
+		}
+		else {
+			peoplePanel.setLayout(new GridLayout(peopleCards.size() + player.getPeopleSeen().size() + 2, 0));
+		}
+		JLabel hand = new JLabel("In Hand:");
+		peoplePanel.add(hand);
+
+
+		if (peopleCards.size() == 0) {
+			peoplePanel.add(new JTextField("None"));
+		}
+
         for (int i = 0; i < peopleCards.size(); i++) {
-        	peoplePanel.add(new JLabel(peopleCards.get(i).getName()));
+        	peoplePanel.add(new JTextField(peopleCards.get(i).getName()));
         }
         
         
-		//set seen
+		//set seen & display
         peoplePanel.add(new JLabel("Seen:"));
+        if (player.getPeopleSeen().size() == 0) {
+			peoplePanel.add(new JTextField("None"));
+		}
         for (String name : player.getPeopleSeen()) {
-        	peoplePanel.add(new JLabel(name));
+        	peoplePanel.add(new JTextField(name));
         	
         }
         
@@ -47,35 +67,58 @@ public class GameKnownCardsPanel extends JPanel{
 	}
 	
 	public GameKnownCardsPanel setWeapons(HumanPlayer player) {
+		//get hand
 		GameKnownCardsPanel weaponPanel = new GameKnownCardsPanel();
 		weaponPanel.setBorder(new TitledBorder (new EtchedBorder(), "Weapons"));
-		ArrayList<Card>weaponCards = new ArrayList<>();
+		ArrayList<Card> weaponCards = new ArrayList<>();
 		for (int i = 0; i < player.getPlayerHand().size(); i++) {
 			if (player.getPlayerHand().get(i).getType() == CardType.WEAPON) {
 				weaponCards.add(player.getPlayerHand().get(i));
 			}
 		}
-        weaponPanel.setLayout(new GridLayout( weaponCards.size() + player.getWeaponsSeen().size() + 2,0));
-		
-        JLabel hand = new JLabel("In Hand:");
-       weaponPanel.add(hand);
-        
-        for (int i = 0; i < weaponCards.size(); i++) {
-        	weaponPanel.add(new JLabel(weaponCards.get(i).getName()));
-        }
-        
-        
-		//set seen
-      weaponPanel.add(new JLabel("Seen:"));
-        for (String name : player.getPeopleSeen()) {
-        	weaponPanel.add(new JLabel(name));
-        	
-        }
-        
-        return weaponPanel;}
-	
+
+		//setting things to the right size dependant on if they have/dont have cards in hand/seen
+		if (weaponCards.isEmpty() && player.getWeaponsSeen().isEmpty()) {
+			weaponPanel.setLayout(new GridLayout(4, 0));
+		}
+		else if(weaponCards.isEmpty()) {
+			weaponPanel.setLayout(new GridLayout(player.getWeaponsSeen().size() + 3, 0));
+		}
+		else if( player.getWeaponsSeen().isEmpty()) {
+			weaponPanel.setLayout(new GridLayout(weaponCards.size() + 3, 0));
+		}
+		else {
+			weaponPanel.setLayout(new GridLayout(weaponCards.size() + player.getWeaponsSeen().size() + 2, 0));
+		}
+		JLabel hand = new JLabel("In Hand:");
+		weaponPanel.add(hand);
+
+
+		if (weaponCards.size() == 0) {
+			weaponPanel.add(new JTextField("None"));
+		}
+
+		for (int i = 0; i < weaponCards.size(); i++) {
+			weaponPanel.add(new JTextField(weaponCards.get(i).getName()));
+		}
+
+
+		//set seen & display
+		weaponPanel.add(new JLabel("Seen:"));
+		if (player.getWeaponsSeen().size() == 0) {
+			weaponPanel.add(new JTextField("None"));
+		}
+		for (String name : player.getWeaponsSeen()) {
+			weaponPanel.add(new JTextField(name));
+
+		}
+
+		return weaponPanel;
+	}
+
 	
 	public GameKnownCardsPanel setRooms(HumanPlayer player) {
+		//get hand
 		GameKnownCardsPanel roomPanel = new GameKnownCardsPanel();
 		roomPanel.setBorder(new TitledBorder (new EtchedBorder(), "Room"));
 		ArrayList<Card> roomCards = new ArrayList<>();
@@ -84,20 +127,40 @@ public class GameKnownCardsPanel extends JPanel{
 				roomCards.add(player.getPlayerHand().get(i));
 			}
 		}
-        roomPanel.setLayout(new GridLayout(roomCards.size() + player.getRoomsSeen().size() + 2, 0));
 		
-        JLabel hand = new JLabel("In Hand:");
-        roomPanel.add(hand);
-        
+		//setting things to the right size dependant on if they have/dont have cards in hand/seen
+		if (roomCards.isEmpty() && player.getRoomsSeen().isEmpty()) {
+			roomPanel.setLayout(new GridLayout(4, 0));
+		}
+		else if(roomCards.isEmpty()) {
+			roomPanel.setLayout(new GridLayout(player.getRoomsSeen().size() + 3, 0));
+		}
+		else if( player.getRoomsSeen().isEmpty()) {
+			roomPanel.setLayout(new GridLayout(roomCards.size() + 3, 0));
+		}
+		else {
+			roomPanel.setLayout(new GridLayout(roomCards.size() + player.getPeopleSeen().size() + 2, 0));
+		}
+		JLabel hand = new JLabel("In Hand:");
+		roomPanel.add(hand);
+
+
+		if (roomCards.size() == 0) {
+			roomPanel.add(new JTextField("None"));
+		}
+
         for (int i = 0; i < roomCards.size(); i++) {
-        	roomPanel.add(new JLabel(roomCards.get(i).getName()));
+        	roomPanel.add(new JTextField(roomCards.get(i).getName()));
         }
         
         
-		//set seen
+		//set seen & display
         roomPanel.add(new JLabel("Seen:"));
-        for (String name : player.getPeopleSeen()) {
-        	roomPanel.add(new JLabel(name));
+        if (player.getRoomsSeen().size() == 0) {
+			roomPanel.add(new JTextField("None"));
+		}
+        for (String name : player.getRoomsSeen()) {
+        	roomPanel.add(new JTextField(name));
         	
         }
         

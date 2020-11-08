@@ -91,22 +91,12 @@ public class ComputerPlayer extends Suspect {
 	public Set<String> getRoomCards() {
 		return roomsSeen;
 	}
-	public void setRoomCards(Set<String> roomsSeen) {
-		this.roomsSeen = roomsSeen;
-	}
 	public Set<String> getWeaponCards() {
 		return weaponsSeen;
-	}
-	public void setWeaponCards(Set<String> weaponsSeen) {
-		this.weaponsSeen = weaponsSeen;
 	}
 	public Set<String> getPeopleCards() {
 		return peopleSeen;
 	}
-	public void setPeopleCards(Set<String> peopleSeen) {
-		this.peopleSeen = peopleSeen;
-	}
-
 	public String getTarget() {
 		return target;
 		

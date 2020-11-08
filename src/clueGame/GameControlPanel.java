@@ -51,7 +51,7 @@ public class GameControlPanel extends JPanel{
 	}
 	
 	
-	private void setTurn(ComputerPlayer computerPlayer, int roll) {
+	private void setTurn(Suspect computerPlayer, int roll) {
 		rollNumber.setText(Integer.toString(roll));
 		playerName.setText(computerPlayer.getName());
 

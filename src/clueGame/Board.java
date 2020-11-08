@@ -122,7 +122,7 @@ public class Board {
 					count++;
 				}
 				else {
-					ComputerPlayer computer = new ComputerPlayer(entry.getKey(), color, row, col);
+					Suspect computer = new ComputerPlayer(entry.getKey(), color, row, col);
 					computers.add(computer);
 					allCharacters.add(computer);
 				}

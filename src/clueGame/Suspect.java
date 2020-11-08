@@ -107,4 +107,15 @@ public abstract class Suspect {
 	public Set<String> getPeopleSeen() {
 		return peopleSeen;
 	}
+	
+	//used for testing purposes to set things to exactly what we want to test for specific scenarios
+	public void setRoomCards(Set<String> roomsSeen) {
+		this.roomsSeen = roomsSeen;
+	}
+	public void setWeaponCards(Set<String> weaponsSeen) {
+		this.weaponsSeen = weaponsSeen;
+	}
+	public void setPeopleCards(Set<String> peopleSeen) {
+		this.peopleSeen = peopleSeen;
+	}
 	}
