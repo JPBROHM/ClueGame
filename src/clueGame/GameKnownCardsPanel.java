@@ -3,6 +3,8 @@ package clueGame;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -173,7 +175,7 @@ public class GameKnownCardsPanel extends JPanel{
            GameKnownCardsPanel panel = new GameKnownCardsPanel();  // create the panel
            JFrame frame = new JFrame();  // create the frame
            frame.setContentPane(panel); // put the panel in the frame
-           frame.setSize(180, 750);  // size the frame
+           frame.setSize(250, 750);  // size the frame
            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // allow it to close
            frame.setVisible(true); // make it visible
            panel.setBorder(new TitledBorder (new EtchedBorder(), "Known Cards"));
@@ -181,6 +183,22 @@ public class GameKnownCardsPanel extends JPanel{
            Color color = new Color(0,0,0);
            color = Color.YELLOW;
            HumanPlayer player = new HumanPlayer("Col. Mustard", color, 0, 0);
+           
+           Set<String> weaponsSeen = new HashSet<>();
+           Set<String> peopleSeen = new HashSet<>();
+          
+           
+           weaponsSeen.add("Pistol");
+           weaponsSeen.add("Chainsaw");
+           
+           peopleSeen.add( "Colonel Mustard");
+           player.updateHand(new Card(CardType.ROOM, "Hall"));
+           player.updateHand(new Card(CardType.WEAPON, "Piano Wire"));
+           player.updateHand(new Card(CardType.PERSON, "Mrs. White"));
+           
+           player.setWeaponCards(weaponsSeen);
+           player.setPeopleCards(peopleSeen);
+           
 
            panel.add(panel.setPeople(player));
            panel.add(panel.setRooms(player));
