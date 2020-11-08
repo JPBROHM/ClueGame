@@ -147,7 +147,7 @@ public class GameControlPanel extends JPanel{
         panel.add(top);
         panel.add(bottom);
         
-        frame.setVisible(true);
+  
         
 
 

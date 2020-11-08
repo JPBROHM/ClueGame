@@ -98,4 +98,13 @@ public abstract class Suspect {
 		else {return null;}
 
 	}
+	public Set<String> getRoomsSeen() {
+		return roomsSeen;
+	}
+	public Set<String> getWeaponsSeen() {
+		return weaponsSeen;
+	}
+	public Set<String> getPeopleSeen() {
+		return peopleSeen;
+	}
 	}
