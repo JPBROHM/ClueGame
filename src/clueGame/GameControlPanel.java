@@ -17,6 +17,7 @@ public class GameControlPanel extends JPanel{
 	private JTextField theGuessResult;
 	private JTextField rollNumber;
 	private JTextField playerName;
+
     
 	
 	public GameControlPanel() {
@@ -54,6 +55,7 @@ public class GameControlPanel extends JPanel{
 	private void setTurn(Suspect computerPlayer, int roll) {
 		rollNumber.setText(Integer.toString(roll));
 		playerName.setText(computerPlayer.getName());
+		playerName.setBackground(computerPlayer.getColor());
 
 		
 	}
@@ -148,7 +150,7 @@ public class GameControlPanel extends JPanel{
         panel.add(bottom);
         
   
-        
+        frame.setVisible(true);
 
 
 

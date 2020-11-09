@@ -1,5 +1,7 @@
 package clueGame;
 
+import java.awt.Color;
+
 public class Card {
 	private CardType type;
 	
@@ -21,5 +23,6 @@ public class Card {
 	public String getName() {
 		return name;
 	}
+	
 	
 }
