@@ -194,13 +194,13 @@ public class BoardCell  implements Comparable<BoardCell> {
 		 if(secretPassageBool) {
 			 
 			 if(getSecretPassageStart()=='W'||getSecretPassage()=='W') {
-				 g.setColor(Color.RED);
+				 g.setColor(new Color(115,34,56));
 				 g.fillRect(col * width,row * height, width, height);
 				 g.setColor(Color.BLACK);
 				 g.drawRect(col * width,row * height, width, height);
 			 }
 			 else {
-				 g.setColor(Color.GREEN);
+				 g.setColor(new Color(85,107,47));
 				 g.fillRect(col * width,row * height, width, height);
 				 g.setColor(Color.BLACK);
 				 g.drawRect(col * width,row * height, width, height);

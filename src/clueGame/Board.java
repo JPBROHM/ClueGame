@@ -75,6 +75,9 @@ public class Board extends JPanel{
 		/*for (Entry<Character, Room> room : rooms.entrySet()) {
 			room.getValue().drawRoom(g, rectWidth, rectHeight);
 		}*/
+		for(Suspect sus : allCharacters) {
+			sus.draw(g, rectWidth, rectHeight);
+		}
 	}
 
 	/*

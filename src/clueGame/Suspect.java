@@ -1,7 +1,7 @@
 package clueGame;
 
 import java.awt.Color;
-
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
@@ -117,5 +117,10 @@ public abstract class Suspect {
 	}
 	public void setPeopleCards(Set<String> peopleSeen) {
 		this.peopleSeen = peopleSeen;
+	}
+	public void draw(Graphics g, int rectWidth, int rectHeight) {
+		g.setColor(this.color);
+		g.fillOval(col * rectWidth, row * rectHeight, rectWidth, rectHeight);
+		
 	}
 	}
