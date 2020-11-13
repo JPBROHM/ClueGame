@@ -1,5 +1,12 @@
 package clueGame;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+import javax.swing.JFrame;
+
 public class Room {
 	
 	private String name;
@@ -34,6 +41,14 @@ public class Room {
 	public BoardCell getCenterCell() {
 		// TODO Auto-generated method stub
 		return centerCell;
+	}
+
+	public void drawRoom(Graphics g, int width, int height) {
+		g.setColor(Color.BLACK);
+		g.setFont(new Font("TimesRoman", Font.PLAIN, 12));
+		
+		g.drawString(name, labelCell.getColumn() * width, labelCell.getRow() * height);
+
 	}
 
 }

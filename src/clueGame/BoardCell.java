@@ -1,7 +1,12 @@
 package clueGame;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import experiment.TestBoard;
 import experiment.TestBoardCell;
@@ -21,7 +26,8 @@ public class BoardCell  implements Comparable<BoardCell> {
 	private boolean isRoom;
 	private boolean isOccupied;
 	private boolean isWalkway;
-
+	private int width;
+	private int height;
 
 
 	public BoardCell(){
@@ -32,9 +38,6 @@ public class BoardCell  implements Comparable<BoardCell> {
 		return isRoom;
 	}
 
-
-	
-	
 
 	public BoardCell(int row, int column, String cellLabel) {
 		this.cellLabel = cellLabel;
@@ -184,6 +187,78 @@ public class BoardCell  implements Comparable<BoardCell> {
 	public boolean getOccupied() {
 		// TODO Auto-generated method stub
 		return isOccupied;
+	}
+
+	public void draw(Graphics g, int row, int col, int width, int height) {
+		
+		 if(secretPassageBool) {
+			 
+			 if(getSecretPassageStart()=='W'||getSecretPassage()=='W') {
+				 g.setColor(Color.RED);
+				 g.fillRect(col * width,row * height, width, height);
+				 g.setColor(Color.BLACK);
+				 g.drawRect(col * width,row * height, width, height);
+			 }
+			 else {
+				 g.setColor(Color.GREEN);
+				 g.fillRect(col * width,row * height, width, height);
+				 g.setColor(Color.BLACK);
+				 g.drawRect(col * width,row * height, width, height);
+			 }
+			 //color (make other end same color)
+		 }
+		 else if (isRoom) {
+			 g.setColor(Color.LIGHT_GRAY);
+			 g.fillRect(col * width,row * height, width, height);
+			 //gray
+		}
+		else  if (isWalkway) {
+			g.setColor(new Color(93,75,59));
+			g.fillRect(col * width,row * height, width, height);
+			g.setColor(Color.BLACK);
+			g.drawRect(col * width,row * height, width, height);
+		//light brown
+		}
+		else if (cellLabel.equals("X")) {
+			g.setColor(Color.BLACK);
+			g.fillRect(col * width,row * height, width, height);
+			g.setColor(Color.BLACK);
+			g.drawRect(col * width,row * height, width, height);
+		//black
+		}
+		if(doorway) {
+			g.setColor(new Color(93,75,59));
+			g.fillRect(col * width,row * height, width, height);
+			g.setColor(Color.BLUE);
+		
+		//color
+		//line on side of door direction
+			DoorDirection dDir = doorDirection;
+			switch (dDir) {
+			//each switch statement is the same, just the direction differs
+			case UP:
+				g.fillRect(col * width,row * height, width, 3);
+				break;
+			case DOWN:
+				g.fillRect(col * width,(row * height) + (height - 3), width, 3);
+				break;
+			case LEFT:
+				g.fillRect(col * width,row * height, 3, height);
+				break;
+			case RIGHT:
+				g.fillRect((col * width) + (width - 3),row * height, 3, height);
+				break;
+			default:
+				break;
+			
+			}
+			g.setColor(Color.BLACK);
+			g.drawRect(col * width,row * height, width, height);
+		}
+		
+		
+		
+		
 	}
 
 

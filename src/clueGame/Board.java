@@ -2,6 +2,7 @@
 package clueGame;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.io.FileNotFoundException;
 
 import java.io.FileReader;
@@ -13,14 +14,19 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
+
+import javax.swing.JPanel;
+
 import experiment.TestBoardCell;
 
 
-public class Board {
+public class Board extends JPanel{
 	
 
 	private int numRows;
 	private int numColumns;
+	private int rectWidth;
+	private int rectHeight;
 	private BoardCell[][] grid;
 	private String csvFile;
 	private String textFile;
@@ -56,8 +62,21 @@ public class Board {
 	
 	
 	
-	
-	
+
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+		rectWidth = getWidth() / numColumns;
+		rectHeight = getHeight() / numRows;
+		for (int i = 0; i < numColumns; i++) {
+			for (int j = 0; j < numRows; j++) {
+				grid[j][i].draw(g, j, i, rectWidth, rectHeight);
+			}
+		}
+		/*for (Entry<Character, Room> room : rooms.entrySet()) {
+			room.getValue().drawRoom(g, rectWidth, rectHeight);
+		}*/
+	}
+
 	/*
 	 * initialize the board (since we are using singleton pattern)
 	 */
@@ -217,6 +236,7 @@ public class Board {
 
 
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
+		
 		FileReader f;
 		f = new FileReader(textFile);
 		//read in all the rooms/spaces skipping comments
@@ -298,6 +318,7 @@ public class Board {
 			//iterate through each row and get the columns to create the grid cell by cell
 			for (int j = 0; j < numColumns; j++) {
 				grid[i][j] = new BoardCell(i,j,currRow[j]);
+				
 				
 				//when the row was split, the character representation of the row has a space before it, since there was a space after the comma
 				//which is the delimiter that was used, so add a space for the sake of checking it with the roomNames map before getting rid of said space
