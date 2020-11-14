@@ -66,18 +66,22 @@ public class Board extends JPanel{
 
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
+		//calculate the size for one of the squares
 		rectWidth = getWidth() / numColumns;
 		rectHeight = getHeight()/ numRows;
+		//iterate through the grid, making each boardCell draw itself
 		for (int i = 0; i < numColumns; i++) {
 			for (int j = 0; j < numRows; j++) {
 				grid[j][i].draw(g, j, i, rectWidth, rectHeight);
 			}
 		}
-		
+		//iterate through the rooms, making the rooms display their names
 		for (Entry<Character, Room> room : rooms.entrySet()) {
 			Room roomDraw = room.getValue();
 			roomDraw.drawRoom(g, rectWidth, rectHeight);
 		}
+		
+		//iterate through the players, drawing a circle in their color for each player
 		for(Suspect sus : allCharacters) {
 			sus.draw(g, rectWidth, rectHeight);
 		}

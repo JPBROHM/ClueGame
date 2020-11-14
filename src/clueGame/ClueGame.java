@@ -26,20 +26,8 @@ public class ClueGame extends JFrame {
 	public static void main(String[] args) {
 		 ClueGame theBoard = new ClueGame();  // create the frame
          theBoard.setVisible(true);
-         
-         
-         /*GameControlPanel controlPanel = new GameControlPanel();
-         JFrame control = controlPanel.main();
-         GameKnownCardsPanel knownCards = new GameKnownCardsPanel();
-         frame.add(control, BorderLayout.SOUTH);
-         frame.add(knownCards, BorderLayout.EAST);
-        */
-    
-         
-         
-         //add known cards
-         //add next turn thing
-         
+      
+   
 
 	}
 
