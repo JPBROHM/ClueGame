@@ -44,9 +44,10 @@ public class Room {
 	}
 
 	public void drawRoom(Graphics g, int width, int height) {
-		g.setColor(Color.BLACK);
-		g.setFont(new Font("TimesRoman", Font.PLAIN, 12));
-		
+		if( labelCell == null) return ;
+		g.setColor(Color.BLUE);
+		Font font = new Font("font", Font.BOLD, 13);
+		g.setFont(font);
 		g.drawString(name, labelCell.getColumn() * width, labelCell.getRow() * height);
 
 	}

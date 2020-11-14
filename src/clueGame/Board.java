@@ -2,6 +2,7 @@
 package clueGame;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.io.FileNotFoundException;
 
@@ -66,15 +67,17 @@ public class Board extends JPanel{
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		rectWidth = getWidth() / numColumns;
-		rectHeight = getHeight() / numRows;
+		rectHeight = getHeight()/ numRows;
 		for (int i = 0; i < numColumns; i++) {
 			for (int j = 0; j < numRows; j++) {
 				grid[j][i].draw(g, j, i, rectWidth, rectHeight);
 			}
 		}
-		/*for (Entry<Character, Room> room : rooms.entrySet()) {
-			room.getValue().drawRoom(g, rectWidth, rectHeight);
-		}*/
+		
+		for (Entry<Character, Room> room : rooms.entrySet()) {
+			Room roomDraw = room.getValue();
+			roomDraw.drawRoom(g, rectWidth, rectHeight);
+		}
 		for(Suspect sus : allCharacters) {
 			sus.draw(g, rectWidth, rectHeight);
 		}

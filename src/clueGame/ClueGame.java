@@ -14,17 +14,27 @@ public class ClueGame extends JFrame {
         board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");		
         board.initialize();
         //draw board
-        setSize(500, 750);  // size the frame
+        setSize(750, 930);  // size the frame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // allow it to close
         add(board, BorderLayout.CENTER);
+        GameControlPanel controlPanel = new GameControlPanel();
+        add(controlPanel, BorderLayout.SOUTH);
+        GameKnownCardsPanel cardPanel = new GameKnownCardsPanel();
+        add(cardPanel, BorderLayout.EAST);
 	}
 	
 	public static void main(String[] args) {
-		 ClueGame frame = new ClueGame();  // create the frame
-         frame.setVisible(true); // make it visible
+		 ClueGame theBoard = new ClueGame();  // create the frame
+         theBoard.setVisible(true);
          
-        
-         //double for loop for size of the board, with BoardCell cell.Draw()??
+         
+         /*GameControlPanel controlPanel = new GameControlPanel();
+         JFrame control = controlPanel.main();
+         GameKnownCardsPanel knownCards = new GameKnownCardsPanel();
+         frame.add(control, BorderLayout.SOUTH);
+         frame.add(knownCards, BorderLayout.EAST);
+        */
+    
          
          
          //add known cards

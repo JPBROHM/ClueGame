@@ -121,6 +121,9 @@ public abstract class Suspect {
 	public void draw(Graphics g, int rectWidth, int rectHeight) {
 		g.setColor(this.color);
 		g.fillOval(col * rectWidth, row * rectHeight, rectWidth, rectHeight);
+		g.setColor(Color.BLACK);
+		g.drawOval(col * rectWidth, row * rectHeight, rectWidth, rectHeight);
+		
 		
 	}
 	}

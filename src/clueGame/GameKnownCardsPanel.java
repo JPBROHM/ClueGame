@@ -16,10 +16,45 @@ import javax.swing.border.TitledBorder;
 public class GameKnownCardsPanel extends JPanel{
 
 	
+	public GameKnownCardsPanel(int i, int j) {
+		super();
+		setLayout(new GridLayout(i, j));
+	}
+
+
+	public GameKnownCardsPanel() {
+		super();
+        setBorder(new TitledBorder (new EtchedBorder(), "Known Cards"));
+        setLayout(new GridLayout(3, 0));
+        Color color = new Color(0,0,0);
+        color = Color.YELLOW;
+        HumanPlayer player = new HumanPlayer("Col. Mustard", color, 0, 0);
+        
+        Set<String> weaponsSeen = new HashSet<>();
+        Set<String> peopleSeen = new HashSet<>();
+       
+        
+        weaponsSeen.add("Pistol");
+        weaponsSeen.add("Chainsaw");
+        
+        peopleSeen.add( "Colonel Mustard");
+        player.updateHand(new Card(CardType.ROOM, "Hall"));
+        player.updateHand(new Card(CardType.WEAPON, "Piano Wire"));
+        player.updateHand(new Card(CardType.PERSON, "Mrs. White"));
+        
+        player.setWeaponCards(weaponsSeen);
+        player.setPeopleCards(peopleSeen);
+        
+
+        add(setPeople(player));
+        add(setRooms(player));
+        add(setWeapons(player));
+	}
+	
 	
 	public GameKnownCardsPanel setPeople(HumanPlayer player) {
 		//get hand
-		GameKnownCardsPanel peoplePanel = new GameKnownCardsPanel();
+		GameKnownCardsPanel peoplePanel = new GameKnownCardsPanel(1 , 0);
 		peoplePanel.setBorder(new TitledBorder (new EtchedBorder(), "People"));
 		ArrayList<Card> peopleCards = new ArrayList<>();
 		for (int i = 0; i < player.getPlayerHand().size(); i++) {
@@ -70,7 +105,7 @@ public class GameKnownCardsPanel extends JPanel{
 	
 	public GameKnownCardsPanel setWeapons(HumanPlayer player) {
 		//get hand
-		GameKnownCardsPanel weaponPanel = new GameKnownCardsPanel();
+		GameKnownCardsPanel weaponPanel = new GameKnownCardsPanel(1,0);
 		weaponPanel.setBorder(new TitledBorder (new EtchedBorder(), "Weapons"));
 		ArrayList<Card> weaponCards = new ArrayList<>();
 		for (int i = 0; i < player.getPlayerHand().size(); i++) {
@@ -121,7 +156,7 @@ public class GameKnownCardsPanel extends JPanel{
 	
 	public GameKnownCardsPanel setRooms(HumanPlayer player) {
 		//get hand
-		GameKnownCardsPanel roomPanel = new GameKnownCardsPanel();
+		GameKnownCardsPanel roomPanel = new GameKnownCardsPanel(1,0);
 		roomPanel.setBorder(new TitledBorder (new EtchedBorder(), "Room"));
 		ArrayList<Card> roomCards = new ArrayList<>();
 		for (int i = 0; i < player.getPlayerHand().size(); i++) {
