@@ -415,6 +415,9 @@ public class Board extends JPanel{
 		}
 		for (int i = 0; i < numRows; i++ ) {
 			for (int j = 0; j < numColumns; j++) {
+				if (i == 5 && j == 0) {
+					System.out.println("butt");
+				}
 				calcAdjList(i, j);
 			}
 		}
@@ -440,21 +443,21 @@ public class Board extends JPanel{
 		
 		//set of if statements is similar to testBoardCell, but it only adds the cell to the adj list 
 		//if its a walkway, since you need to be on a doorway to enter a room
-		if(column != 0 && (grid[row][column - 1].getCellLabel().charAt(0) == 'W')) {
+		if(column != 0 && (grid[row][column - 1].isWalkway())) {
 			
 				grid[row][column].addToAdjList(grid[row][column - 1]);
 			
 		} 
-		if(column != grid[0].length - 1 && (grid[row][column + 1].getCellLabel().charAt(0) == 'W') ) {
+		if(column != grid[0].length - 1 && (grid[row][column + 1].isWalkway() )) {
 				grid[row][column].addToAdjList(grid[row][column + 1]);
 			
 		}
-		if(row != 0 && (grid[row - 1][column].getCellLabel().charAt(0) == 'W') ) {
+		if(row != 0 && (grid[row - 1][column].isWalkway()) ) {
 			
 				grid[row][column].addToAdjList(grid[row - 1][column]);
 		
 		}
-		if(row != grid.length - 1 && (grid[row + 1][column].getCellLabel().charAt(0) == 'W') ) {
+		if(row != grid.length - 1 && (grid[row + 1][column].isWalkway()) ) {
 			
 				grid[row][column].addToAdjList(grid[row + 1][column]);
 			
@@ -529,9 +532,13 @@ public class Board extends JPanel{
 				//scan through to find inverse order of ^^, add to adj list.
 				String passSec = ""+secretPassage+first;
 				for(int i=0;i<numRows;i++) {
+					if (i == 23) {
+						System.out.println("Break");
+					}
 					for (int j=0; j<numColumns;j++) {
-						if (grid[i][j].getCellLabel().equals(passSec)) {
+ 						if (grid[i][j].getCellLabel().equals(passSec)) {
 							grid[row][column].addToAdjList(grid[i][j]);
+							grid[i][j].addToAdjList(grid[row][column]);
 						}
 					}
 				}
@@ -777,6 +784,7 @@ public class Board extends JPanel{
 		public void mouseClicked(MouseEvent e) {
 			Board board = Board.getInstance();
 			Set<BoardCell> targets = board.getTargets();
+			if(targets.size()!=0) {
 			int rectWidth = board.getWidth() / (board.getNumColumns());
 			int rectHeight = board.getHeight() / (board.getNumRows());
 			if (turnCount == 0) {
@@ -812,6 +820,8 @@ public class Board extends JPanel{
 			
 			}
 		}
+			else {board.getHuman().setHasMoved(true);}
+			}
 
 		@Override
 		public void mousePressed(MouseEvent e) {}

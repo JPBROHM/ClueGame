@@ -93,8 +93,8 @@ public class BoardCell  implements Comparable<BoardCell> {
 				first=cellLabel.charAt(0);
 				secretPassage=cellLabel.charAt(1);
 				secretPassageBool=true;
-				isRoom = true;
-				isWalkway = false;
+				isRoom = false;
+				isWalkway = true;
 			}
 		}
 	}

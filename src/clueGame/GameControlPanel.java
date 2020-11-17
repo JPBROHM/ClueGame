@@ -138,6 +138,7 @@ public class GameControlPanel extends JPanel{
 					int min = 999;
 					boolean moveBool = false;
 					BoardCell cellToMoveTo = new BoardCell();
+					int count = 0;
 					ArrayList<Card> seenRooms = new ArrayList<>();
 					for (String name : sus.getRoomsSeen()) {
 						seenRooms.add(new Card(CardType.ROOM, name));
@@ -145,6 +146,9 @@ public class GameControlPanel extends JPanel{
 					sus.setTarget(seenRooms);
 					BoardCell targetRoomCell = board.getCell(board.getRoom(sus.getTarget()).getCenterCell().getRow(),board.getRoom(sus.getTarget()).getCenterCell().getColumn());
 					for (BoardCell targetCell : targets) {
+						if (count == 0) {
+							cellToMoveTo = targetCell;
+						}
 						if (targetCell.isRoomCenter() && sus.getTarget().equals(board.getRoom(targetCell.getCellLabel().charAt(0)).getName())) {
 							board.getCell(sus.getRow(), sus.getCol()).setOccupied(false);
 							sus.setRow(targetCell.getRow());
