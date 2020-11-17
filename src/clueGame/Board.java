@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
 
 import java.io.FileReader;
@@ -18,8 +20,10 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import clueGame.GameControlPanel.NextButtonListener;
 import experiment.TestBoardCell;
 
 
@@ -46,9 +50,20 @@ public class Board extends JPanel{
 	private Set<Card> deckSet;
 	private ArrayList<Card> roomCards;
 	private int turnCount;
+	private int eventCount;
 
 	
 	
+	public int getEventCount() {
+		return eventCount;
+	}
+
+
+	public void addEventCount(int eventCount) {
+		this.eventCount += eventCount;
+	}
+
+
 	public int rollDice() {
 		Random die = new Random();
 		return die.nextInt(6) + 1;
@@ -68,6 +83,7 @@ public class Board extends JPanel{
 	
 	public void nextTurn() {
 		turnCount++;
+		eventCount = 0;
 		if (turnCount == 6) {
 			turnCount = 0;
 			human.setHasMoved(false);
@@ -105,8 +121,11 @@ public class Board extends JPanel{
 		//iterate through the grid, making each boardCell draw itself
 		for (int i = 0; i < numColumns; i++) {
 			for (int j = 0; j < numRows; j++) {
-				grid[j][i].draw(g, j, i, rectWidth, rectHeight);
-				grid[j][i].drawTarget(g, j, i, rectWidth, rectHeight );
+				
+				if (legalTargets.contains(grid[j][i]) && turnCount == 0) {
+					grid[j][i].drawTarget(g, j, i, rectWidth, rectHeight);
+				}
+				else {grid[j][i].draw(g, j, i, rectWidth, rectHeight);}
 			}
 		}
 		//iterate through the rooms, making the rooms display their names
@@ -126,6 +145,8 @@ public class Board extends JPanel{
 	 * initialize the board (since we are using singleton pattern)
 	 */
 	public void initialize(){
+		addMouseListener(new BoardListener());
+		legalTargets = new HashSet<>();
 		rooms = new HashMap<Character, Room>();
 		weapons = new HashSet<String>();
 		players = new HashMap<String, String>();
@@ -268,6 +289,7 @@ public class Board extends JPanel{
 			}
 			
 		}
+		
 	}
 		
 	
@@ -747,7 +769,64 @@ public class Board extends JPanel{
 		this.human = human;
 	}
 	
-	
+
+	class BoardListener implements MouseListener {
+		
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			Board board = Board.getInstance();
+			Set<BoardCell> targets = board.getTargets();
+			int rectWidth = board.getWidth() / (board.getNumColumns());
+			int rectHeight = board.getHeight() / (board.getNumRows());
+			if (turnCount == 0) {
+				int x = e.getX();
+				int y = e.getY();
+				
+				for (BoardCell cell : targets ) {
+					if ((x >= ((cell.getColumn()) * rectWidth)) && (x <= ((cell.getColumn() + 1) * rectWidth)) &&
+							(y >= ((cell.getRow()) * rectHeight)) && (y <= ((cell.getRow() + 1) * rectHeight))) {
+						
+						//move player
+						board.getCell(board.getHuman().getRow(), board.getHuman().getCol()).setOccupied(false);
+						board.getHuman().setRow(cell.getRow());
+						board.getHuman().setCol(cell.getColumn());
+						board.getCell(board.getHuman().getRow(), board.getHuman().getCol()).setOccupied(true);
+						//are they in a room? --> suggestion stuff for next time
+						board.getHuman().setHasMoved(true);
+
+						
+						
+					}
+					
+				}
+				if (!getHuman().isHasMoved() && board.getEventCount()% 2 == 0) {
+					JOptionPane.showMessageDialog(null,"Error: You have selected an invalid tile. \n Please select one of the yellow spaces.", 
+							"Invalid Tile", JOptionPane.PLAIN_MESSAGE);
+					
+				}
+				board.addEventCount(1);
+				board.repaint();
+				
+				//set has moved to true
+			
+			}
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {}
+
+		@Override
+		public void mouseExited(MouseEvent e) {}
+		
+	}
+
 
 
 

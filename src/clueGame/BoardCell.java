@@ -175,17 +175,14 @@ public class BoardCell  implements Comparable<BoardCell> {
 	}
 
 	public int getRow() {
-		// TODO Auto-generated method stub
 		return row;
 	}
 
 	public int getColumn() {
-		// TODO Auto-generated method stub
 		return column;
 	}
 
 	public boolean getOccupied() {
-		// TODO Auto-generated method stub
 		return isOccupied;
 	}
 
@@ -261,7 +258,7 @@ public class BoardCell  implements Comparable<BoardCell> {
 		
 	}
 
-	public void drawTarget(Graphics g, int row, int col, int rectWidth, int rectHeight) {
+	public void drawTarget(Graphics g, int row, int col, int width, int height) {
 		g.setColor(Color.YELLOW);
 		g.fillRect(col * width,row * height, width, height);
 		g.setColor(Color.BLACK);

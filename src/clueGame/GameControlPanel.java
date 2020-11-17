@@ -103,7 +103,6 @@ public class GameControlPanel extends JPanel{
 		Board board = Board.getInstance();
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("Worky worky worky");
 			players = board.getAllCharacters();
 			//check if human turn over (have they moved)
 			//if no --> error
@@ -125,6 +124,7 @@ public class GameControlPanel extends JPanel{
 				board.calcTargets(cell,roll);
 
 				Set<BoardCell> targets = board.getTargets();
+				board.repaint();
 
 
 
@@ -137,7 +137,7 @@ public class GameControlPanel extends JPanel{
 				if(sus instanceof ComputerPlayer) {
 					int min = 999;
 					boolean moveBool = false;
-					BoardCell cellToMoveTo = null;
+					BoardCell cellToMoveTo = new BoardCell();
 					ArrayList<Card> seenRooms = new ArrayList<>();
 					for (String name : sus.getRoomsSeen()) {
 						seenRooms.add(new Card(CardType.ROOM, name));
@@ -146,16 +146,20 @@ public class GameControlPanel extends JPanel{
 					BoardCell targetRoomCell = board.getCell(board.getRoom(sus.getTarget()).getCenterCell().getRow(),board.getRoom(sus.getTarget()).getCenterCell().getColumn());
 					for (BoardCell targetCell : targets) {
 						if (targetCell.isRoomCenter() && sus.getTarget().equals(board.getRoom(targetCell.getCellLabel().charAt(0)).getName())) {
+							board.getCell(sus.getRow(), sus.getCol()).setOccupied(false);
 							sus.setRow(targetCell.getRow());
 							sus.setCol(targetCell.getColumn());
+							board.getCell(sus.getRow(), sus.getCol()).setOccupied(true);
 							moveBool = true;
 							break;
 						}
 						else if (targetCell.isDoorway()) {
 							for (BoardCell roomCell : targetCell.getAdjList()) {
 								if (roomCell.isRoomCenter() && sus.getTarget().equals(board.getRoom(roomCell.getCellLabel().charAt(0)).getName())) {
+									board.getCell(sus.getRow(), sus.getCol()).setOccupied(false);
 									sus.setRow(targetCell.getRow());
 									sus.setCol(targetCell.getColumn());
+									board.getCell(sus.getRow(), sus.getCol()).setOccupied(true);
 									moveBool = true;
 									break;
 								}
@@ -167,41 +171,28 @@ public class GameControlPanel extends JPanel{
 						}
 					}
 					if (!moveBool) {
+						board.getCell(sus.getRow(), sus.getCol()).setOccupied(false);
 						sus.setRow(cellToMoveTo.getRow());
 						sus.setCol(cellToMoveTo.getColumn());
+						board.getCell(sus.getRow(), sus.getCol()).setOccupied(true);
+						
+						
 					}
 
 
 					board.repaint();
-				}
-				
-
-			
-			//is new player human? 
+				}	
+				//is new player human? 
 				else{
-				//if yes flag unfinished, end
-					sus.setHasMoved(false);}
-		
-			
-			
-			
-			
-			
-			
-			
-			
-			
+				//if yes flag unfinished, display targets, end
+					board.repaint();
+					}
+
 		} else {
+			board.repaint();
 			JOptionPane.showMessageDialog(null,"Error: Your move is not over. Please move your player before continuing", 
 					"Turn Not Over", JOptionPane.PLAIN_MESSAGE);
-		}
-	
-			
-	
-		
-		
-		
-		
+		}	
 		
 		
 		}
