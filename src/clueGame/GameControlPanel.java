@@ -101,6 +101,8 @@ public class GameControlPanel extends JPanel{
 	class NextButtonListener implements ActionListener {
 		private ArrayList<Suspect> players;
 		Board board = Board.getInstance();
+		
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			players = board.getAllCharacters();
@@ -110,7 +112,7 @@ public class GameControlPanel extends JPanel{
 			if (board.getHuman().isHasMoved()) {
 				board.nextTurn();
 				Suspect sus = players.get(board.getTurnCount());
-
+				
 
 				//roll dice
 				int roll = board.rollDice();
