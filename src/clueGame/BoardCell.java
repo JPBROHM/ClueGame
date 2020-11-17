@@ -261,5 +261,13 @@ public class BoardCell  implements Comparable<BoardCell> {
 		
 	}
 
+	public void drawTarget(Graphics g, int row, int col, int rectWidth, int rectHeight) {
+		g.setColor(Color.YELLOW);
+		g.fillRect(col * width,row * height, width, height);
+		g.setColor(Color.BLACK);
+		g.drawRect(col * width,row * height, width, height);
+		
+	}
+
 
 }

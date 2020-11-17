@@ -4,6 +4,8 @@ package clueGame;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 
 import java.io.FileReader;
@@ -43,6 +45,37 @@ public class Board extends JPanel{
 	private ArrayList<Card> deck;
 	private Set<Card> deckSet;
 	private ArrayList<Card> roomCards;
+	private int turnCount;
+
+	
+	
+	public int rollDice() {
+		Random die = new Random();
+		return die.nextInt(6) + 1;
+	}
+	
+	
+	public int getTurnCount() {
+		return turnCount;
+	}
+
+
+
+
+	public void setTurnCount(int turnCount) {
+		this.turnCount = turnCount;
+	}
+	
+	public void nextTurn() {
+		turnCount++;
+		if (turnCount == 6) {
+			turnCount = 0;
+			human.setHasMoved(false);
+		}
+	}
+
+
+
 
 	/*
 	 * variable and methods used for singleton pattern
@@ -73,6 +106,7 @@ public class Board extends JPanel{
 		for (int i = 0; i < numColumns; i++) {
 			for (int j = 0; j < numRows; j++) {
 				grid[j][i].draw(g, j, i, rectWidth, rectHeight);
+				grid[j][i].drawTarget(g, j, i, rectWidth, rectHeight );
 			}
 		}
 		//iterate through the rooms, making the rooms display their names
@@ -81,6 +115,7 @@ public class Board extends JPanel{
 			roomDraw.drawRoom(g, rectWidth, rectHeight);
 		}
 		
+	
 		//iterate through the players, drawing a circle in their color for each player
 		for(Suspect sus : allCharacters) {
 			sus.draw(g, rectWidth, rectHeight);
@@ -99,6 +134,8 @@ public class Board extends JPanel{
 		deckSet = new HashSet<>();
 		solution = new Solution();
 		roomCards = new ArrayList<>();
+		turnCount = 0;
+		Random r = new Random();
 		int count = 0;
 		Color color = new Color(0,0,0);
 		try {
@@ -181,7 +218,7 @@ public class Board extends JPanel{
 				weaponCards.add(new Card(CardType.WEAPON, entry));
 			}
 			//this is where the solution gets created
-			Random r = new Random();
+			
 			int p = (r.nextInt(playerCards.size() - 1));
 			int w = (r.nextInt(weaponCards.size() - 1));
 			int ro = (r.nextInt(roomCards.size() - 1));
@@ -596,7 +633,14 @@ public class Board extends JPanel{
 		return room;
 	}
 	
-	
+	public Room getRoom(String name) {
+		for (Entry<Character, Room> room : rooms.entrySet()) {
+			if (room.getValue().getName().equals(name)) {
+				return room.getValue();
+			}
+		}
+		return null;
+	}
 	
 	public boolean roomExists(char c) {
 		return rooms.containsKey(c);
@@ -702,6 +746,9 @@ public class Board extends JPanel{
 	public void setHuman(Suspect human) {
 		this.human = human;
 	}
+	
+	
+
 
 
 }

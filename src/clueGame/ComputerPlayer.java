@@ -12,6 +12,7 @@ public class ComputerPlayer extends Suspect {
 	
 	
 
+	@Override
 	public void setTarget(ArrayList<Card> roomCards) {
 		if (roomsSeen.contains(target)) {
 			ArrayList<String> possibleTargets = new ArrayList<>();
@@ -32,12 +33,13 @@ public class ComputerPlayer extends Suspect {
 				int randoGen = (r.nextInt(possibleTargets.size()));
 				this.target = possibleTargets.get(randoGen);}
 		}
-
 		
 	}
 
 	public ComputerPlayer(String name, Color color, int row, int col) {
 		super(name, color, row, col);
+		target = "Kitchen";
+		
 	}
 
 	@Override
@@ -97,6 +99,7 @@ public class ComputerPlayer extends Suspect {
 	public Set<String> getPeopleCards() {
 		return peopleSeen;
 	}
+	@Override
 	public String getTarget() {
 		return target;
 		

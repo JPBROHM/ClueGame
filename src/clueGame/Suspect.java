@@ -16,9 +16,17 @@ public abstract class Suspect {
 	protected Set<String> roomsSeen;
 	protected Set<String> weaponsSeen;
 	protected Set<String> peopleSeen;
+	private boolean hasMoved = true;
+	public String target;
 	
 	
 	
+	public boolean isHasMoved() {
+		return hasMoved;
+	}
+	public void setHasMoved(boolean hasMoved) {
+		this.hasMoved = hasMoved;
+	}
 	public Suspect() {
 		super();
 		
@@ -126,4 +134,13 @@ public abstract class Suspect {
 		
 		
 	}
+	protected abstract String getTarget();
+	
+	public void setRow(int row) {
+		this.row = row;
+	}
+	public void setCol(int col) {
+		this.col = col;
+	}
+	protected abstract void setTarget(ArrayList<Card> playerHand2);
 	}

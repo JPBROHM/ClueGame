@@ -2,10 +2,15 @@ package clueGame;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
@@ -28,7 +33,6 @@ public class GameControlPanel extends JPanel{
 		
 		Color color = new Color(0,0,0);
     	color = Color.YELLOW;
-    	setTurn(new ComputerPlayer( "Col. Mustard", color, 0, 0), 5);
     	theGuess.setText("I have no guess!");
     	theGuessResult.setText( "So you have nothing?");
     	
@@ -56,6 +60,7 @@ public class GameControlPanel extends JPanel{
 		JLabel whosTurn = new JLabel("Who's turn?");
 		JButton accuseButton = new JButton("Make Accusation");
 		JButton nextButton = new JButton("NEXT!");
+		nextButton.addActionListener(new NextButtonListener());
 
 
 
@@ -89,6 +94,133 @@ public class GameControlPanel extends JPanel{
 		
 		
 	}
+	
+
+	
+	
+	class NextButtonListener implements ActionListener {
+		private ArrayList<Suspect> players;
+		Board board = Board.getInstance();
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("Worky worky worky");
+			players = board.getAllCharacters();
+			//check if human turn over (have they moved)
+			//if no --> error
+			//if yes --> update current player
+			if (board.getHuman().isHasMoved()) {
+				board.nextTurn();
+				Suspect sus = players.get(board.getTurnCount());
+
+
+				//roll dice
+				int roll = board.rollDice();
+				//set turn
+				setTurn(sus, roll);
+				board.repaint();
+
+				//calctargets
+				BoardCell cell = board.getCell(sus.getRow(), sus.getCol());
+
+				board.calcTargets(cell,roll);
+
+				Set<BoardCell> targets = board.getTargets();
+
+
+
+				//we have a target room--> we need to set the target cell to the closest door for that room
+
+			
+
+
+				//if they can get to the door they want (in die roll-1) -------> then go in that room center
+				if(sus instanceof ComputerPlayer) {
+					int min = 999;
+					boolean moveBool = false;
+					BoardCell cellToMoveTo = null;
+					ArrayList<Card> seenRooms = new ArrayList<>();
+					for (String name : sus.getRoomsSeen()) {
+						seenRooms.add(new Card(CardType.ROOM, name));
+					}
+					sus.setTarget(seenRooms);
+					BoardCell targetRoomCell = board.getCell(board.getRoom(sus.getTarget()).getCenterCell().getRow(),board.getRoom(sus.getTarget()).getCenterCell().getColumn());
+					for (BoardCell targetCell : targets) {
+						if (targetCell.isRoomCenter() && sus.getTarget().equals(board.getRoom(targetCell.getCellLabel().charAt(0)).getName())) {
+							sus.setRow(targetCell.getRow());
+							sus.setCol(targetCell.getColumn());
+							moveBool = true;
+							break;
+						}
+						else if (targetCell.isDoorway()) {
+							for (BoardCell roomCell : targetCell.getAdjList()) {
+								if (roomCell.isRoomCenter() && sus.getTarget().equals(board.getRoom(roomCell.getCellLabel().charAt(0)).getName())) {
+									sus.setRow(targetCell.getRow());
+									sus.setCol(targetCell.getColumn());
+									moveBool = true;
+									break;
+								}
+								break;
+							}
+						} else if (Math.abs(targetCell.getRow() + targetCell.getColumn() - targetRoomCell.getRow() - targetRoomCell.getColumn()) < min){
+							min = Math.abs(targetCell.getRow() + targetCell.getColumn() - targetRoomCell.getRow() - targetRoomCell.getColumn());
+							cellToMoveTo = targetCell;
+						}
+					}
+					if (!moveBool) {
+						sus.setRow(cellToMoveTo.getRow());
+						sus.setCol(cellToMoveTo.getColumn());
+					}
+
+
+					board.repaint();
+				}
+				
+
+			
+			//is new player human? 
+				else{
+				//if yes flag unfinished, end
+					sus.setHasMoved(false);}
+		
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		} else {
+			JOptionPane.showMessageDialog(null,"Error: Your move is not over. Please move your player before continuing", 
+					"Turn Not Over", JOptionPane.PLAIN_MESSAGE);
+		}
+	
+			
+	
+		
+		
+		
+		
+		
+		
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public GameControlPanel(int rows, int cols) {
 		theGuess = new JTextField();
 		theGuessResult = new JTextField();
