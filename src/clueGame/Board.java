@@ -415,9 +415,6 @@ public class Board extends JPanel{
 		}
 		for (int i = 0; i < numRows; i++ ) {
 			for (int j = 0; j < numColumns; j++) {
-				if (i == 5 && j == 0) {
-					System.out.println("butt");
-				}
 				calcAdjList(i, j);
 			}
 		}
@@ -532,9 +529,6 @@ public class Board extends JPanel{
 				//scan through to find inverse order of ^^, add to adj list.
 				String passSec = ""+secretPassage+first;
 				for(int i=0;i<numRows;i++) {
-					if (i == 23) {
-						System.out.println("Break");
-					}
 					for (int j=0; j<numColumns;j++) {
  						if (grid[i][j].getCellLabel().equals(passSec)) {
 							grid[row][column].addToAdjList(grid[i][j]);
@@ -782,47 +776,57 @@ public class Board extends JPanel{
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
+			//get instance of board and set size or rectangle
 			Board board = Board.getInstance();
 			Set<BoardCell> targets = board.getTargets();
+			//only tries to move if they have places they can move
 			if(targets.size()!=0) {
-			int rectWidth = board.getWidth() / (board.getNumColumns());
-			int rectHeight = board.getHeight() / (board.getNumRows());
-			if (turnCount == 0) {
-				int x = e.getX();
-				int y = e.getY();
-				
-				for (BoardCell cell : targets ) {
-					if ((x >= ((cell.getColumn()) * rectWidth)) && (x <= ((cell.getColumn() + 1) * rectWidth)) &&
-							(y >= ((cell.getRow()) * rectHeight)) && (y <= ((cell.getRow() + 1) * rectHeight))) {
-						
-						//move player
-						board.getCell(board.getHuman().getRow(), board.getHuman().getCol()).setOccupied(false);
-						board.getHuman().setRow(cell.getRow());
-						board.getHuman().setCol(cell.getColumn());
-						board.getCell(board.getHuman().getRow(), board.getHuman().getCol()).setOccupied(true);
-						//are they in a room? --> suggestion stuff for next time
-						board.getHuman().setHasMoved(true);
+				int rectWidth = board.getWidth() / (board.getNumColumns());
+				int rectHeight = board.getHeight() / (board.getNumRows());
 
-						
-						
+				if (turnCount == 0) {
+					//get pixel location of mouse click on the game board
+					int x = e.getX();
+					int y = e.getY();
+
+					for (BoardCell cell : targets ) {
+						if ((x >= ((cell.getColumn()) * rectWidth)) && (x <= ((cell.getColumn() + 1) * rectWidth)) &&
+								(y >= ((cell.getRow()) * rectHeight)) && (y <= ((cell.getRow() + 1) * rectHeight))) {
+
+							//move player
+							board.getCell(board.getHuman().getRow(), board.getHuman().getCol()).setOccupied(false);
+							board.getHuman().setRow(cell.getRow());
+							board.getHuman().setCol(cell.getColumn());
+							board.getCell(board.getHuman().getRow(), board.getHuman().getCol()).setOccupied(true);
+							//are they in a room? --> suggestion stuff to work on next time
+							//set have move to true
+							board.getHuman().setHasMoved(true);
+
+
+
+						}
+
 					}
-					
-				}
-				if (!getHuman().isHasMoved() && board.getEventCount()% 2 == 0) {
-					JOptionPane.showMessageDialog(null,"Error: You have selected an invalid tile. \n Please select one of the yellow spaces.", 
-							"Invalid Tile", JOptionPane.PLAIN_MESSAGE);
-					
-				}
-				board.addEventCount(1);
-				board.repaint();
-				
-				//set has moved to true
-			
-			}
-		}
-			else {board.getHuman().setHasMoved(true);}
-			}
+					//mod 2 because there was an issue with it printing twice 
+					if (!getHuman().isHasMoved() && board.getEventCount()% 2 == 0) {
+						JOptionPane.showMessageDialog(null,"Error: You have selected an invalid tile. \n Please select one of the yellow spaces.", 
+								"Invalid Tile", JOptionPane.PLAIN_MESSAGE);
 
+					}
+					board.addEventCount(1);
+					//show updated board (continues to show possible tile markings until next is pressed so person isn't locked into their first click)
+					board.repaint();
+
+
+
+				}
+			}
+			//if human player has no moves skips their turn via setting has moved to true
+			else {board.getHuman().setHasMoved(true);}
+		}
+		
+		
+		//unused mouse functions
 		@Override
 		public void mousePressed(MouseEvent e) {}
 

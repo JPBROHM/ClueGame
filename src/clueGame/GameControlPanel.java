@@ -143,13 +143,20 @@ public class GameControlPanel extends JPanel{
 					for (String name : sus.getRoomsSeen()) {
 						seenRooms.add(new Card(CardType.ROOM, name));
 					}
+					//handle moving the Computer players
 					sus.setTarget(seenRooms);
 					BoardCell targetRoomCell = board.getCell(board.getRoom(sus.getTarget()).getCenterCell().getRow(),board.getRoom(sus.getTarget()).getCenterCell().getColumn());
 					for (BoardCell targetCell : targets) {
 						if (count == 0) {
+							//set cell to move to as an actual cell so the player always has a valid place to move to, even if it isnt a good place to move to
 							cellToMoveTo = targetCell;
 						}
+						
+						//if the computer player can get into the room they are trying to go to, then enter that room
 						if (targetCell.isRoomCenter() && sus.getTarget().equals(board.getRoom(targetCell.getCellLabel().charAt(0)).getName())) {
+							
+							//all these move blocks are the same, set the current space to no longer be occupied, move then set the new space
+							//to be occupied
 							board.getCell(sus.getRow(), sus.getCol()).setOccupied(false);
 							sus.setRow(targetCell.getRow());
 							sus.setCol(targetCell.getColumn());
@@ -157,6 +164,8 @@ public class GameControlPanel extends JPanel{
 							moveBool = true;
 							break;
 						}
+						
+						//if the computer player can get to a door way of the room they want to go to, but not inside the room, go to the doorway space
 						else if (targetCell.isDoorway()) {
 							for (BoardCell roomCell : targetCell.getAdjList()) {
 								if (roomCell.isRoomCenter() && sus.getTarget().equals(board.getRoom(roomCell.getCellLabel().charAt(0)).getName())) {
@@ -169,11 +178,15 @@ public class GameControlPanel extends JPanel{
 								}
 								break;
 							}
+							
+							//if the space isnt a room or doorway, and its closer to the target room than the current closest pspace, then save that space 
+							//and it will be moved to if there are no oother bettter option
 						} else if (Math.abs(targetCell.getRow() + targetCell.getColumn() - targetRoomCell.getRow() - targetRoomCell.getColumn()) < min){
 							min = Math.abs(targetCell.getRow() + targetCell.getColumn() - targetRoomCell.getRow() - targetRoomCell.getColumn());
 							cellToMoveTo = targetCell;
 						}
 					}
+					//if the player wasnt able to get to the room or a doorway, go to the boardcell that is closest to the target room they want to go to
 					if (!moveBool) {
 						board.getCell(sus.getRow(), sus.getCol()).setOccupied(false);
 						sus.setRow(cellToMoveTo.getRow());
