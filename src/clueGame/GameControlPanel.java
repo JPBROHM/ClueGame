@@ -8,8 +8,12 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -61,6 +65,7 @@ public class GameControlPanel extends JPanel{
 		JButton accuseButton = new JButton("Make Accusation");
 		JButton nextButton = new JButton("NEXT!");
 		nextButton.addActionListener(new NextButtonListener());
+		accuseButton.addActionListener(new AccuseButtonListener());
 
 
 
@@ -87,7 +92,7 @@ public class GameControlPanel extends JPanel{
 		add(top);
 		add(bottom);
 
-
+		
 		setVisible(true);
 		
 		
@@ -97,10 +102,10 @@ public class GameControlPanel extends JPanel{
 	
 
 	
-	
 	class NextButtonListener implements ActionListener {
 		private ArrayList<Suspect> players;
 		Board board = Board.getInstance();
+		
 		
 		
 		@Override
@@ -264,7 +269,7 @@ public class GameControlPanel extends JPanel{
 	}
 	
 	
-	private void setTurn(Suspect computerPlayer, int roll) {
+	public void setTurn(Suspect computerPlayer, int roll) {
 		rollNumber.setText(Integer.toString(roll));
 		playerName.setText(computerPlayer.getName());
 		playerName.setBackground(computerPlayer.getColor());

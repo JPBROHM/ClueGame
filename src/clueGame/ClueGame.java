@@ -2,6 +2,8 @@ package clueGame;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.util.Random;
+import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -24,6 +26,17 @@ public class ClueGame extends JFrame {
         add(controlPanel, BorderLayout.SOUTH);
         GameKnownCardsPanel cardPanel = new GameKnownCardsPanel();
         add(cardPanel, BorderLayout.EAST);
+        Random r = new Random();
+        
+        //manually making the first turn work (since the next button normally triggers it)
+        int firstRoll = board.rollDice();
+        controlPanel.setTurn(board.getHuman(),firstRoll);
+        BoardCell cell = board.getCell(board.getHuman().getRow(), board.getHuman().getCol());
+
+		board.calcTargets(cell,firstRoll);
+
+		Set<BoardCell> targets = board.getTargets();
+		board.repaint();
 	}
 	
 	public static void main(String[] args) {
@@ -35,7 +48,11 @@ public class ClueGame extends JFrame {
 		
 		
 		
+		
+		
 		 ClueGame theBoard = new ClueGame();  // create the frame
+		 //used for testing to make sure correct accusation works
+		 board.setSolution( new Solution(new Card(CardType.PERSON, "Mrs. White"), new Card(CardType.ROOM, "Hall"), new Card(CardType.WEAPON, "Pistol")));
          theBoard.setVisible(true);
       
    

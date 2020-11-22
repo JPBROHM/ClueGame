@@ -16,7 +16,7 @@ public abstract class Suspect {
 	protected Set<String> roomsSeen;
 	protected Set<String> weaponsSeen;
 	protected Set<String> peopleSeen;
-	private boolean hasMoved = true;
+	private boolean hasMoved = false;
 	public String target;
 	
 	

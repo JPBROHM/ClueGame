@@ -2,6 +2,7 @@
 package clueGame;
 
 import java.awt.Color;
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -798,9 +799,16 @@ public class Board extends JPanel{
 							board.getHuman().setRow(cell.getRow());
 							board.getHuman().setCol(cell.getColumn());
 							board.getCell(board.getHuman().getRow(), board.getHuman().getCol()).setOccupied(true);
-							//are they in a room? --> suggestion stuff to work on next time
+														
+							
 							//set have move to true
 							board.getHuman().setHasMoved(true);
+							
+							//are they in a room? if yes --> suggestion stuff
+							if(board.getCell(board.getHuman().getRow(), board.getHuman().getCol()).isRoom()) {
+								//handle suggestion stuff
+							} 
+							else{}
 
 
 
