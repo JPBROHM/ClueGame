@@ -32,7 +32,7 @@ class BoardListener implements MouseListener {
 		handleCount = 0;
 		//get instance of board and set size or rectangle
 		targets = board.getTargets();
-		//only tries to move if they have places they can move
+		//only tries to move if they have places they can move and haven't already made a suggestion this turn
 		if(targets.size()!=0 && !board.isSuggestionMade()) {
 			int rectWidth = board.getWidth() / (board.getNumColumns());
 			int rectHeight = board.getHeight() / (board.getNumRows());
@@ -56,13 +56,13 @@ class BoardListener implements MouseListener {
 						//set have move to true
 						board.getHuman().setHasMoved(true);
 						
-						//are they in a room? if yes --> suggestion stuff
+						//are they in a room?
 						if(board.getCell(board.getHuman().getRow(), board.getHuman().getCol()).isRoom() && !board.isSuggestionMade()
 												&& board.getEventCount()% 2 == 0) {
 							
-							
+							//set room text field equal to the room they are currently in
 							roomName = new JTextField(board.getRoom(board.getCell(board.getHuman().getRow(), board.getHuman().getCol())).getName());
-							//handle suggestion stuff
+						
 							
 							//create panel to select suggestion cards
 							JFrame frame = new JFrame();  // create the frame
@@ -75,7 +75,7 @@ class BoardListener implements MouseListener {
 							
 					    	
 					    	//create the combo boxes and give the first option to be select whatever
-					    	//this forces the player to actually activate the listener for the combo boxes in case the accusation they wanted to make was already 
+					    	//this forces the player to actually activate the listener for the combo boxes in case the suggestion they wanted to make was already 
 					    	//the first option in one of the combo boxes
 							
 							weaponBox = new JComboBox();
@@ -87,6 +87,7 @@ class BoardListener implements MouseListener {
 							Set<Card> deck = board.getDeckSet();
 							
 							//iterate through the deck, adding each card to corresponding combo boxes
+							//only adding weapon and people cards as room card for a suggestion is locked to whatever room they are currently in
 							for (Card card : deck) {
 
 								if (card.getType() == CardType.WEAPON) {
@@ -96,6 +97,7 @@ class BoardListener implements MouseListener {
 									personBox.addItem(card.getName());
 								}
 							}
+							//add combo boxes and labels to the suggestion panel
 							suggestMenu.add(room);
 							suggestMenu.add(roomName);
 							suggestMenu.add(person);
@@ -106,7 +108,7 @@ class BoardListener implements MouseListener {
 							suggestMenu.add(cancelButton);
 							//create a listener to set the strings for each card the player selected
 							class ComboListener implements ActionListener{
-								//set the accusation strings based on what was selected 
+								//set the suggestion strings based on what was selected 
 								@Override
 								public void actionPerformed(ActionEvent e) {
 									
@@ -129,13 +131,17 @@ class BoardListener implements MouseListener {
 								//if submit is clicked
 								@Override
 								public void actionPerformed(ActionEvent e) {
-									//create accusation with the players choices
+									//create suggestion with the players choices
 									suggestion = new Solution(new Card(CardType.PERSON, personString), 
 											new Card(CardType.ROOM, board.getRoom(board.getCell(board.getHuman().getRow(), board.getHuman().getCol())).getName()), 
 											new Card(CardType.WEAPON, weaponString));
 
 									//check suggestion to see if it is correct
 									if (handleCount == 0) {
+										//handle count variable needed to be created because for some unknown reason this 
+										//section of code tries to run as many times as turns you had
+										//first suggestion runs handleSuggestion 1 time, 2nd time it runs twice, 3rd time 3 times so on and so forth
+										//handle count variable makes the handle suggestion only run once per suggestion
 										handleCount++;
 										Card disproveCard = board.handleSuggestion(suggestion, board.getHuman());
 										if (disproveCard != null) {
@@ -162,7 +168,7 @@ class BoardListener implements MouseListener {
 							//cancel button closes the accuse menu
 							class CancelButtonListener implements ActionListener{
 								//if cancel is clicked
-								//close accuse menu
+								//close suggestion menu
 								@Override
 								public void actionPerformed(ActionEvent e) {
 									frame.setVisible(false);

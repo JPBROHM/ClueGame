@@ -256,7 +256,12 @@ public class GameKnownCardsPanel extends JPanel{
 			int numWeaponsSeen = board.getHuman().getWeaponsSeen().size();
 			int numRoomsSeen = board.getHuman().getRoomsSeen().size();
 			
-			
+			//doing these switch cases depending on how many cards has been seen is clearly alot of code and definitly not the most ideal
+			//did this because it was the only way i could think of having a text field for every card from the start then updating those text field, as 
+			//otherwise we would have to completely remake the entire panel and re-add it to the clueGame instance, and i couldn't figure out how to do that
+			//for now this gets the job done and works, although if time allows for it after getting the game fully functional and do work that needs to be 
+			//done for other classes
+			//this method is going to be kept in mind for next major refactoring session we do
 			
 			if (numPeopleSeen != peopleCardsSeen) {
 				int nameCount = 0;
