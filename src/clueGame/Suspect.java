@@ -106,6 +106,22 @@ public abstract class Suspect {
 		else {return null;}
 
 	}
+	
+	
+	
+	public void updateSeen(Card card) {
+		if (card.getType().equals(CardType.PERSON)) {
+			peopleSeen.add(card.getName());
+		}
+		if (card.getType().equals(CardType.WEAPON)) {
+			weaponsSeen.add(card.getName());
+		}
+		if (card.getType().equals(CardType.ROOM)) {
+			roomsSeen.add(card.getName());
+		}
+	}
+	
+	
 	public Set<String> getRoomsSeen() {
 		return roomsSeen;
 	}

@@ -34,6 +34,10 @@ class AccuseButtonListener implements ActionListener{
 			JOptionPane.showMessageDialog(null,"Error: It is not your turn. Wait until your turn to make an accusation", 
 					"Accusation Error", JOptionPane.PLAIN_MESSAGE);
 		}
+		if (board.isSuggestionMade()) {
+			JOptionPane.showMessageDialog(null,"Error: You made a suggestion this turn, wait until the beggining of your next turn to make an accusation", 
+					"Accusation Error", JOptionPane.PLAIN_MESSAGE);
+		}
 
 		//if yes --> do following
 		else {
@@ -42,7 +46,8 @@ class AccuseButtonListener implements ActionListener{
 			JFrame frame = new JFrame();  // create the frame
 			GameControlPanel accuseMenu = new GameControlPanel(4,2);
 	    	frame.setContentPane(accuseMenu); // put the panel in the frame
-	    	frame.setSize(250, 300);  // size the frame
+	    	frame.setTitle("Make an Accusation");
+	    	frame.setSize(250, 150);  // size the frame
 	    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // allow it to close
 	    	frame.setVisible(true);
 			

@@ -1,6 +1,7 @@
 
 package clueGame;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 
 import java.awt.Font;
@@ -21,8 +22,12 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import clueGame.GameControlPanel.NextButtonListener;
 import experiment.TestBoardCell;
@@ -52,9 +57,22 @@ public class Board extends JPanel{
 	private ArrayList<Card> roomCards;
 	private int turnCount;
 	private int eventCount;
+	private boolean suggestionMade = false;
+	private JFrame frame = new JFrame();
+	private int cardDisplayCount = 0;
 
 	
 	
+	public boolean isSuggestionMade() {
+		return suggestionMade;
+	}
+
+
+	public void setSuggestionMade(boolean suggestionMade) {
+		this.suggestionMade = suggestionMade;
+	}
+
+
 	public int getEventCount() {
 		return eventCount;
 	}
@@ -146,6 +164,8 @@ public class Board extends JPanel{
 	 * initialize the board (since we are using singleton pattern)
 	 */
 	public void initialize(){
+		
+		
 		addMouseListener(new BoardListener());
 		legalTargets = new HashSet<>();
 		rooms = new HashMap<Character, Room>();
@@ -263,8 +283,8 @@ public class Board extends JPanel{
 			}
 			//remove the cards that were used for the solution
 			deck.remove(p);
-			deck.remove(p+w);
-			deck.remove(p+w+ro);
+			deck.remove(playerCards.size()+w - 1);
+			deck.remove(playerCards.size()+weaponCards.size()+ro - 2);
 			int num = 0;
 			while(!deck.isEmpty()) {
 				for (Suspect sus : computers) {
@@ -291,11 +311,12 @@ public class Board extends JPanel{
 			
 		}
 		
+		
+		
+		
+		
 	}
 		
-	
-
-	
 
 
 	
@@ -624,6 +645,8 @@ public class Board extends JPanel{
 
 
 	public Card handleSuggestion(Solution suggestion, Suspect player) {
+		cardDisplayCount = 0;
+		Card card = null;
 		//iterate through all players, seeing if any can disprove the suggestion, is they can return whatever card they 
 		//use to disprove the suggestion
 		for (Suspect playeri : allCharacters) {
@@ -631,15 +654,26 @@ public class Board extends JPanel{
 				if (playeri.disproveSuggestion(suggestion) == null) {
 					continue;
 				} else {
-					return playeri.disproveSuggestion(suggestion);
+					card = playeri.disproveSuggestion(suggestion);
+					player.updateSeen(card);
+					if(cardDisplayCount == 0) {
+					JOptionPane.showMessageDialog(null,"Your suggestion was disproved with the card: " + card.getName(), 
+							"Disproved", JOptionPane.PLAIN_MESSAGE);
+					}
+					cardDisplayCount++;
+					break;	
 				}
 			}
 		}
-		return null;
+		if (card == null) {
+			JOptionPane.showMessageDialog(null,"No one was able to disprove your suggestion.", 
+					"Not Disproved", JOptionPane.PLAIN_MESSAGE);
+		}
+		return card;
 	}
-	
-	
-	
+
+
+
 	public Set<BoardCell> getTargets() {
 
 		return legalTargets;
@@ -772,82 +806,7 @@ public class Board extends JPanel{
 	}
 	
 
-	class BoardListener implements MouseListener {
-		
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			//get instance of board and set size or rectangle
-			Board board = Board.getInstance();
-			Set<BoardCell> targets = board.getTargets();
-			//only tries to move if they have places they can move
-			if(targets.size()!=0) {
-				int rectWidth = board.getWidth() / (board.getNumColumns());
-				int rectHeight = board.getHeight() / (board.getNumRows());
-
-				if (turnCount == 0) {
-					//get pixel location of mouse click on the game board
-					int x = e.getX();
-					int y = e.getY();
-
-					for (BoardCell cell : targets ) {
-						if ((x >= ((cell.getColumn()) * rectWidth)) && (x <= ((cell.getColumn() + 1) * rectWidth)) &&
-								(y >= ((cell.getRow()) * rectHeight)) && (y <= ((cell.getRow() + 1) * rectHeight))) {
-
-							//move player
-							board.getCell(board.getHuman().getRow(), board.getHuman().getCol()).setOccupied(false);
-							board.getHuman().setRow(cell.getRow());
-							board.getHuman().setCol(cell.getColumn());
-							board.getCell(board.getHuman().getRow(), board.getHuman().getCol()).setOccupied(true);
-														
-							
-							//set have move to true
-							board.getHuman().setHasMoved(true);
-							
-							//are they in a room? if yes --> suggestion stuff
-							if(board.getCell(board.getHuman().getRow(), board.getHuman().getCol()).isRoom()) {
-								//handle suggestion stuff
-							} 
-							else{}
-
-
-
-						}
-
-					}
-					//mod 2 because there was an issue with it printing twice 
-					if (!getHuman().isHasMoved() && board.getEventCount()% 2 == 0) {
-						JOptionPane.showMessageDialog(null,"Error: You have selected an invalid tile. \n Please select one of the yellow spaces.", 
-								"Invalid Tile", JOptionPane.PLAIN_MESSAGE);
-
-					}
-					board.addEventCount(1);
-					//show updated board (continues to show possible tile markings until next is pressed so person isn't locked into their first click)
-					board.repaint();
-
-
-
-				}
-			}
-			//if human player has no moves skips their turn via setting has moved to true
-			else {board.getHuman().setHasMoved(true);}
-		}
-		
-		
-		//unused mouse functions
-		@Override
-		public void mousePressed(MouseEvent e) {}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {}
-
-		@Override
-		public void mouseExited(MouseEvent e) {}
-		
-	}
+	
 
 
 

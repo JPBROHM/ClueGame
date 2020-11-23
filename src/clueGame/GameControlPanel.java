@@ -110,6 +110,7 @@ public class GameControlPanel extends JPanel{
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			board.setSuggestionMade(false);
 			players = board.getAllCharacters();
 			//check if human turn over (have they moved)
 			//if no --> error
