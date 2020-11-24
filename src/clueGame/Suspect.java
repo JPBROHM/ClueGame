@@ -10,7 +10,7 @@ import java.util.Set;
 
 public abstract class Suspect {
 	private int offset;
-	private String name;
+	protected String name;
 	private Color color;
 	protected int row;
 	protected int col;
@@ -214,4 +214,6 @@ public abstract class Suspect {
 		this.col = col;
 	}
 	protected abstract void setTarget(ArrayList<Card> playerHand2);
+	
+	protected abstract void makeAccusation(Set<Card> deck);
 	}

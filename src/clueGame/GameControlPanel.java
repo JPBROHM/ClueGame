@@ -21,6 +21,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 public class GameControlPanel extends JPanel{
+	Board board = Board.getInstance();
 
 	private JTextField theGuess;
 	private JTextField theGuessResult;
@@ -111,6 +112,7 @@ public class GameControlPanel extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			board.setSuggestionMade(false);
+			board.setPlayerTurnStart(true);
 			players = board.getAllCharacters();
 			//check if human turn over (have they moved)
 			//if no --> error
@@ -143,12 +145,13 @@ public class GameControlPanel extends JPanel{
 
 				//if they can get to the door they want (in die roll-1) -------> then go in that room center
 				if(sus instanceof ComputerPlayer) {
+					board.setPlayerTurnStart(false);
 					int min = 999;
 					boolean moveBool = false;
 					BoardCell cellToMoveTo = new BoardCell();
 					int count = 0;
 					//make accusation if roomCards(seen+hand)==roomCards-1 && same for people and weapons 
-					
+					sus.makeAccusation(board.getDeckSet());
 					
 					BoardCell targetRoomCell = board.getCell(board.getRoom(sus.getTarget()).getCenterCell().getRow(),board.getRoom(sus.getTarget()).getCenterCell().getColumn());
 					for (BoardCell targetCell : targets) {
@@ -168,6 +171,7 @@ public class GameControlPanel extends JPanel{
 							board.getCell(sus.getRow(), sus.getCol()).setOccupied(true);
 							moveBool = true;
 							Solution compPlayerSuggestion = sus.createSuggestion(board.getDeckSet(), board);
+							board.setSuggestionMade(true);
 							board.handleSuggestion(compPlayerSuggestion, sus);
 							//handle moving the Computer players
 							sus.setTarget(board.getRoomCards());
@@ -201,31 +205,57 @@ public class GameControlPanel extends JPanel{
 						sus.setRow(cellToMoveTo.getRow());
 						sus.setCol(cellToMoveTo.getColumn());
 						board.getCell(sus.getRow(), sus.getCol()).setOccupied(true);
-						
-						
+
+
 					}
 
-
+					if(board.isSuggestionMade()) {
+						theGuess.setText(board.getCurrSuggest().getPerson().getName() + " with the " +
+								board.getCurrSuggest().getWeapon().getName() + " in the " + board.getCurrSuggest().getRoom().getName());
+						if(board.isDisproved()) {
+							theGuessResult.setText("Disproved");
+						}
+						else {
+							theGuessResult.setText("Suggestion was not disproved");
+						}
+					} else {
+						theGuess.setText("No Suggestion Made");
+						theGuessResult.setText("No Result");
+					}
+					
 					board.repaint();
 				}	
 				//is new player human? 
 				else{
 				//if yes flag unfinished, display targets, end
 					board.repaint();
-					}
+				}
 
-		} else {
-			board.repaint();
-			JOptionPane.showMessageDialog(null,"Error: Your move is not over. Please move your player before continuing", 
-					"Turn Not Over", JOptionPane.PLAIN_MESSAGE);
-		}	
-		
-		
+			} else {
+				board.repaint();
+				JOptionPane.showMessageDialog(null,"Error: Your move is not over. Please move your player before continuing", 
+						"Turn Not Over", JOptionPane.PLAIN_MESSAGE);
+			}	
+			if(board.isSuggestionMade()) {
+				theGuess.setText(board.getCurrSuggest().getPerson().getName() + " with the " +
+						board.getCurrSuggest().getWeapon().getName() + " in the " + board.getCurrSuggest().getRoom().getName());
+				if(board.isDisproved()) {
+					theGuessResult.setText("Disproved");
+				}
+				else {
+					theGuessResult.setText("Suggestion was not disproved");
+				}
+			} else {
+				theGuess.setText("No Suggestion Made");
+				theGuessResult.setText("No Result");
+			}
+
+			
 		}
-		
+
 	}
-	
-	
+
+
 	
 	
 	
@@ -307,6 +337,11 @@ public class GameControlPanel extends JPanel{
 
 
  }
+
+	public void update() {
+		// TODO Auto-generated method stub
+		
+	}
 
 	
 

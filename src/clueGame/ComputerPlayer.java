@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import org.junit.jupiter.api.BeforeAll;
 
 public class ComputerPlayer extends Suspect {
@@ -14,9 +16,7 @@ public class ComputerPlayer extends Suspect {
 
 	@Override
 	public void setTarget(ArrayList<Card> roomCards) {
-		if (roomsSeen.isEmpty()) {
-			return;
-		}
+		
 		if (board.getRoom(board.getCell(row, col)).getName().equals(target)) {
 			ArrayList<String> possibleTargets = new ArrayList<>();
 			boolean wasRoomSeen = false;
@@ -78,6 +78,43 @@ public class ComputerPlayer extends Suspect {
 	
 	public void HARDSETTEST(String target) {
 		this.target = target;
+	}
+
+	@Override
+	protected void makeAccusation(Set<Card> deck) {
+		boolean roomAccuse = false;
+		boolean personAccuse = false;
+		boolean weaponAccuse = false;
+		String room = "";
+		String weapon = "";
+		String person = "";
+		if ((roomsSeen.size() + weaponsSeen.size() + peopleSeen.size()) == deck.size() - 3) {
+			for(Card card : deck) {
+				if (!roomsSeen.contains(card.getName()) && card.getType() == CardType.ROOM) {
+					room = card.getName();
+					roomAccuse = true;
+					continue;
+				}
+				if (!peopleSeen.contains(card.getName()) && card.getType() == CardType.PERSON) {
+					person = card.getName();
+					personAccuse = true;
+					continue;
+				}
+				if (!weaponsSeen.contains(card.getName()) && card.getType() == CardType.WEAPON) {
+					weapon = card.getName();
+					weaponAccuse = true;
+					continue;
+				}
+			}
+		}
+		if(roomAccuse && personAccuse && weaponAccuse) {
+			//display the lose message
+			JOptionPane.showMessageDialog(null, name + " wins with an accusation of " + person + " in the " + room + " with the " + weapon, 
+					"You lose", JOptionPane.PLAIN_MESSAGE);
+			//close the game
+			System.exit(0);
+		}
+		
 	}
 
 

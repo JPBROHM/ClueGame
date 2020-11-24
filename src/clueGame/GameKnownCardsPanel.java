@@ -24,7 +24,7 @@ public class GameKnownCardsPanel extends JPanel{
 	JTextField personCard3 = new JTextField("Not Seen            ");
 	JTextField personCard4 = new JTextField("Not Seen            ");
 	JTextField personCard5 = new JTextField("Not Seen            ");
-	JTextField personCard6 = new JTextField("Not Seen            ");
+	
 
 	int weaponCardsSeen = 0;
 	JTextField weaponCard1 = new JTextField("Not Seen            ");	
@@ -39,6 +39,7 @@ public class GameKnownCardsPanel extends JPanel{
 	JTextField roomCard3 = new JTextField("Not Seen            ");
 	JTextField roomCard4 = new JTextField("Not Seen            ");
 	JTextField roomCard5 = new JTextField("Not Seen            ");
+	JTextField roomCard6 = new JTextField("Not Seen            ");
 	
 	
 	
@@ -74,7 +75,7 @@ public class GameKnownCardsPanel extends JPanel{
 		
 		//setting things to the right size dependant on if they have/dont have cards in hand/seen
 		
-		peoplePanel.setLayout(new GridLayout(9, 0));
+		peoplePanel.setLayout(new GridLayout(8, 0));
 		
 		
 		JLabel hand = new JLabel("In Hand:");
@@ -116,9 +117,7 @@ public class GameKnownCardsPanel extends JPanel{
         	case 4: 
         		peoplePanel.add(personCard5);
         		break;   
-        	case 5:
-        		peoplePanel.add(personCard6);
-        		break;
+        	
         	}
 		}
         
@@ -188,7 +187,7 @@ public class GameKnownCardsPanel extends JPanel{
 
 	
 	public GameKnownCardsPanel setRooms(Suspect player) {
-		int count = 5;
+		int count = 6;
 		//get hand
 		GameKnownCardsPanel roomPanel = new GameKnownCardsPanel(1,0);
 		roomPanel.setBorder(new TitledBorder (new EtchedBorder(), "Room"));
@@ -201,7 +200,7 @@ public class GameKnownCardsPanel extends JPanel{
 		
 		//setting things to the right size dependant on if they have/dont have cards in hand/seen
 		
-		roomPanel.setLayout(new GridLayout(8, 0));
+		roomPanel.setLayout(new GridLayout(9, 0));
 		
 		
 		JLabel hand = new JLabel("In Hand:");
@@ -241,7 +240,10 @@ public class GameKnownCardsPanel extends JPanel{
         		break;
         	case 4: 
         		roomPanel.add(roomCard5);
-        		break;        	       	        	
+        		break;  
+        	case 5:
+        		roomPanel.add(roomCard6);
+        		break;
         	}
 		}
         
@@ -251,7 +253,7 @@ public class GameKnownCardsPanel extends JPanel{
 	
 
 
-		public void update() {
+		public  void update() {
 			int numPeopleSeen = board.getHuman().getPeopleSeen().size();
 			int numWeaponsSeen = board.getHuman().getWeaponsSeen().size();
 			int numRoomsSeen = board.getHuman().getRoomsSeen().size();
@@ -340,33 +342,6 @@ public class GameKnownCardsPanel extends JPanel{
 						}
 						if (nameCount == 4) {
 							personCard5.setText(name);
-						}
-						nameCount++;
-					}
-				case 6:
-					nameCount = 0;
-					for (String name : board.getHuman().getPeopleSeen()) {
-						if (nameCount == 0) {
-							personCard1.setText(name);
-						
-						}
-						if (nameCount == 1) {
-							personCard2.setText(name);
-							
-						}
-						if (nameCount == 2) {
-							personCard3.setText(name);
-							
-						}
-						if (nameCount == 3) {
-							personCard4.setText(name);
-						
-						}
-						if (nameCount == 4) {
-							personCard5.setText(name);
-						}
-						if (nameCount == 5) {
-							personCard6.setText(name);
 						}
 						nameCount++;
 					}
@@ -546,6 +521,33 @@ public class GameKnownCardsPanel extends JPanel{
 						}
 						if (nameCount == 4) {
 							roomCard5.setText(name);
+						}
+						nameCount++;
+					}
+				case 6:
+					nameCount = 0;
+					for (String name : board.getHuman().getRoomsSeen()) {
+						if (nameCount == 0) {
+							roomCard1.setText(name);
+							
+						}
+						if (nameCount == 1) {
+							roomCard2.setText(name);
+							
+						}
+						if (nameCount == 2) {
+							roomCard3.setText(name);
+							
+						}
+						if (nameCount == 3) {
+							roomCard4.setText(name);
+							
+						}
+						if (nameCount == 4) {
+							roomCard5.setText(name);
+						}
+						if (nameCount == 5) {
+							roomCard6.setText(name);
 						}
 						nameCount++;
 					}

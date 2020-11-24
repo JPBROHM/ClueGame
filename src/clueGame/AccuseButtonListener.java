@@ -33,10 +33,12 @@ class AccuseButtonListener implements ActionListener{
 		if(sus instanceof ComputerPlayer) {
 			JOptionPane.showMessageDialog(null,"Error: It is not your turn. Wait until your turn to make an accusation", 
 					"Accusation Error", JOptionPane.PLAIN_MESSAGE);
+			return;
 		}
 		if (board.isSuggestionMade()) {
 			JOptionPane.showMessageDialog(null,"Error: You made a suggestion this turn, wait until the beggining of your next turn to make an accusation", 
 					"Accusation Error", JOptionPane.PLAIN_MESSAGE);
+			return;
 		}
 
 		//if yes --> do following

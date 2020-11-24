@@ -2,6 +2,7 @@ package clueGame;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Set;
 
 public class HumanPlayer extends Suspect {
 	
@@ -28,6 +29,13 @@ public class HumanPlayer extends Suspect {
 	@Override
 	protected void setTarget(ArrayList<Card> playerHand2) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void makeAccusation(Set<Card> deck) {
+		//literally do nothing
+		return;
 		
 	}
 

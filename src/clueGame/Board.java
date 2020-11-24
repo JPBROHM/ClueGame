@@ -35,7 +35,8 @@ import experiment.TestBoardCell;
 
 public class Board extends JPanel{
 	
-
+	private boolean playerTurnStart;
+	private boolean disproved;
 	private int numRows;
 	private int numColumns;
 	private int rectWidth;
@@ -60,9 +61,25 @@ public class Board extends JPanel{
 	private boolean suggestionMade = false;
 	private JFrame frame = new JFrame();
 	private int cardDisplayCount = 0;
+	private Solution currSuggest;
 
 	
 	
+	public boolean isDisproved() {
+		return disproved;
+	}
+
+
+	public boolean isPlayerTurnStart() {
+		return playerTurnStart;
+	}
+
+
+	public void setPlayerTurnStart(boolean turnStart) {
+		this.playerTurnStart = turnStart;
+	}
+
+
 	public boolean isSuggestionMade() {
 		return suggestionMade;
 	}
@@ -298,10 +315,12 @@ public class Board extends JPanel{
 					if(deck.size()>1) {
 						num = r.nextInt(deck.size() - 1);
 						sus.updateHand(deck.get(num));
+						sus.updateSeen(deck.get(num));
 						deck.remove(num);
 					}
 					else if(deck.size()==1) {
 						sus.updateHand(deck.get(0));
+						sus.updateSeen(deck.get(0));
 						deck.remove(0);
 						}
 				}
@@ -652,10 +671,9 @@ public class Board extends JPanel{
 
 
 	public Card handleSuggestion(Solution suggestion, Suspect player) {
-		System.out.println(player.getName());
-		System.out.println(suggestion.getPerson().getName() + " ");
-		System.out.println(suggestion.getWeapon().getName() + " ");
-		System.out.println(suggestion.getRoom().getName() + " ");
+		currSuggest = suggestion;
+		suggestionMade = true;
+		
 		for (int i = 0; i < allCharacters.size(); i++) {
 			if (allCharacters.get(i).getName().equals(suggestion.getPerson().getName())) {
 				getCell(allCharacters.get(i).getRow(), allCharacters.get(i).getCol()).setOccupied(false);
@@ -674,22 +692,31 @@ public class Board extends JPanel{
 				} else {
 					card = playeri.disproveSuggestion(suggestion);
 					player.updateSeen(card);
-					if(cardDisplayCount == 0) {
+					if(cardDisplayCount == 0 && (player instanceof HumanPlayer)) {
 					JOptionPane.showMessageDialog(null,"Your suggestion was disproved with the card: " + card.getName(), 
 							"Disproved", JOptionPane.PLAIN_MESSAGE);
 					}
+					disproved = true;
 					cardDisplayCount++;
 					break;	
 				}
 			}
 		}
-		if (card == null) {
+		if (card == null && (player instanceof HumanPlayer)) {
 			JOptionPane.showMessageDialog(null,"No one was able to disprove your suggestion.", 
 					"Not Disproved", JOptionPane.PLAIN_MESSAGE);
+		}
+		if (card == null) {
+			disproved = false;
 		}
 		return card;
 	}
 
+
+
+	public Solution getCurrSuggest() {
+		return currSuggest;
+	}
 
 
 	public Set<BoardCell> getTargets() {
