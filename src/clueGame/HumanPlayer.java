@@ -9,8 +9,8 @@ public class HumanPlayer extends Suspect {
 		super();
 	}
 
-	public HumanPlayer(String name, Color color, int row, int col) {
-		super(name, color, row, col);
+	public HumanPlayer(String name, Color color, int row, int col, int offset) {
+		super(name, color, row, col, offset);
 	}
 
 	@Override
@@ -18,7 +18,7 @@ public class HumanPlayer extends Suspect {
 		playerHand.add(card);
 		
 	}
-
+	
 	@Override
 	protected String getTarget() {
 		// TODO Auto-generated method stub

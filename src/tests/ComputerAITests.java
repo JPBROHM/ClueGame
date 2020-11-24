@@ -46,7 +46,7 @@ class ComputerAITests {
 		
 		//give location(Murder Room) && target Murder Room
 		Color color = new Color(255,0,0);
-		ComputerPlayer player = new ComputerPlayer("Player", color, 2, 2);
+		ComputerPlayer player = new ComputerPlayer("Player", color, 2, 2, 0);
 	
 		
 		player.HARDSETTEST("Murder Room");
@@ -94,7 +94,7 @@ class ComputerAITests {
 	void testCreateSuggestion() {
 		//Cehck to see that a suggestion has one of each type of card
 		Color color = new Color(255,0,0);
-		ComputerPlayer player = new ComputerPlayer("Player", color, 12, 20);
+		ComputerPlayer player = new ComputerPlayer("Player", color, 12, 20,0);
 		Solution suggestion =  player.createSuggestion(board.getDeckSet(), board);
 		Assert.assertEquals(CardType.PERSON, suggestion.getPerson().getType());
 		Assert.assertEquals(CardType.WEAPON, suggestion.getWeapon().getType());

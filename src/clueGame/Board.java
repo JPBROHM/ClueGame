@@ -190,6 +190,7 @@ public class Board extends JPanel{
 		
 		if(!players.isEmpty()) {
 			for (Map.Entry<String, String> entry : players.entrySet()) {
+				int offset = 0;
 				//each player has a corresponding color, it was easiest to then give each color a corresponding starting location
 				//then use that to set the starting location of the player
 				int row = 0;
@@ -198,39 +199,45 @@ public class Board extends JPanel{
 					color = Color.BLUE;
 					row = 0;
 					col = 7;
+					offset = 3;
 				}
 				if (entry.getValue().equals("Green")) {
 					color = Color.GREEN;
 					row = 6;
 					col = 0;
+					offset = 2;
 				}
 				if (entry.getValue().equals("Purple")) {
 					color = Color.MAGENTA;
 					row = 18;
 					col = 0;
+					offset = 0;
 				}
 				if (entry.getValue().equals("Red")) {
 					color = Color.RED;
 					row = 24;
 					col = 7;
+					offset = 4;
 				}
 				if (entry.getValue().equals("White")) {
 					color = Color.WHITE;
 					row = 17;
 					col = 23;
+					offset = 6;
 				}
 				if (entry.getValue().equals("Yellow")) {
 					color = Color.YELLOW;
 					row = 0;
 					col = 18;
+					offset = 5;
 				}
 				if (count == 0) {
-					human = new HumanPlayer(entry.getKey(), color, row, col);
+					human = new HumanPlayer(entry.getKey(), color, row, col, offset);
 					allCharacters.add(human);
 					count++;
 				}
 				else {
-					Suspect computer = new ComputerPlayer(entry.getKey(), color, row, col);
+					Suspect computer = new ComputerPlayer(entry.getKey(), color, row, col, offset);
 					computers.add(computer);
 					allCharacters.add(computer);
 				}
@@ -643,24 +650,19 @@ public class Board extends JPanel{
 
 
 
-	/******************************************************************************************************
-	 * ****************************************************************************************************
-	 * ****************************************************************************************************
-	 * ****************************************************************************************************
-	 * 
-	 * 
-	 * 
-	 * HANDLE SUGGESTION STILL NEEDS TO MOVE THE ACCUSED PLAYER TO THE ROOM THEY ARE BEING ACCUSED FROM
-	 * 
-	 * 
-	 * 
-	 * ****************************************************************************************************
-	 * ****************************************************************************************************
-	 * ****************************************************************************************************
-	 * ****************************************************************************************************
-	 */
 
 	public Card handleSuggestion(Solution suggestion, Suspect player) {
+		System.out.println(player.getName());
+		System.out.println(suggestion.getPerson().getName() + " ");
+		System.out.println(suggestion.getWeapon().getName() + " ");
+		System.out.println(suggestion.getRoom().getName() + " ");
+		for (int i = 0; i < allCharacters.size(); i++) {
+			if (allCharacters.get(i).getName().equals(suggestion.getPerson().getName())) {
+				getCell(allCharacters.get(i).getRow(), allCharacters.get(i).getCol()).setOccupied(false);
+				allCharacters.get(i).setRow(player.getRow());
+				allCharacters.get(i).setCol(player.getCol());
+			}
+		}
 		cardDisplayCount = 0;
 		Card card = null;
 		//iterate through all players, seeing if any can disprove the suggestion, is they can return whatever card they 

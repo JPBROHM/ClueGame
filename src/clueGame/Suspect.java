@@ -9,16 +9,18 @@ import java.util.Set;
 
 
 public abstract class Suspect {
+	private int offset;
 	private String name;
 	private Color color;
-	private int row,col;
+	protected int row;
+	protected int col;
 	protected ArrayList<Card> playerHand;
 	protected Set<String> roomsSeen;
 	protected Set<String> weaponsSeen;
 	protected Set<String> peopleSeen;
 	private boolean hasMoved = false;
 	public String target;
-	
+	Board board = Board.getInstance();
 	
 	
 	public boolean isHasMoved() {
@@ -31,12 +33,13 @@ public abstract class Suspect {
 		super();
 		
 	}
-	public Suspect(String name, Color color, int row, int col) {
+	public Suspect(String name, Color color, int row, int col, int offset) {
 		super();
 		this.name = name;
 		this.color = color;
 		this.row = row;
 		this.col = col;
+		this.offset = offset;
 		this.playerHand = new ArrayList<>();
 		roomsSeen = new HashSet<>();
 		peopleSeen = new HashSet<>();
@@ -121,6 +124,49 @@ public abstract class Suspect {
 		}
 	}
 	
+	public void addSeenRoom(String name) {
+		roomsSeen.add(name);
+	}
+	
+	public Solution createSuggestion(Set<Card> deck, Board board) {
+		Card w = new Card();
+		Card p = new Card();
+		Card r = new Card();
+		ArrayList<String> NOTseenWeapons = new ArrayList<>();
+		ArrayList<String> NOTseenPeople = new ArrayList<>();
+		//iterate through all cards in the deck, if the card has not been seen by that player add it to a list
+		for (Card card : deck) {
+			if (card.getType() == CardType.WEAPON && !weaponsSeen.contains(card.getName())) {
+				NOTseenWeapons.add(card.getName());
+			}
+			if (card.getType() == CardType.PERSON && !peopleSeen.contains(card.getName())) {
+				NOTseenPeople.add(card.getName());
+			}
+		}	
+		
+		//randomly select a player and a weapon that has not been seen
+		Random rand = new Random();
+		if (NOTseenPeople.size() > 1) {
+			int Prand = rand.nextInt(NOTseenPeople.size());
+			p = new Card(CardType.PERSON, NOTseenPeople.get(Prand));
+		} else {
+			p = new Card(CardType.PERSON, NOTseenPeople.get(0));
+		}
+		if (NOTseenWeapons.size() > 1) {
+			int Wrand = rand.nextInt(NOTseenWeapons.size());
+			w = new Card(CardType.WEAPON, NOTseenWeapons.get(Wrand));
+		} else {
+			w = new Card(CardType.WEAPON, NOTseenWeapons.get(0));
+		}
+		//get corresponding room of the location of the player
+		int row = getRow();
+		int col = getCol();
+		String name = board.getRoom(board.getCell(row, col).getCellLabel().charAt(0)).getName();
+		r = new Card(CardType.ROOM, name);
+		
+		//return a solution object to be the suggestion, containing the randomly chosen weapon and person and the room the player is currently in
+		return new Solution(p,r,w);
+	}
 	
 	public Set<String> getRoomsSeen() {
 		return roomsSeen;
@@ -143,15 +189,24 @@ public abstract class Suspect {
 		this.peopleSeen = peopleSeen;
 	}
 	public void draw(Graphics g, int rectWidth, int rectHeight) {
-		g.setColor(this.color);
-		g.fillOval(col * rectWidth, row * rectHeight, rectWidth, rectHeight);
-		g.setColor(Color.BLACK);
-		g.drawOval(col * rectWidth, row * rectHeight, rectWidth, rectHeight);
-		
-		
+		int mainOffset = (rectWidth/6) * offset;
+		if (board.getCell(row, col).isRoomCenter()) {
+			g.setColor(this.color);
+			g.fillOval(col * rectWidth + mainOffset, row * rectHeight, rectWidth, rectHeight);
+			g.setColor(Color.BLACK);
+			g.drawOval(col * rectWidth + mainOffset, row * rectHeight, rectWidth, rectHeight);
+		}
+		else {
+			g.setColor(this.color);
+			g.fillOval(col * rectWidth, row * rectHeight, rectWidth, rectHeight);
+			g.setColor(Color.BLACK);
+			g.drawOval(col * rectWidth, row * rectHeight, rectWidth, rectHeight);
+		}
+
+
 	}
 	protected abstract String getTarget();
-	
+
 	public void setRow(int row) {
 		this.row = row;
 	}

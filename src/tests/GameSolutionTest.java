@@ -61,11 +61,11 @@ class GameSolutionTest {
 	@Test
 	void disproveSuggestion() {
 		Color color = new Color(255,0,0);
-		ComputerPlayer player = new ComputerPlayer("Player", color, 12, 20);
+		ComputerPlayer player = new ComputerPlayer("Player", color, 12, 20, 0);
 		Solution suggestion =  player.createSuggestion(board.getDeckSet(), board);
 			
 		
-		Suspect player2 = new ComputerPlayer("Player2", color, 15,18);
+		Suspect player2 = new ComputerPlayer("Player2", color, 15,18,0);
 		//give player no cards
 		//check that returns null
 		assertEquals(player2.disproveSuggestion(suggestion),null);
@@ -110,12 +110,12 @@ class GameSolutionTest {
 	@Test
 	void testHandleSuggestion() {
 		Color color = new Color(255,0,0);
-		ComputerPlayer player1 = new ComputerPlayer("Player1", color, 12, 20);
-		Suspect player2 = new ComputerPlayer("Player2", color, 15, 18);
-		Suspect player3 = new ComputerPlayer("Player3", color, 14, 18);
-		Suspect player4 = new ComputerPlayer("Player4", color, 13, 18);
-		Suspect player5 = new ComputerPlayer("Player5", color, 12, 18);
-		Suspect player6 = new ComputerPlayer("Player6", color, 11, 18);
+		ComputerPlayer player1 = new ComputerPlayer("Player1", color, 12, 20,0);
+		Suspect player2 = new ComputerPlayer("Player2", color, 15, 18,0);
+		Suspect player3 = new ComputerPlayer("Player3", color, 14, 18,0);
+		Suspect player4 = new ComputerPlayer("Player4", color, 13, 18,0);
+		Suspect player5 = new ComputerPlayer("Player5", color, 12, 18, 0);
+		Suspect player6 = new ComputerPlayer("Player6", color, 11, 18, 0);
 		ArrayList<Suspect> players = new ArrayList<>();
 		players.add(player1);
 		players.add(player2);

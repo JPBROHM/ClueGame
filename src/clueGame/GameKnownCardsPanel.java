@@ -571,7 +571,7 @@ public class GameKnownCardsPanel extends JPanel{
            panel.setLayout(new GridLayout(3, 0));
            Color color = new Color(0,0,0);
            color = Color.YELLOW;
-           HumanPlayer player = new HumanPlayer("Col. Mustard", color, 0, 0);
+           
            
            Set<String> weaponsSeen = new HashSet<>();
            Set<String> peopleSeen = new HashSet<>();
@@ -581,18 +581,7 @@ public class GameKnownCardsPanel extends JPanel{
            weaponsSeen.add("Chainsaw");
            
            peopleSeen.add( "Colonel Mustard");
-           player.updateHand(new Card(CardType.ROOM, "Hall"));
-           player.updateHand(new Card(CardType.WEAPON, "Piano Wire"));
-           player.updateHand(new Card(CardType.PERSON, "Mrs. White"));
-           
-           player.setWeaponCards(weaponsSeen);
-           player.setPeopleCards(peopleSeen);
-           
-
-           panel.add(panel.setPeople(player));
-           panel.add(panel.setRooms(player));
-           panel.add(panel.setWeapons(player));
-
+          
     }
 
 

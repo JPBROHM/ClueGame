@@ -147,12 +147,9 @@ public class GameControlPanel extends JPanel{
 					boolean moveBool = false;
 					BoardCell cellToMoveTo = new BoardCell();
 					int count = 0;
-					ArrayList<Card> seenRooms = new ArrayList<>();
-					for (String name : sus.getRoomsSeen()) {
-						seenRooms.add(new Card(CardType.ROOM, name));
-					}
-					//handle moving the Computer players
-					sus.setTarget(seenRooms);
+					//make accusation if roomCards(seen+hand)==roomCards-1 && same for people and weapons 
+					
+					
 					BoardCell targetRoomCell = board.getCell(board.getRoom(sus.getTarget()).getCenterCell().getRow(),board.getRoom(sus.getTarget()).getCenterCell().getColumn());
 					for (BoardCell targetCell : targets) {
 						if (count == 0) {
@@ -170,6 +167,10 @@ public class GameControlPanel extends JPanel{
 							sus.setCol(targetCell.getColumn());
 							board.getCell(sus.getRow(), sus.getCol()).setOccupied(true);
 							moveBool = true;
+							Solution compPlayerSuggestion = sus.createSuggestion(board.getDeckSet(), board);
+							board.handleSuggestion(compPlayerSuggestion, sus);
+							//handle moving the Computer players
+							sus.setTarget(board.getRoomCards());
 							break;
 						}
 						
@@ -291,7 +292,7 @@ public class GameControlPanel extends JPanel{
     	// test filling in the data
     	Color color = new Color(0,0,0);
     	color = Color.YELLOW;
-    	panel.setTurn(new ComputerPlayer( "Col. Mustard", color, 0, 0), 5);
+    	
     	panel.setGuess( "I have no guess!");
     	panel.setGuessResult( "So you have nothing?");
 
