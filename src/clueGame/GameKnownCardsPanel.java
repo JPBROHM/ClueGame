@@ -19,6 +19,9 @@ import javax.swing.border.TitledBorder;
 public class GameKnownCardsPanel extends JPanel{
 	Board board = Board.getInstance();
 	int peopleCardsSeen = 0;
+	ArrayList<JTextField> personCards;
+	ArrayList<JTextField> weaponCards;
+	ArrayList<JTextField> roomCards;
 	JTextField personCard1 = new JTextField("Not Seen            ");
 	JTextField personCard2 = new JTextField("Not Seen            ");
 	JTextField personCard3 = new JTextField("Not Seen            ");

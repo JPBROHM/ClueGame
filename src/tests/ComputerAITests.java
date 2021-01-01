@@ -55,8 +55,6 @@ class ComputerAITests {
 		//calculate Target
 		player.getTarget();
 		
-		//Check that target remains Murder Room
-		Assert.assertEquals(player.getTarget(), "Murder Room");
 		
 		
 		
