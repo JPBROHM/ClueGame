@@ -335,13 +335,7 @@ public class Board extends JPanel{
 					deck.remove(0);
 				}
 			}
-			
-		}
-		
-		
-		
-		
-		
+		}	
 	}
 		
 

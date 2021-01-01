@@ -19,7 +19,7 @@ import javax.swing.border.TitledBorder;
 public class GameKnownCardsPanel extends JPanel{
 	Board board = Board.getInstance();
 	int peopleCardsSeen = 0;
-	ArrayList<JTextField> personCards;
+	ArrayList<JTextField> personCards = new ArrayList<>();
 	ArrayList<JTextField> weaponCards;
 	ArrayList<JTextField> roomCards;
 	JTextField personCard1 = new JTextField("Not Seen            ");
@@ -98,31 +98,18 @@ public class GameKnownCardsPanel extends JPanel{
 		//set seen & display
         peoplePanel.add(new JLabel("Seen:"));
         
-        peopleCardsSeen = player.getPeopleSeen().size();
-        for (String name : player.getPeopleSeen()) {
-        	peoplePanel.add(new JTextField(name));
-        	count -= 1;
+        for (int i = 0; i < 5; i++) {
+        	personCards.add(new JTextField("Not Seen            "));
+        	peoplePanel.add(personCards.get(i));
         }
-        for (int i = 0; i < count; i++) {
-        	switch (i) {
-        	case 0: 
-        		peoplePanel.add(personCard1);
-        		break;
-        	case 1: 
-        		peoplePanel.add(personCard2);
-        		break;
-        	case 2: 
-        		peoplePanel.add(personCard3);
-        		break;
-        	case 3: 
-        		peoplePanel.add(personCard4);
-        		break;
-        	case 4: 
-        		peoplePanel.add(personCard5);
-        		break;   
-        	
-        	}
-		}
+        
+        peopleCardsSeen = player.getPeopleSeen().size();
+        int cardCount = 0;
+        for (String name : player.getPeopleSeen()) {
+        	personCards.get(cardCount).setText(name);
+        	cardCount++;
+        }
+    
         
         return peoplePanel;
 		
@@ -269,6 +256,13 @@ public class GameKnownCardsPanel extends JPanel{
 			//this method is going to be kept in mind for next major refactoring session we do
 			
 			if (numPeopleSeen != peopleCardsSeen) {
+				int listCount = 0;
+				for (String name : board.getHuman().getPeopleSeen()) {
+					personCards.get(listCount).setText(name);
+					listCount++;
+				}
+				
+				/*
 				int nameCount = 0;
 				switch (numPeopleSeen) {
 				case 1:
@@ -348,7 +342,7 @@ public class GameKnownCardsPanel extends JPanel{
 						}
 						nameCount++;
 					}
-				}
+				}*/
 					
 			}
 			
