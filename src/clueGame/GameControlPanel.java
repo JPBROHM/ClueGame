@@ -158,6 +158,7 @@ public class GameControlPanel extends JPanel{
 						if (count == 0) {
 							//set cell to move to as an actual cell so the player always has a valid place to move to, even if it isnt a good place to move to
 							cellToMoveTo = targetCell;
+							count++;
 						}
 						
 						//if the computer player can get into the room they are trying to go to, then enter that room
@@ -192,11 +193,17 @@ public class GameControlPanel extends JPanel{
 								break;
 							}
 							
-							//if the space isnt a room or doorway, and its closer to the target room than the current closest pspace, then save that space 
-							//and it will be moved to if there are no oother bettter option
-						} else if (Math.abs(targetCell.getRow() + targetCell.getColumn() - targetRoomCell.getRow() - targetRoomCell.getColumn()) < min){
-							min = Math.abs(targetCell.getRow() + targetCell.getColumn() - targetRoomCell.getRow() - targetRoomCell.getColumn());
-							cellToMoveTo = targetCell;
+							//if the space isnt a room or doorway, and its closer to a doorway to the target room than the current closest space, then save that space 
+							//and it will be moved to if there are no other better option
+						} else {
+							for (BoardCell doorway : targetRoomCell.getAdjList()) {
+								if (Math.abs(targetCell.getRow() - doorway.getRow()) + Math.abs(targetCell.getColumn() - doorway.getColumn()) < min) {
+									min = Math.abs(targetCell.getRow() - doorway.getRow()) + Math.abs(targetCell.getColumn() - doorway.getColumn());
+									cellToMoveTo = targetCell;
+								}
+								
+							}
+							
 						}
 					}
 					//if the player wasnt able to get to the room or a doorway, go to the boardcell that is closest to the target room they want to go to
