@@ -16,6 +16,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -322,7 +323,7 @@ public class Board extends JPanel{
 	}
 
 
-	public void dealDeck(ArrayList<Card> deck, Random r) {
+	public void dealDeck(List<Card> deck, Random r) {
 		int num = 0;
 		while(!deck.isEmpty()) {
 			for (Suspect sus : computers) {
