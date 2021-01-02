@@ -19,9 +19,9 @@ import javax.swing.border.TitledBorder;
 public class GameKnownCardsPanel extends JPanel{
 	Board board = Board.getInstance();
 	int peopleCardsSeen = 0;
-	ArrayList<JTextField> personCards = new ArrayList<>();
-	ArrayList<JTextField> weaponCards;
-	ArrayList<JTextField> roomCards;
+	ArrayList<JTextField> personCardsArray = new ArrayList<>();
+	ArrayList<JTextField> weaponCardsArray = new ArrayList<>();
+	ArrayList<JTextField> roomCardsArray;
 	JTextField personCard1 = new JTextField("Not Seen            ");
 	JTextField personCard2 = new JTextField("Not Seen            ");
 	JTextField personCard3 = new JTextField("Not Seen            ");
@@ -99,14 +99,14 @@ public class GameKnownCardsPanel extends JPanel{
         peoplePanel.add(new JLabel("Seen:"));
         
         for (int i = 0; i < 5; i++) {
-        	personCards.add(new JTextField("Not Seen            "));
-        	peoplePanel.add(personCards.get(i));
+        	personCardsArray.add(new JTextField("Not Seen            "));
+        	peoplePanel.add(personCardsArray.get(i));
         }
         
         peopleCardsSeen = player.getPeopleSeen().size();
         int cardCount = 0;
         for (String name : player.getPeopleSeen()) {
-        	personCards.get(cardCount).setText(name);
+        	personCardsArray.get(cardCount).setText(name);
         	cardCount++;
         }
     
@@ -147,29 +147,16 @@ public class GameKnownCardsPanel extends JPanel{
 
 		//set seen & display
 		weaponPanel.add(new JLabel("Seen:"));
+		int cardCount = 0;
+		for (int i = 0; i < 5; i++) {
+        	weaponCardsArray.add(new JTextField("Not Seen            "));
+        	weaponPanel.add(weaponCardsArray.get(i));
+        }
+		
 		weaponCardsSeen = player.getWeaponsSeen().size();
 		for (String name : player.getWeaponsSeen()) {
-			weaponPanel.add(new JTextField(name));
-			count -= 1;
-		}
-		for (int i = 0; i < count; i++) {
-			switch (i) {
-        	case 0: 
-        		weaponPanel.add(weaponCard1);
-        		break;
-        	case 1: 
-        		weaponPanel.add(weaponCard2);
-        		break;
-        	case 2: 
-        		weaponPanel.add(weaponCard3);
-        		break;
-        	case 3: 
-        		weaponPanel.add(weaponCard4);
-        		break;
-        	case 4: 
-        		weaponPanel.add(weaponCard5);
-        		break;        	       	        	
-        	}
+			weaponCardsArray.get(cardCount).setText(name);
+        	cardCount++;
 		}
 
 		return weaponPanel;
@@ -256,93 +243,12 @@ public class GameKnownCardsPanel extends JPanel{
 			//this method is going to be kept in mind for next major refactoring session we do
 			
 			if (numPeopleSeen != peopleCardsSeen) {
-				int listCount = 0;
+				int peopleCount = 0;
 				for (String name : board.getHuman().getPeopleSeen()) {
-					personCards.get(listCount).setText(name);
-					listCount++;
+					personCardsArray.get(peopleCount).setText(name);
+					peopleCount++;
+					repaint();
 				}
-				
-				/*
-				int nameCount = 0;
-				switch (numPeopleSeen) {
-				case 1:
-					for (String name : board.getHuman().getPeopleSeen()) {
-						personCard1.setText(name);
-					}
-				case 2:
-					nameCount = 0;
-					for (String name : board.getHuman().getPeopleSeen()) {
-						if (nameCount == 0) {
-							personCard1.setText(name);
-							
-						}
-						if (nameCount == 1) {
-							personCard2.setText(name);
-						}
-						nameCount++;
-					}
-				case 3:
-					nameCount = 0;
-					for (String name : board.getHuman().getPeopleSeen()) {
-						if (nameCount == 0) {
-							personCard1.setText(name);
-						
-						}
-						if (nameCount == 1) {
-							personCard2.setText(name);
-							
-						}
-						
-						if (nameCount == 2) {
-							personCard3.setText(name);
-						}
-						nameCount++;
-					}
-				case 4:
-					nameCount = 0;
-					for (String name : board.getHuman().getPeopleSeen()) {
-						if (nameCount == 0) {
-							personCard1.setText(name);
-							
-						}
-						if (nameCount == 1) {
-							personCard2.setText(name);
-							
-						}
-						if (nameCount == 2) {
-							personCard3.setText(name);
-							
-						}
-						if (nameCount == 3) {
-							personCard4.setText(name);
-						}
-						nameCount++;
-					}
-				case 5:
-					nameCount = 0;
-					for (String name : board.getHuman().getPeopleSeen()) {
-						if (nameCount == 0) {
-							personCard1.setText(name);
-						
-						}
-						if (nameCount == 1) {
-							personCard2.setText(name);
-							
-						}
-						if (nameCount == 2) {
-							personCard3.setText(name);
-							
-						}
-						if (nameCount == 3) {
-							personCard4.setText(name);
-						
-						}
-						if (nameCount == 4) {
-							personCard5.setText(name);
-						}
-						nameCount++;
-					}
-				}*/
 					
 			}
 			
@@ -355,6 +261,14 @@ public class GameKnownCardsPanel extends JPanel{
 			
 			
 			if (numWeaponsSeen != weaponCardsSeen) {
+				
+				int weaponCount = 0;
+				for (String name : board.getHuman().getWeaponsSeen()) {
+					weaponCardsArray.get(weaponCount).setText(name);
+					weaponCount++;
+					repaint();
+				}
+				/*
 				int nameCount = 0;
 				switch (numWeaponsSeen) {
 				case 1:
@@ -432,7 +346,7 @@ public class GameKnownCardsPanel extends JPanel{
 						}
 						nameCount++;
 					}
-				}
+				}*/
 					
 			}
 			

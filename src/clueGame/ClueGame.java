@@ -18,7 +18,11 @@ import javax.swing.JOptionPane;
 
 public class ClueGame extends JFrame {
 	private static Board board;
-	GameKnownCardsPanel cardPanel;
+	static GameKnownCardsPanel cardPanel;
+	public static GameKnownCardsPanel getCardPanel() {
+		return cardPanel;
+	}
+
 	GameControlPanel controlPanel;
 	
 	public ClueGame() {
@@ -97,12 +101,12 @@ public class ClueGame extends JFrame {
 		 
 	
          theBoard.setVisible(true);
-         while (true) {
+         /*while (true) {
         	 theBoard.cardPanel.update();
         	 if (!theBoard.isVisible()) {
         		 break;
         	 }
-         }
+         }*/
       
    
 

@@ -162,6 +162,9 @@ class BoardListener implements MouseListener {
 											board.getHuman().setHasMoved(true);
 										}
 									}
+									 ClueGame.getCardPanel().update();
+									 
+									 board.validate();
 								}
 
 							}
