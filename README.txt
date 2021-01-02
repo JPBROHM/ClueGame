@@ -1,4 +1,8 @@
 
+Game Starts from running ClueGame.java in the clueGame package
+
+
+
 The computer players have TERRIBLE movement, but will eventually make an accusation
 
 Authors: Joshua Brohm and Sam Pearson
