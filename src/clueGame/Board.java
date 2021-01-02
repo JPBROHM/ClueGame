@@ -186,11 +186,11 @@ public class Board extends JPanel{
 		
 		addMouseListener(new BoardListener());
 		legalTargets = new HashSet<>();
-		rooms = new HashMap<Character, Room>();
-		weapons = new HashSet<String>();
-		players = new HashMap<String, String>();
-		allCharacters = new ArrayList<Suspect>();
-		computers = new HashSet<Suspect>();
+		rooms = new HashMap<>();
+		weapons = new HashSet<>();
+		players = new HashMap<>();
+		allCharacters = new ArrayList<>();
+		computers = new HashSet<>();
 		deckSet = new HashSet<>();
 		solution = new Solution();
 		roomCards = new ArrayList<>();
@@ -206,136 +206,148 @@ public class Board extends JPanel{
 		}
 
 		
-		if(!players.isEmpty()) {
-			for (Map.Entry<String, String> entry : players.entrySet()) {
-				int offset = 0;
-				//each player has a corresponding color, it was easiest to then give each color a corresponding starting location
-				//then use that to set the starting location of the player
-				int row = 0;
-				int col = 0;
-				if (entry.getValue().equals("Blue")) {
-					color = Color.BLUE;
-					row = 0;
-					col = 7;
-					offset = 3;
-				}
-				if (entry.getValue().equals("Green")) {
-					color = Color.GREEN;
-					row = 6;
-					col = 0;
-					offset = 2;
-				}
-				if (entry.getValue().equals("Purple")) {
-					color = Color.MAGENTA;
-					row = 18;
-					col = 0;
-					offset = 0;
-				}
-				if (entry.getValue().equals("Red")) {
-					color = Color.RED;
-					row = 24;
-					col = 7;
-					offset = 4;
-				}
-				if (entry.getValue().equals("White")) {
-					color = Color.WHITE;
-					row = 17;
-					col = 23;
-					offset = 6;
-				}
-				if (entry.getValue().equals("Yellow")) {
-					color = Color.YELLOW;
-					row = 0;
-					col = 18;
-					offset = 5;
-				}
-				if (count == 0) {
-					human = new HumanPlayer(entry.getKey(), color, row, col, offset);
-					allCharacters.add(human);
-					count++;
-				}
-				else {
-					Suspect computer = new ComputerPlayer(entry.getKey(), color, row, col, offset);
-					computers.add(computer);
-					allCharacters.add(computer);
-				}
+		if(players.isEmpty()) {
+			System.out.println("Players map is empty");
+			System.exit(0);
+		}
+		for (Map.Entry<String, String> entry : players.entrySet()) {
+			int offset = 0;
+			//each player has a corresponding color, it was easiest to then give each color a corresponding starting location
+			//then use that to set the starting location of the player
+			int row = 0;
+			int col = 0;
+			if (entry.getValue().equals("Blue")) {
+				color = Color.BLUE;
+				row = 0;
+				col = 7;
+				offset = 3;
 			}
-
-			//this next chunks purpose is to create three separate "decks" one of all room, weapons and players,
-			//the point of this is to separate them first so the solution can be made, then they can be put into a deck and that large deck
-			//dealt out to the players
-			ArrayList<Card> playerCards = new ArrayList<>();
-			ArrayList<Card> weaponCards = new ArrayList<>();
-			deck = new ArrayList<>();
-
-			for (Entry<Character, Room> entry : rooms.entrySet()) {
-				if (!(entry.getValue().getName().equals("Walkway") || entry.getValue().getName().equals("Unused"))) {
-				
-					roomCards.add(new Card(CardType.ROOM, entry.getValue().getName()));
-				}
+			else if (entry.getValue().equals("Green")) {
+				color = Color.GREEN;
+				row = 6;
+				col = 0;
+				offset = 2;
 			}
-
-			for (Entry<String, String> entry : players.entrySet()) {
-				
-				playerCards.add(new Card(CardType.PERSON, entry.getKey()));
+			else if (entry.getValue().equals("Purple")) {
+				color = Color.MAGENTA;
+				row = 18;
+				col = 0;
+				offset = 0;
 			}
-
-			for (String entry : weapons) {
-				
-				weaponCards.add(new Card(CardType.WEAPON, entry));
+			else if (entry.getValue().equals("Red")) {
+				color = Color.RED;
+				row = 24;
+				col = 7;
+				offset = 4;
 			}
-			//this is where the solution gets created
+			else if (entry.getValue().equals("White")) {
+				color = Color.WHITE;
+				row = 17;
+				col = 23;
+				offset = 6;
+			}
+			else if (entry.getValue().equals("Yellow")) {
+				color = Color.YELLOW;
+				row = 0;
+				col = 18;
+				offset = 5;
+			}
+			if (count == 0) {
+				human = new HumanPlayer(entry.getKey(), color, row, col, offset);
+				allCharacters.add(human);
+				count++;
+			}
+			else {
+				Suspect computer = new ComputerPlayer(entry.getKey(), color, row, col, offset);
+				computers.add(computer);
+				allCharacters.add(computer);
+			}
+		}
+
+		createDecks(r);
+	}
+
+
+	public void createDecks(Random r) {
+		//this next chunks purpose is to create three separate "decks" one of all room, weapons and players,
+		//the point of this is to separate them first so the solution can be made, then they can be put into a deck and that large deck
+		//dealt out to the players
+		ArrayList<Card> playerCards = new ArrayList<>();
+		ArrayList<Card> weaponCards = new ArrayList<>();
+		deck = new ArrayList<>();
+
+		for (Entry<Character, Room> entry : rooms.entrySet()) {
+			if (!(entry.getValue().getName().equals("Walkway") || entry.getValue().getName().equals("Unused"))) {
 			
-			int p = (r.nextInt(playerCards.size() - 1));
-			int w = (r.nextInt(weaponCards.size() - 1));
-			int ro = (r.nextInt(roomCards.size() - 1));
-			solution = new Solution( playerCards.get(p), roomCards.get(ro), 
-					weaponCards.get(w));
+				roomCards.add(new Card(CardType.ROOM, entry.getValue().getName()));
+			}
+		}
+
+		for (Entry<String, String> entry : players.entrySet()) {
 			
-			//all the cards are now put into one large deck
-			for (int i = 0; i < playerCards.size(); i++) {
-				deck.add(playerCards.get(i));
-			}
-			for (int i = 0; i < weaponCards.size(); i++) {
-				deck.add(weaponCards.get(i));
-			}
-			for (int i = 0; i < roomCards.size(); i++) {
-				deck.add(roomCards.get(i));
-			}
+			playerCards.add(new Card(CardType.PERSON, entry.getKey()));
+		}
+
+		for (String entry : weapons) {
 			
-			for (int i = 0; i < deck.size(); i++) {
-				deckSet.add(deck.get(i));
-			}
-			//remove the cards that were used for the solution
-			deck.remove(p);
-			deck.remove(playerCards.size()+w - 1);
-			deck.remove(playerCards.size()+weaponCards.size()+ro - 2);
-			int num = 0;
-			while(!deck.isEmpty()) {
-				for (Suspect sus : computers) {
-					if(deck.size()>1) {
-						num = r.nextInt(deck.size() - 1);
-						sus.updateHand(deck.get(num));
-						sus.updateSeen(deck.get(num));
-						deck.remove(num);
-					}
-					else if(deck.size()==1) {
-						sus.updateHand(deck.get(0));
-						sus.updateSeen(deck.get(0));
-						deck.remove(0);
-						}
-				}
+			weaponCards.add(new Card(CardType.WEAPON, entry));
+		}
+		//this is where the solution gets created
+		
+		int p = (r.nextInt(playerCards.size() - 1));
+		int w = (r.nextInt(weaponCards.size() - 1));
+		int ro = (r.nextInt(roomCards.size() - 1));
+		solution = new Solution( playerCards.get(p), roomCards.get(ro), 
+				weaponCards.get(w));
+		
+		//all the cards are now put into one large deck
+		for (int i = 0; i < playerCards.size(); i++) {
+			deck.add(playerCards.get(i));
+		}
+		for (int i = 0; i < weaponCards.size(); i++) {
+			deck.add(weaponCards.get(i));
+		}
+		for (int i = 0; i < roomCards.size(); i++) {
+			deck.add(roomCards.get(i));
+		}
+		
+		for (int i = 0; i < deck.size(); i++) {
+			deckSet.add(deck.get(i));
+		}
+		//remove the cards that were used for the solution
+		deck.remove(p);
+		deck.remove(playerCards.size()+w - 1);
+		deck.remove(playerCards.size()+weaponCards.size()+ro - 2);
+		dealDeck(deck, r);
+	}
+
+
+	public void dealDeck(ArrayList<Card> deck, Random r) {
+		int num = 0;
+		while(!deck.isEmpty()) {
+			for (Suspect sus : computers) {
 				if(deck.size()>1) {
 					num = r.nextInt(deck.size() - 1);
-					human.updateHand(deck.get(num));
+					sus.updateHand(deck.get(num));
+					sus.updateSeen(deck.get(num));
 					deck.remove(num);
 				}
-				else if (deck.size()==1) {
-					human.updateHand(deck.get(0));
+				else if(deck.size()==1) {
+					sus.updateHand(deck.get(0));
+					sus.updateSeen(deck.get(0));
 					deck.remove(0);
-				}
+					}
 			}
-		}	
+			if(deck.size()>1) {
+				num = r.nextInt(deck.size() - 1);
+				human.updateHand(deck.get(num));
+				deck.remove(num);
+			}
+			else if (deck.size()==1) {
+				human.updateHand(deck.get(0));
+				deck.remove(0);
+			}
+		}
 	}
 		
 

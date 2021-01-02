@@ -66,6 +66,7 @@ public class ClueGame extends JFrame {
 		 
          game.setVisible(true);
          
+         System.out.println(board.getSolution().getPerson().getName() + board.getSolution().getWeapon().getName() + board.getSolution().getRoom().getName());
       
    
 
