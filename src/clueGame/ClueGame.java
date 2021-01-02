@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 
 
 public class ClueGame extends JFrame {
-	private static Board board;
+	private static Board board = Board.getInstance();;
 	static GameKnownCardsPanel cardPanel;
 	public static GameKnownCardsPanel getCardPanel() {
 		return cardPanel;
@@ -27,7 +27,6 @@ public class ClueGame extends JFrame {
 	
 	public ClueGame() {
 		 //create the board
-        board = Board.getInstance();
         board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");		
         board.initialize();
         //draw board
@@ -40,8 +39,7 @@ public class ClueGame extends JFrame {
         add(controlPanel, BorderLayout.SOUTH);
         cardPanel = new GameKnownCardsPanel();
         add(cardPanel, BorderLayout.EAST);
-        controlPanel.addMouseListener(new FrameListener());
-        board.addMouseListener(new FrameListener());
+     
         
         
         Random r = new Random();
@@ -57,56 +55,17 @@ public class ClueGame extends JFrame {
 		board.repaint();
 	}
 	
+
 	
-	
-	class FrameListener implements MouseListener, ActionListener{
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			cardPanel.update();
-				
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {}
-
-		@Override
-		public void mouseExited(MouseEvent e) {}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			cardPanel.update();
-			
-		}
-		
-	}
-	
-	public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+	public static void main(String[] args) {
 		ClueGame game = new ClueGame();
 		//create splash screen
 		JOptionPane.showMessageDialog(null, "You are "+board.getHuman().getName()+"."+ "\n" +"Can you find the solution \nbefore the Computer players?", 
 																					"Welcome to Clue", JOptionPane.PLAIN_MESSAGE);
-		
-		
-		
-		
-		
-		 ClueGame theBoard = new ClueGame();  // create the frame
-		 
 	
-         theBoard.setVisible(true);
-         /*while (true) {
-        	 theBoard.cardPanel.update();
-        	 if (!theBoard.isVisible()) {
-        		 break;
-        	 }
-         }*/
+		 
+         game.setVisible(true);
+         
       
    
 

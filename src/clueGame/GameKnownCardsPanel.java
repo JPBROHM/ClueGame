@@ -21,7 +21,7 @@ public class GameKnownCardsPanel extends JPanel{
 	int peopleCardsSeen = 0;
 	ArrayList<JTextField> personCardsArray = new ArrayList<>();
 	ArrayList<JTextField> weaponCardsArray = new ArrayList<>();
-	ArrayList<JTextField> roomCardsArray;
+	ArrayList<JTextField> roomCardsArray = new ArrayList<>();
 	JTextField personCard1 = new JTextField("Not Seen            ");
 	JTextField personCard2 = new JTextField("Not Seen            ");
 	JTextField personCard3 = new JTextField("Not Seen            ");
@@ -85,7 +85,7 @@ public class GameKnownCardsPanel extends JPanel{
 		peoplePanel.add(hand);
 
 
-		if (peopleCards.size() == 0) {
+		if (peopleCards.isEmpty()) {
 			peoplePanel.add(new JTextField("None"));
 		}
 
@@ -98,7 +98,7 @@ public class GameKnownCardsPanel extends JPanel{
 		//set seen & display
         peoplePanel.add(new JLabel("Seen:"));
         
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < count; i++) {
         	personCardsArray.add(new JTextField("Not Seen            "));
         	peoplePanel.add(personCardsArray.get(i));
         }
@@ -148,7 +148,7 @@ public class GameKnownCardsPanel extends JPanel{
 		//set seen & display
 		weaponPanel.add(new JLabel("Seen:"));
 		int cardCount = 0;
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < count; i++) {
         	weaponCardsArray.add(new JTextField("Not Seen            "));
         	weaponPanel.add(weaponCardsArray.get(i));
         }
@@ -196,34 +196,18 @@ public class GameKnownCardsPanel extends JPanel{
         
 		//set seen & display
         roomPanel.add(new JLabel("Seen:"));
-        roomCardsSeen = player.getRoomsSeen().size();
-        for (String name : player.getRoomsSeen()) {
-        	roomPanel.add(new JTextField(name));
-        	count -= 1;
+		int cardCount = 0;
+		for (int i = 0; i < count; i++) {
+        	roomCardsArray.add(new JTextField("Not Seen            "));
+        	roomPanel.add(roomCardsArray.get(i));
         }
-        for (int i = 0; i < count; i++) {
-        	switch (i) {
-        	case 0: 
-        		roomPanel.add(roomCard1);
-        		break;
-        	case 1: 
-        		roomPanel.add(roomCard2);
-        		break;
-        	case 2: 
-        		roomPanel.add(roomCard3);
-        		break;
-        	case 3: 
-        		roomPanel.add(roomCard4);
-        		break;
-        	case 4: 
-        		roomPanel.add(roomCard5);
-        		break;  
-        	case 5:
-        		roomPanel.add(roomCard6);
-        		break;
-        	}
+		
+		roomCardsSeen = player.getRoomsSeen().size();
+		for (String name : player.getRoomsSeen()) {
+			roomCardsArray.get(cardCount).setText(name);
+        	cardCount++;
 		}
-        
+       
         return roomPanel;
 	}
 	
@@ -248,17 +232,10 @@ public class GameKnownCardsPanel extends JPanel{
 					personCardsArray.get(peopleCount).setText(name);
 					peopleCount++;
 					repaint();
-				}
-					
+				}	
 			}
 			
-			
-			
-			
-			
-			
-			
-			
+		
 			
 			if (numWeaponsSeen != weaponCardsSeen) {
 				
@@ -267,206 +244,22 @@ public class GameKnownCardsPanel extends JPanel{
 					weaponCardsArray.get(weaponCount).setText(name);
 					weaponCount++;
 					repaint();
-				}
-				/*
-				int nameCount = 0;
-				switch (numWeaponsSeen) {
-				case 1:
-					for (String name : board.getHuman().getWeaponsSeen()) {
-						weaponCard1.setText(name);
-					}
-				case 2:
-					nameCount = 0;
-					for (String name : board.getHuman().getWeaponsSeen()) {
-						if (nameCount == 0) {
-							weaponCard1.setText(name);
-						}
-						if (nameCount == 1) {
-							weaponCard2.setText(name);
-						}
-						nameCount++;
-					}
-				case 3:
-					nameCount = 0;
-					for (String name : board.getHuman().getWeaponsSeen()) {
-						if (nameCount == 0) {
-							weaponCard1.setText(name);
-							
-						}
-						if (nameCount == 1) {
-							weaponCard2.setText(name);
-							
-						}
-						if (nameCount == 2) {
-							weaponCard3.setText(name);
-						}
-						nameCount++;
-					}
-				case 4:
-					nameCount = 0;
-					for (String name : board.getHuman().getWeaponsSeen()) {
-						if (nameCount == 0) {
-							weaponCard1.setText(name);
-
-						}
-						if (nameCount == 1) {
-							weaponCard2.setText(name);
-							
-						}
-						if (nameCount == 2) {
-							weaponCard3.setText(name);
-							
-						}
-						if (nameCount == 3) {
-							weaponCard4.setText(name);
-						}
-						nameCount++;
-					}
-				case 5:
-					nameCount = 0;
-					for (String name : board.getHuman().getWeaponsSeen()) {
-						if (nameCount == 0) {
-							weaponCard1.setText(name);
-							
-						}
-						if (nameCount == 1) {
-							weaponCard2.setText(name);
-							
-						}
-						if (nameCount == 2) {
-							weaponCard3.setText(name);
-							
-						}
-						if (nameCount == 3) {
-							weaponCard4.setText(name);
-							
-						}
-						if (nameCount == 4) {
-							weaponCard5.setText(name);
-						}
-						nameCount++;
-					}
-				}*/
-					
+				}		
 			}
 			
 			
-			
-			
-			
+	
 			
 			
 			if (numRoomsSeen != roomCardsSeen) {
-				int nameCount = 0;
-				switch (numRoomsSeen) {
-				case 1:
-					for (String name : board.getHuman().getRoomsSeen()) {
-						roomCard1.setText(name);
-					}
-				case 2:
-					nameCount = 0;
-					for (String name : board.getHuman().getRoomsSeen()) {
-						if (nameCount == 0) {
-							roomCard1.setText(name);
-							
-						}
-						if (nameCount == 1) {
-							roomCard2.setText(name);
-						}
-						nameCount++;
-					}
-				case 3:
-					nameCount = 0;
-					for (String name : board.getHuman().getRoomsSeen()) {
-						if (nameCount == 0) {
-							roomCard1.setText(name);
-						
-						}
-						if (nameCount == 1) {
-							roomCard2.setText(name);
-						
-						}
-						if (nameCount == 2) {
-							roomCard3.setText(name);
-						}
-						nameCount++;
-					}
-				case 4:
-					nameCount = 0;
-					for (String name : board.getHuman().getRoomsSeen()) {
-						if (nameCount == 0) {
-							roomCard1.setText(name);
-						
-						}
-						if (nameCount == 1) {
-							roomCard2.setText(name);
-							
-						}
-						if (nameCount == 2) {
-							roomCard3.setText(name);
-							
-						}
-						if (nameCount == 3) {
-							roomCard4.setText(name);
-						}
-						nameCount++;
-					}
-				case 5:
-					nameCount = 0;
-					for (String name : board.getHuman().getRoomsSeen()) {
-						if (nameCount == 0) {
-							roomCard1.setText(name);
-							
-						}
-						if (nameCount == 1) {
-							roomCard2.setText(name);
-							
-						}
-						if (nameCount == 2) {
-							roomCard3.setText(name);
-							
-						}
-						if (nameCount == 3) {
-							roomCard4.setText(name);
-							
-						}
-						if (nameCount == 4) {
-							roomCard5.setText(name);
-						}
-						nameCount++;
-					}
-				case 6:
-					nameCount = 0;
-					for (String name : board.getHuman().getRoomsSeen()) {
-						if (nameCount == 0) {
-							roomCard1.setText(name);
-							
-						}
-						if (nameCount == 1) {
-							roomCard2.setText(name);
-							
-						}
-						if (nameCount == 2) {
-							roomCard3.setText(name);
-							
-						}
-						if (nameCount == 3) {
-							roomCard4.setText(name);
-							
-						}
-						if (nameCount == 4) {
-							roomCard5.setText(name);
-						}
-						if (nameCount == 5) {
-							roomCard6.setText(name);
-						}
-						nameCount++;
-					}
-				}
-					
-			}
-			
-			
+				
+				int roomCount = 0;
+				for (String name : board.getHuman().getRoomsSeen()) {
+					roomCardsArray.get(roomCount).setText(name);
+					roomCount++;
+					repaint();
+				}		
+			}	
 		}
 
 		
